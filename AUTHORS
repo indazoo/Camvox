@@ -1,0 +1,7 @@
+
+Maintainer: Take Vos <Take.Vos@vosgames.nl>
+- Voxel octtree implementation
+- CSG implementation
+- Python binding
+
+
