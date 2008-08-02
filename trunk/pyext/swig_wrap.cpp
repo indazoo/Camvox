@@ -2773,7 +2773,111 @@ SWIG_From_int  (int value)
 #ifdef __cplusplus
 extern "C" {
 #endif
-SWIGINTERN PyObject *_wrap_new_Interval(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_Interval_low_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Interval *arg1 = (Interval *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Interval_low_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Interval, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Interval_low_set" "', argument " "1"" of type '" "Interval *""'"); 
+  }
+  arg1 = reinterpret_cast< Interval * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Interval_low_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->low = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Interval_low_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Interval *arg1 = (Interval *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Interval_low_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Interval, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Interval_low_get" "', argument " "1"" of type '" "Interval *""'"); 
+  }
+  arg1 = reinterpret_cast< Interval * >(argp1);
+  result = (double) ((arg1)->low);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Interval_high_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Interval *arg1 = (Interval *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:Interval_high_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Interval, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Interval_high_set" "', argument " "1"" of type '" "Interval *""'"); 
+  }
+  arg1 = reinterpret_cast< Interval * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "Interval_high_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->high = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_Interval_high_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Interval *arg1 = (Interval *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Interval_high_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Interval, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Interval_high_get" "', argument " "1"" of type '" "Interval *""'"); 
+  }
+  arg1 = reinterpret_cast< Interval * >(argp1);
+  result = (double) ((arg1)->high);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Interval__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   double arg1 ;
   double arg2 ;
@@ -2804,6 +2908,74 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_new_Interval__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  Interval *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_Interval",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_Interval" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  result = (Interval *)new Interval(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Interval, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Interval(PyObject *self, PyObject *args) {
+  int argc;
+  PyObject *argv[3];
+  int ii;
+  
+  if (!PyTuple_Check(args)) SWIG_fail;
+  argc = (int)PyObject_Length(args);
+  for (ii = 0; (ii < argc) && (ii < 2); ii++) {
+    argv[ii] = PyTuple_GET_ITEM(args,ii);
+  }
+  if (argc == 1) {
+    int _v;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      return _wrap_new_Interval__SWIG_1(self, args);
+    }
+  }
+  if (argc == 2) {
+    int _v;
+    {
+      int res = SWIG_AsVal_double(argv[0], NULL);
+      _v = SWIG_CheckState(res);
+    }
+    if (_v) {
+      {
+        int res = SWIG_AsVal_double(argv[1], NULL);
+        _v = SWIG_CheckState(res);
+      }
+      if (_v) {
+        return _wrap_new_Interval__SWIG_0(self, args);
+      }
+    }
+  }
+  
+fail:
+  SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number of arguments for overloaded function 'new_Interval'.\n"
+    "  Possible C/C++ prototypes are:\n"
+    "    Interval(double,double)\n"
+    "    Interval(double)\n");
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *_wrap_delete_Interval(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   Interval *arg1 = (Interval *) 0 ;
@@ -2825,50 +2997,6 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_Interval_lower(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Interval *arg1 = (Interval *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  double result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Interval_lower",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Interval, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Interval_lower" "', argument " "1"" of type '" "Interval *""'"); 
-  }
-  arg1 = reinterpret_cast< Interval * >(argp1);
-  result = (double)(arg1)->lower();
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
-SWIGINTERN PyObject *_wrap_Interval_upper(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
-  PyObject *resultobj = 0;
-  Interval *arg1 = (Interval *) 0 ;
-  void *argp1 = 0 ;
-  int res1 = 0 ;
-  PyObject * obj0 = 0 ;
-  double result;
-  
-  if (!PyArg_ParseTuple(args,(char *)"O:Interval_upper",&obj0)) SWIG_fail;
-  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Interval, 0 |  0 );
-  if (!SWIG_IsOK(res1)) {
-    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Interval_upper" "', argument " "1"" of type '" "Interval *""'"); 
-  }
-  arg1 = reinterpret_cast< Interval * >(argp1);
-  result = (double)(arg1)->upper();
-  resultobj = SWIG_From_double(static_cast< double >(result));
-  return resultobj;
-fail:
-  return NULL;
-}
-
-
 SWIGINTERN PyObject *Interval_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
@@ -2877,6 +3005,19 @@ SWIGINTERN PyObject *Interval_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObj
 }
 
 SWIGINTERN PyObject *_wrap_new_Vector__SWIG_0(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Vector *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_Vector")) SWIG_fail;
+  result = (Vector *)new Vector();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Vector, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_Vector__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   double arg1 ;
   double arg2 ;
@@ -2916,7 +3057,7 @@ fail:
 }
 
 
-SWIGINTERN PyObject *_wrap_new_Vector__SWIG_1(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+SWIGINTERN PyObject *_wrap_new_Vector__SWIG_2(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   double arg1 ;
   double arg2 ;
@@ -2975,6 +3116,9 @@ SWIGINTERN PyObject *_wrap_new_Vector(PyObject *self, PyObject *args) {
   for (ii = 0; (ii < argc) && (ii < 4); ii++) {
     argv[ii] = PyTuple_GET_ITEM(args,ii);
   }
+  if (argc == 0) {
+    return _wrap_new_Vector__SWIG_0(self, args);
+  }
   if (argc == 3) {
     int _v;
     {
@@ -2992,7 +3136,7 @@ SWIGINTERN PyObject *_wrap_new_Vector(PyObject *self, PyObject *args) {
           _v = SWIG_CheckState(res);
         }
         if (_v) {
-          return _wrap_new_Vector__SWIG_0(self, args);
+          return _wrap_new_Vector__SWIG_1(self, args);
         }
       }
     }
@@ -3019,7 +3163,7 @@ SWIGINTERN PyObject *_wrap_new_Vector(PyObject *self, PyObject *args) {
             _v = SWIG_CheckState(res);
           }
           if (_v) {
-            return _wrap_new_Vector__SWIG_1(self, args);
+            return _wrap_new_Vector__SWIG_2(self, args);
           }
         }
       }
@@ -3029,6 +3173,7 @@ SWIGINTERN PyObject *_wrap_new_Vector(PyObject *self, PyObject *args) {
 fail:
   SWIG_SetErrorMsg(PyExc_NotImplementedError,"Wrong number of arguments for overloaded function 'new_Vector'.\n"
     "  Possible C/C++ prototypes are:\n"
+    "    Vector()\n"
     "    Vector(double,double,double)\n"
     "    Vector(double,double,double,double)\n");
   return NULL;
@@ -4166,10 +4311,12 @@ SWIGINTERN PyObject *VoxNode_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObje
 }
 
 static PyMethodDef SwigMethods[] = {
+	 { (char *)"Interval_low_set", _wrap_Interval_low_set, METH_VARARGS, NULL},
+	 { (char *)"Interval_low_get", _wrap_Interval_low_get, METH_VARARGS, NULL},
+	 { (char *)"Interval_high_set", _wrap_Interval_high_set, METH_VARARGS, NULL},
+	 { (char *)"Interval_high_get", _wrap_Interval_high_get, METH_VARARGS, NULL},
 	 { (char *)"new_Interval", _wrap_new_Interval, METH_VARARGS, NULL},
 	 { (char *)"delete_Interval", _wrap_delete_Interval, METH_VARARGS, NULL},
-	 { (char *)"Interval_lower", _wrap_Interval_lower, METH_VARARGS, NULL},
-	 { (char *)"Interval_upper", _wrap_Interval_upper, METH_VARARGS, NULL},
 	 { (char *)"Interval_swigregister", Interval_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_Vector", _wrap_new_Vector, METH_VARARGS, NULL},
 	 { (char *)"delete_Vector", _wrap_delete_Vector, METH_VARARGS, NULL},

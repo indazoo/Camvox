@@ -18,4 +18,25 @@
 
 namespace camvox {
 
+void CSGOperation::mergeTransforms(void)
+{
+	if (parent) {
+		total_transform = transform * parent->total_transform;
+		total_inv_transform = parent->total_inv_transform * inv_transform;
+	} else {
+		total_transform = transform;
+		total_inv_transform = inv_transform;
+	}
+
+	for (unsigned int i = 0; i < childs.size(); i++) {
+		childs[i]->mergeTransforms();
+	}
+}
+
+void CSGOperation::add(CSGObject *obj)
+{
+	obj->parent = this;
+	childs.push_back(obj);
+}
+
 }

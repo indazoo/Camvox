@@ -26,26 +26,9 @@ class TVector {
 public:
 	T	x, y, z, w;
 
-	TVector(void) {
-		x = 0.0;
-		y = 0.0;
-		z = 0.0;
-		w = 0.0;
-	}
-
-	TVector(T _x, T _y, T _z) {
-		x = _x;
-		y = _y;
-		z = _z;
-		w = 0.0;
-	}
-
-	TVector(T _x, T _y, T _z, T _w) {
-		x = _x;
-		y = _y;
-		z = _z;
-		w = 0.0;
-	}
+	TVector(void) : x(0.0), y(0.0), z(0.0), w(0.0) {}
+	TVector(T _x, T _y, T _z) : x(_x), y(_y), z(_z), w(0.0) {} 
+	TVector(T _x, T _y, T _z, T _w) : x(_x), y(_y), z(_z), w(_w) {}
 
 	TVector operator-() const {
 		return TVector(-x, -y, -z, w);

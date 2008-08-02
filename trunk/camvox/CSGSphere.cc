@@ -25,7 +25,8 @@ CSGSphere::CSGSphere(double _diameter)
 
 Interval CSGSphere::characteristic(const IntervalVector &a) const
 {
-	return (square(a.x) + square(a.y) + square(a.z) - diameter);
+	IntervalVector b = total_inv_transform * a;
+	return (b.x.square() + b.y.square() + b.z.square() - diameter);
 }
 
 }

@@ -15,7 +15,6 @@
 @SET_MAKE@
 
 # used by automake
-#INCLUDES = -I/usr/local/boost_1_35_0
 
 
 
@@ -96,8 +95,6 @@ AUTOCONF = @AUTOCONF@
 AUTOHEADER = @AUTOHEADER@
 AUTOMAKE = @AUTOMAKE@
 AWK = @AWK@
-BOOST_CPPFLAGS = @BOOST_CPPFLAGS@
-BOOST_LDFLAGS = @BOOST_LDFLAGS@
 CC = @CC@
 CCDEPMODE = @CCDEPMODE@
 CFLAGS = @CFLAGS@
@@ -215,7 +212,7 @@ target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 lib_LTLIBRARIES = libcamvox.la
-libcamvox_la_CXXFLAGS = -Wall $(BOOST_CPPFLAGS)
+libcamvox_la_CXXFLAGS = -Wall
 libcamvox_la_LDFLAGS = -release 1.0
 libcamvox_la_SOURCES = CSGObject.cc\
 			CSGOperation.cc\
