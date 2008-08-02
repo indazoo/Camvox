@@ -30,14 +30,16 @@ typedef enum {
 
 class CSGObject {
 public:
-	Matrix		object_trans;
-	Matrix		total_trans;
-	IntervalMatrix	total_interval_trans;
+	Matrix		transform;
+	Matrix		inv_transform;
+	Matrix		total_transform;
+	Matrix		total_inv_transform;
 
 	CSGObject() {}
 	virtual ~CSGObject() {}
 	virtual void translate(const Vector &a);
-	virtual box_type_t characteristic(const IntervalVector &a) const;
+	virtual void scale(const Vector &a);
+	virtual box_type_t boxType(const IntervalVector &a) const;
 };
 
 }

@@ -14,16 +14,26 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <cassert>
 #include <camvox/CSGObject.h>
 
 namespace camvox {
 
 void CSGObject::translate(const Vector &a)
 {
+	transform = transform.translate(a);
+	inv_transform = transform.translate(-a);
 }
 
-box_type_t CSGObject::characteristic(const IntervalVector &a) const
+void CSGObject::scale(const Vector &a)
 {
+	transform = transform.scale(a);
+	inv_transform = transform.scale(1.0 / a);
+}
+
+box_type_t CSGObject::boxType(const IntervalVector &a) const
+{
+	assert(0);
 	return GREY_BOX;
 }
 

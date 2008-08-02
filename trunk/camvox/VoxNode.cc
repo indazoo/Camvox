@@ -108,7 +108,7 @@ long VoxNode::addCSGObjectToVoxel(VoxTree &tree, const VoxCoord &coord, int chil
 	} else {
 		// There is just data at this level.
 		IntervalVector child_voxel_bound = child_coord.boundingBox(tree.scale);
-		switch(obj.characteristic(child_voxel_bound)) {
+		switch(obj.boxType(child_voxel_bound)) {
 		case BLACK_BOX:
 			//fprintf(stderr, "black at <%i %i %i, %i>\n", child_coord.v[0], child_coord.v[1], child_coord.v[2], child_coord.depth);
 			voxels[child_index].data|= (1 << layer);
@@ -189,12 +189,12 @@ void VoxNode::generatePOVCodeForVoxel(VoxTree &tree, const VoxCoord &coord, int 
 			fprintf(stdout, "box {\n");
 
 			fprintf(stdout, "  <%lf %lf %lf>, <%lf %lf %lf>\n",
-				child_voxel_bound[0].lower(),
-				child_voxel_bound[1].lower(),
-				child_voxel_bound[2].lower(),
-				child_voxel_bound[0].upper(),
-				child_voxel_bound[1].upper(),
-				child_voxel_bound[2].upper()
+				child_voxel_bound.x.lower(),
+				child_voxel_bound.y.lower(),
+				child_voxel_bound.z.lower(),
+				child_voxel_bound.x.upper(),
+				child_voxel_bound.y.upper(),
+				child_voxel_bound.z.upper()
 			);
 
 			//fprintf(stdout, "  texture {\n");

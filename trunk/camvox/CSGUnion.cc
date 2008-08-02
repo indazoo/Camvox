@@ -18,12 +18,12 @@
 
 namespace camvox {
 
-box_type_t CSGUnion::characteristic(const IntervalVector &a) const
+box_type_t CSGUnion::boxType(const IntervalVector &a) const
 {
 	bool grey = false;
 	
 	for (unsigned int i = 0; i < childs.size(); i++) {
-		switch (childs[i]->characteristic(a)) {
+		switch (childs[i]->boxType(a)) {
 		case BLACK_BOX:
 			return BLACK_BOX;
 		case GREY_BOX:

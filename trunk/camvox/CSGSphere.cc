@@ -18,16 +18,14 @@
 
 namespace camvox {
 
-box_type_t CSGSphere::characteristic(const IntervalVector &a) const
+CSGSphere::CSGSphere(double _diameter)
 {
-	Interval I =  (square(a[0]) + square(a[1]) + square(a[2]) - Interval(1.0, 1.0));
-	if (I.upper() < 0.0) {
-		return BLACK_BOX;
-	} else if (I.lower() > 0.0) {
-		return WHITE_BOX;
-	} else {
-		return GREY_BOX;
-	}
+	diameter = _diameter;
+}
+
+Interval CSGSphere::characteristic(const IntervalVector &a) const
+{
+	return (square(a.x) + square(a.y) + square(a.z) - diameter);
 }
 
 }
