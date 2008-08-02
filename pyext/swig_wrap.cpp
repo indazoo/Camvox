@@ -2501,12 +2501,23 @@ SWIG_Python_MustGetPtr(PyObject *obj, swig_type_info *ty, int argnum, int flags)
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_Interval swig_types[0]
-#define SWIGTYPE_p_Matrix swig_types[1]
-#define SWIGTYPE_p_Vector swig_types[2]
-#define SWIGTYPE_p_char swig_types[3]
-static swig_type_info *swig_types[5];
-static swig_module_info swig_module = {swig_types, 4, 0, 0, 0, 0};
+#define SWIGTYPE_p_CSGInvert swig_types[0]
+#define SWIGTYPE_p_CSGObject swig_types[1]
+#define SWIGTYPE_p_CSGOperation swig_types[2]
+#define SWIGTYPE_p_CSGPrimative swig_types[3]
+#define SWIGTYPE_p_CSGSphere swig_types[4]
+#define SWIGTYPE_p_CSGUnion swig_types[5]
+#define SWIGTYPE_p_Interval swig_types[6]
+#define SWIGTYPE_p_IntervalVector swig_types[7]
+#define SWIGTYPE_p_Matrix swig_types[8]
+#define SWIGTYPE_p_Vector swig_types[9]
+#define SWIGTYPE_p_VoxCoord swig_types[10]
+#define SWIGTYPE_p_VoxNode swig_types[11]
+#define SWIGTYPE_p_VoxTree swig_types[12]
+#define SWIGTYPE_p_char swig_types[13]
+#define SWIGTYPE_p_uint32_t swig_types[14]
+static swig_type_info *swig_types[16];
+static swig_module_info swig_module = {swig_types, 15, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -2676,6 +2687,117 @@ SWIGINTERN double Vector_w_set(Vector *self,double value){
 			(*self)[3] = value;
 			return value;
 		}
+
+#include <limits.h>
+#if !defined(SWIG_NO_LLONG_MAX)
+# if !defined(LLONG_MAX) && defined(__GNUC__) && defined (__LONG_LONG_MAX__)
+#   define LLONG_MAX __LONG_LONG_MAX__
+#   define LLONG_MIN (-LLONG_MAX - 1LL)
+#   define ULLONG_MAX (LLONG_MAX * 2ULL + 1ULL)
+# endif
+#endif
+
+
+#include <float.h>
+
+
+#include <math.h>
+
+
+SWIGINTERNINLINE int
+SWIG_CanCastAsInteger(double *d, double min, double max) {
+  double x = *d;
+  if ((min <= x && x <= max)) {
+   double fx = floor(x);
+   double cx = ceil(x);
+   double rd =  ((x - fx) < 0.5) ? fx : cx; /* simple rint */
+   if ((errno == EDOM) || (errno == ERANGE)) {
+     errno = 0;
+   } else {
+     double summ, reps, diff;
+     if (rd < x) {
+       diff = x - rd;
+     } else if (rd > x) {
+       diff = rd - x;
+     } else {
+       return 1;
+     }
+     summ = rd + x;
+     reps = diff/summ;
+     if (reps < 8*DBL_EPSILON) {
+       *d = rd;
+       return 1;
+     }
+   }
+  }
+  return 0;
+}
+
+
+SWIGINTERN int
+SWIG_AsVal_long (PyObject *obj, long* val)
+{
+  if (PyInt_Check(obj)) {
+    if (val) *val = PyInt_AsLong(obj);
+    return SWIG_OK;
+  } else if (PyLong_Check(obj)) {
+    long v = PyLong_AsLong(obj);
+    if (!PyErr_Occurred()) {
+      if (val) *val = v;
+      return SWIG_OK;
+    } else {
+      PyErr_Clear();
+    }
+  }
+#ifdef SWIG_PYTHON_CAST_MODE
+  {
+    int dispatch = 0;
+    long v = PyInt_AsLong(obj);
+    if (!PyErr_Occurred()) {
+      if (val) *val = v;
+      return SWIG_AddCast(SWIG_OK);
+    } else {
+      PyErr_Clear();
+    }
+    if (!dispatch) {
+      double d;
+      int res = SWIG_AddCast(SWIG_AsVal_double (obj,&d));
+      if (SWIG_IsOK(res) && SWIG_CanCastAsInteger(&d, LONG_MIN, LONG_MAX)) {
+	if (val) *val = (long)(d);
+	return res;
+      }
+    }
+  }
+#endif
+  return SWIG_TypeError;
+}
+
+
+SWIGINTERN int
+SWIG_AsVal_int (PyObject * obj, int *val)
+{
+  long v;
+  int res = SWIG_AsVal_long (obj, &v);
+  if (SWIG_IsOK(res)) {
+    if ((v < INT_MIN || v > INT_MAX)) {
+      return SWIG_OverflowError;
+    } else {
+      if (val) *val = static_cast< int >(v);
+    }
+  }  
+  return res;
+}
+
+
+  #define SWIG_From_long   PyInt_FromLong 
+
+
+SWIGINTERNINLINE PyObject *
+SWIG_From_int  (int value)
+{    
+  return SWIG_From_long  (value);
+}
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -3178,6 +3300,1058 @@ SWIGINTERN PyObject *Matrix_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObjec
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_CSGObject(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGObject *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_CSGObject")) SWIG_fail;
+  result = (CSGObject *)new CSGObject();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CSGObject, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_CSGObject(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGObject *arg1 = (CSGObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_CSGObject",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGObject, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CSGObject" "', argument " "1"" of type '" "CSGObject *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGObject * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *CSGObject_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_CSGObject, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_CSGPrimative(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGPrimative *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_CSGPrimative")) SWIG_fail;
+  result = (CSGPrimative *)new CSGPrimative();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CSGPrimative, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_CSGPrimative(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGPrimative *arg1 = (CSGPrimative *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_CSGPrimative",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGPrimative, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CSGPrimative" "', argument " "1"" of type '" "CSGPrimative *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGPrimative * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *CSGPrimative_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_CSGPrimative, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_CSGSphere(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGSphere *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_CSGSphere")) SWIG_fail;
+  result = (CSGSphere *)new CSGSphere();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CSGSphere, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_CSGSphere(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGSphere *arg1 = (CSGSphere *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_CSGSphere",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGSphere, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CSGSphere" "', argument " "1"" of type '" "CSGSphere *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGSphere * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *CSGSphere_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_CSGSphere, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_CSGOperation(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGOperation *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_CSGOperation")) SWIG_fail;
+  result = (CSGOperation *)new CSGOperation();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CSGOperation, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_CSGOperation(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGOperation *arg1 = (CSGOperation *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_CSGOperation",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGOperation, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CSGOperation" "', argument " "1"" of type '" "CSGOperation *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGOperation * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *CSGOperation_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_CSGOperation, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_CSGUnion(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGUnion *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_CSGUnion")) SWIG_fail;
+  result = (CSGUnion *)new CSGUnion();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CSGUnion, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_CSGUnion(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGUnion *arg1 = (CSGUnion *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_CSGUnion",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGUnion, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CSGUnion" "', argument " "1"" of type '" "CSGUnion *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGUnion * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *CSGUnion_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_CSGUnion, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_CSGInvert(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGInvert *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_CSGInvert")) SWIG_fail;
+  result = (CSGInvert *)new CSGInvert();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CSGInvert, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_CSGInvert(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGInvert *arg1 = (CSGInvert *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_CSGInvert",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGInvert, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CSGInvert" "', argument " "1"" of type '" "CSGInvert *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGInvert * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *CSGInvert_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_CSGInvert, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_VoxCoord_v_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxCoord *arg1 = (VoxCoord *) 0 ;
+  uint32_t *arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VoxCoord_v_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxCoord, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxCoord_v_set" "', argument " "1"" of type '" "VoxCoord *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxCoord * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_uint32_t, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VoxCoord_v_set" "', argument " "2"" of type '" "uint32_t [3]""'"); 
+  } 
+  arg2 = reinterpret_cast< uint32_t * >(argp2);
+  {
+    if (arg2) {
+      size_t ii = 0;
+      for (; ii < (size_t)3; ++ii) arg1->v[ii] = arg2[ii];
+    } else {
+      SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in variable '""v""' of type '""uint32_t [3]""'");
+    }
+  }
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxCoord_v_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxCoord *arg1 = (VoxCoord *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  uint32_t *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VoxCoord_v_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxCoord, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxCoord_v_get" "', argument " "1"" of type '" "VoxCoord *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxCoord * >(argp1);
+  result = (uint32_t *)(uint32_t *) ((arg1)->v);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_uint32_t, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxCoord_depth_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxCoord *arg1 = (VoxCoord *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VoxCoord_depth_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxCoord, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxCoord_depth_set" "', argument " "1"" of type '" "VoxCoord *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxCoord * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VoxCoord_depth_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  if (arg1) (arg1)->depth = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxCoord_depth_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxCoord *arg1 = (VoxCoord *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VoxCoord_depth_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxCoord, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxCoord_depth_get" "', argument " "1"" of type '" "VoxCoord *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxCoord * >(argp1);
+  result = (int) ((arg1)->depth);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_VoxCoord(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxCoord *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_VoxCoord")) SWIG_fail;
+  result = (VoxCoord *)new VoxCoord();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VoxCoord, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_VoxCoord(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxCoord *arg1 = (VoxCoord *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_VoxCoord",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxCoord, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_VoxCoord" "', argument " "1"" of type '" "VoxCoord *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxCoord * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxCoord_nextNeighbour(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxCoord *arg1 = (VoxCoord *) 0 ;
+  int arg2 ;
+  int arg3 ;
+  int arg4 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  int val4 ;
+  int ecode4 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  VoxCoord result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOO:VoxCoord_nextNeighbour",&obj0,&obj1,&obj2,&obj3)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxCoord, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxCoord_nextNeighbour" "', argument " "1"" of type '" "VoxCoord *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxCoord * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VoxCoord_nextNeighbour" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "VoxCoord_nextNeighbour" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  ecode4 = SWIG_AsVal_int(obj3, &val4);
+  if (!SWIG_IsOK(ecode4)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode4), "in method '" "VoxCoord_nextNeighbour" "', argument " "4"" of type '" "int""'");
+  } 
+  arg4 = static_cast< int >(val4);
+  result = (arg1)->nextNeighbour(arg2,arg3,arg4);
+  resultobj = SWIG_NewPointerObj((new VoxCoord(static_cast< const VoxCoord& >(result))), SWIGTYPE_p_VoxCoord, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxCoord_childCoord(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxCoord *arg1 = (VoxCoord *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  VoxCoord result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VoxCoord_childCoord",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxCoord, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxCoord_childCoord" "', argument " "1"" of type '" "VoxCoord *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxCoord * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VoxCoord_childCoord" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  result = (arg1)->childCoord(arg2);
+  resultobj = SWIG_NewPointerObj((new VoxCoord(static_cast< const VoxCoord& >(result))), SWIGTYPE_p_VoxCoord, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxCoord_boundingBox(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxCoord *arg1 = (VoxCoord *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  IntervalVector result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VoxCoord_boundingBox",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxCoord, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxCoord_boundingBox" "', argument " "1"" of type '" "VoxCoord *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxCoord * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VoxCoord_boundingBox" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  result = (arg1)->boundingBox(arg2);
+  resultobj = SWIG_NewPointerObj((new IntervalVector(static_cast< const IntervalVector& >(result))), SWIGTYPE_p_IntervalVector, SWIG_POINTER_OWN |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *VoxCoord_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_VoxCoord, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_VoxTree_max_depth_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VoxTree_max_depth_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_max_depth_set" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VoxTree_max_depth_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  if (arg1) (arg1)->max_depth = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxTree_max_depth_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VoxTree_max_depth_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_max_depth_get" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  result = (int) ((arg1)->max_depth);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxTree_nr_nodes_created_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VoxTree_nr_nodes_created_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_nr_nodes_created_set" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VoxTree_nr_nodes_created_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  if (arg1) (arg1)->nr_nodes_created = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxTree_nr_nodes_created_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VoxTree_nr_nodes_created_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_nr_nodes_created_get" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  result = (int) ((arg1)->nr_nodes_created);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxTree_nr_nodes_destroyed_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  int arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  int val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VoxTree_nr_nodes_destroyed_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_nr_nodes_destroyed_set" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  ecode2 = SWIG_AsVal_int(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VoxTree_nr_nodes_destroyed_set" "', argument " "2"" of type '" "int""'");
+  } 
+  arg2 = static_cast< int >(val2);
+  if (arg1) (arg1)->nr_nodes_destroyed = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxTree_nr_nodes_destroyed_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  int result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VoxTree_nr_nodes_destroyed_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_nr_nodes_destroyed_get" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  result = (int) ((arg1)->nr_nodes_destroyed);
+  resultobj = SWIG_From_int(static_cast< int >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxTree_scale_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  double arg2 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  double val2 ;
+  int ecode2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:VoxTree_scale_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_scale_set" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  ecode2 = SWIG_AsVal_double(obj1, &val2);
+  if (!SWIG_IsOK(ecode2)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode2), "in method '" "VoxTree_scale_set" "', argument " "2"" of type '" "double""'");
+  } 
+  arg2 = static_cast< double >(val2);
+  if (arg1) (arg1)->scale = arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxTree_scale_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  double result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VoxTree_scale_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_scale_get" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  result = (double) ((arg1)->scale);
+  resultobj = SWIG_From_double(static_cast< double >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_new_VoxTree(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)":new_VoxTree")) SWIG_fail;
+  result = (VoxTree *)new VoxTree();
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VoxTree, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_VoxTree(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_VoxTree",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_VoxTree" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxTree_generatePOVCode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VoxTree_generatePOVCode",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_generatePOVCode" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  (arg1)->generatePOVCode();
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxTree_addCSGObject(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  CSGObject *arg2 = 0 ;
+  int arg3 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  int val3 ;
+  int ecode3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  long result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VoxTree_addCSGObject",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_addCSGObject" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_CSGObject,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VoxTree_addCSGObject" "', argument " "2"" of type '" "CSGObject &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VoxTree_addCSGObject" "', argument " "2"" of type '" "CSGObject &""'"); 
+  }
+  arg2 = reinterpret_cast< CSGObject * >(argp2);
+  ecode3 = SWIG_AsVal_int(obj2, &val3);
+  if (!SWIG_IsOK(ecode3)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode3), "in method '" "VoxTree_addCSGObject" "', argument " "3"" of type '" "int""'");
+  } 
+  arg3 = static_cast< int >(val3);
+  result = (long)(arg1)->addCSGObject(*arg2,arg3);
+  resultobj = SWIG_From_long(static_cast< long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxTree_prune(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxTree *arg1 = (VoxTree *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  long result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:VoxTree_prune",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxTree, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxTree_prune" "', argument " "1"" of type '" "VoxTree *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxTree * >(argp1);
+  result = (long)(arg1)->prune();
+  resultobj = SWIG_From_long(static_cast< long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *VoxTree_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_VoxTree, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
+SWIGINTERN PyObject *_wrap_new_VoxNode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  long arg1 ;
+  long val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  VoxNode *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_VoxNode",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_long(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_VoxNode" "', argument " "1"" of type '" "long""'");
+  } 
+  arg1 = static_cast< long >(val1);
+  result = (VoxNode *)new VoxNode(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_VoxNode, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_VoxNode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxNode *arg1 = (VoxNode *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_VoxNode",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxNode, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_VoxNode" "', argument " "1"" of type '" "VoxNode *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxNode * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxNode_prune(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxNode *arg1 = (VoxNode *) 0 ;
+  VoxTree *arg2 = 0 ;
+  VoxCoord *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  long result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VoxNode_prune",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxNode, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxNode_prune" "', argument " "1"" of type '" "VoxNode *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxNode * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_VoxTree,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VoxNode_prune" "', argument " "2"" of type '" "VoxTree &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VoxNode_prune" "', argument " "2"" of type '" "VoxTree &""'"); 
+  }
+  arg2 = reinterpret_cast< VoxTree * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_VoxCoord,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VoxNode_prune" "', argument " "3"" of type '" "VoxCoord &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VoxNode_prune" "', argument " "3"" of type '" "VoxCoord &""'"); 
+  }
+  arg3 = reinterpret_cast< VoxCoord * >(argp3);
+  result = (long)(arg1)->prune(*arg2,*arg3);
+  resultobj = SWIG_From_long(static_cast< long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxNode_addCSGObject(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxNode *arg1 = (VoxNode *) 0 ;
+  VoxTree *arg2 = 0 ;
+  VoxCoord *arg3 = 0 ;
+  CSGObject *arg4 = 0 ;
+  int arg5 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  void *argp4 = 0 ;
+  int res4 = 0 ;
+  int val5 ;
+  int ecode5 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  PyObject * obj3 = 0 ;
+  PyObject * obj4 = 0 ;
+  long result;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOOOO:VoxNode_addCSGObject",&obj0,&obj1,&obj2,&obj3,&obj4)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxNode, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxNode_addCSGObject" "', argument " "1"" of type '" "VoxNode *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxNode * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_VoxTree,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VoxNode_addCSGObject" "', argument " "2"" of type '" "VoxTree &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VoxNode_addCSGObject" "', argument " "2"" of type '" "VoxTree &""'"); 
+  }
+  arg2 = reinterpret_cast< VoxTree * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_VoxCoord,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VoxNode_addCSGObject" "', argument " "3"" of type '" "VoxCoord &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VoxNode_addCSGObject" "', argument " "3"" of type '" "VoxCoord &""'"); 
+  }
+  arg3 = reinterpret_cast< VoxCoord * >(argp3);
+  res4 = SWIG_ConvertPtr(obj3, &argp4, SWIGTYPE_p_CSGObject,  0 );
+  if (!SWIG_IsOK(res4)) {
+    SWIG_exception_fail(SWIG_ArgError(res4), "in method '" "VoxNode_addCSGObject" "', argument " "4"" of type '" "CSGObject &""'"); 
+  }
+  if (!argp4) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VoxNode_addCSGObject" "', argument " "4"" of type '" "CSGObject &""'"); 
+  }
+  arg4 = reinterpret_cast< CSGObject * >(argp4);
+  ecode5 = SWIG_AsVal_int(obj4, &val5);
+  if (!SWIG_IsOK(ecode5)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode5), "in method '" "VoxNode_addCSGObject" "', argument " "5"" of type '" "int""'");
+  } 
+  arg5 = static_cast< int >(val5);
+  result = (long)(arg1)->addCSGObject(*arg2,*arg3,*arg4,arg5);
+  resultobj = SWIG_From_long(static_cast< long >(result));
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_VoxNode_generatePOVCode(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  VoxNode *arg1 = (VoxNode *) 0 ;
+  VoxTree *arg2 = 0 ;
+  VoxCoord *arg3 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  void *argp3 = 0 ;
+  int res3 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  PyObject * obj2 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OOO:VoxNode_generatePOVCode",&obj0,&obj1,&obj2)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_VoxNode, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "VoxNode_generatePOVCode" "', argument " "1"" of type '" "VoxNode *""'"); 
+  }
+  arg1 = reinterpret_cast< VoxNode * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_VoxTree,  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "VoxNode_generatePOVCode" "', argument " "2"" of type '" "VoxTree &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VoxNode_generatePOVCode" "', argument " "2"" of type '" "VoxTree &""'"); 
+  }
+  arg2 = reinterpret_cast< VoxTree * >(argp2);
+  res3 = SWIG_ConvertPtr(obj2, &argp3, SWIGTYPE_p_VoxCoord,  0 );
+  if (!SWIG_IsOK(res3)) {
+    SWIG_exception_fail(SWIG_ArgError(res3), "in method '" "VoxNode_generatePOVCode" "', argument " "3"" of type '" "VoxCoord &""'"); 
+  }
+  if (!argp3) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "VoxNode_generatePOVCode" "', argument " "3"" of type '" "VoxCoord &""'"); 
+  }
+  arg3 = reinterpret_cast< VoxCoord * >(argp3);
+  (arg1)->generatePOVCode(*arg2,*arg3);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *VoxNode_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_VoxNode, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 static PyMethodDef SwigMethods[] = {
 	 { (char *)"new_Interval", _wrap_new_Interval, METH_VARARGS, NULL},
 	 { (char *)"delete_Interval", _wrap_delete_Interval, METH_VARARGS, NULL},
@@ -3196,34 +4370,150 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"new_Matrix", _wrap_new_Matrix, METH_VARARGS, NULL},
 	 { (char *)"delete_Matrix", _wrap_delete_Matrix, METH_VARARGS, NULL},
 	 { (char *)"Matrix_swigregister", Matrix_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_CSGObject", _wrap_new_CSGObject, METH_VARARGS, NULL},
+	 { (char *)"delete_CSGObject", _wrap_delete_CSGObject, METH_VARARGS, NULL},
+	 { (char *)"CSGObject_swigregister", CSGObject_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_CSGPrimative", _wrap_new_CSGPrimative, METH_VARARGS, NULL},
+	 { (char *)"delete_CSGPrimative", _wrap_delete_CSGPrimative, METH_VARARGS, NULL},
+	 { (char *)"CSGPrimative_swigregister", CSGPrimative_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_CSGSphere", _wrap_new_CSGSphere, METH_VARARGS, NULL},
+	 { (char *)"delete_CSGSphere", _wrap_delete_CSGSphere, METH_VARARGS, NULL},
+	 { (char *)"CSGSphere_swigregister", CSGSphere_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_CSGOperation", _wrap_new_CSGOperation, METH_VARARGS, NULL},
+	 { (char *)"delete_CSGOperation", _wrap_delete_CSGOperation, METH_VARARGS, NULL},
+	 { (char *)"CSGOperation_swigregister", CSGOperation_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_CSGUnion", _wrap_new_CSGUnion, METH_VARARGS, NULL},
+	 { (char *)"delete_CSGUnion", _wrap_delete_CSGUnion, METH_VARARGS, NULL},
+	 { (char *)"CSGUnion_swigregister", CSGUnion_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_CSGInvert", _wrap_new_CSGInvert, METH_VARARGS, NULL},
+	 { (char *)"delete_CSGInvert", _wrap_delete_CSGInvert, METH_VARARGS, NULL},
+	 { (char *)"CSGInvert_swigregister", CSGInvert_swigregister, METH_VARARGS, NULL},
+	 { (char *)"VoxCoord_v_set", _wrap_VoxCoord_v_set, METH_VARARGS, NULL},
+	 { (char *)"VoxCoord_v_get", _wrap_VoxCoord_v_get, METH_VARARGS, NULL},
+	 { (char *)"VoxCoord_depth_set", _wrap_VoxCoord_depth_set, METH_VARARGS, NULL},
+	 { (char *)"VoxCoord_depth_get", _wrap_VoxCoord_depth_get, METH_VARARGS, NULL},
+	 { (char *)"new_VoxCoord", _wrap_new_VoxCoord, METH_VARARGS, NULL},
+	 { (char *)"delete_VoxCoord", _wrap_delete_VoxCoord, METH_VARARGS, NULL},
+	 { (char *)"VoxCoord_nextNeighbour", _wrap_VoxCoord_nextNeighbour, METH_VARARGS, NULL},
+	 { (char *)"VoxCoord_childCoord", _wrap_VoxCoord_childCoord, METH_VARARGS, NULL},
+	 { (char *)"VoxCoord_boundingBox", _wrap_VoxCoord_boundingBox, METH_VARARGS, NULL},
+	 { (char *)"VoxCoord_swigregister", VoxCoord_swigregister, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_max_depth_set", _wrap_VoxTree_max_depth_set, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_max_depth_get", _wrap_VoxTree_max_depth_get, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_nr_nodes_created_set", _wrap_VoxTree_nr_nodes_created_set, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_nr_nodes_created_get", _wrap_VoxTree_nr_nodes_created_get, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_nr_nodes_destroyed_set", _wrap_VoxTree_nr_nodes_destroyed_set, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_nr_nodes_destroyed_get", _wrap_VoxTree_nr_nodes_destroyed_get, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_scale_set", _wrap_VoxTree_scale_set, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_scale_get", _wrap_VoxTree_scale_get, METH_VARARGS, NULL},
+	 { (char *)"new_VoxTree", _wrap_new_VoxTree, METH_VARARGS, NULL},
+	 { (char *)"delete_VoxTree", _wrap_delete_VoxTree, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_generatePOVCode", _wrap_VoxTree_generatePOVCode, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_addCSGObject", _wrap_VoxTree_addCSGObject, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_prune", _wrap_VoxTree_prune, METH_VARARGS, NULL},
+	 { (char *)"VoxTree_swigregister", VoxTree_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_VoxNode", _wrap_new_VoxNode, METH_VARARGS, NULL},
+	 { (char *)"delete_VoxNode", _wrap_delete_VoxNode, METH_VARARGS, NULL},
+	 { (char *)"VoxNode_prune", _wrap_VoxNode_prune, METH_VARARGS, NULL},
+	 { (char *)"VoxNode_addCSGObject", _wrap_VoxNode_addCSGObject, METH_VARARGS, NULL},
+	 { (char *)"VoxNode_generatePOVCode", _wrap_VoxNode_generatePOVCode, METH_VARARGS, NULL},
+	 { (char *)"VoxNode_swigregister", VoxNode_swigregister, METH_VARARGS, NULL},
 	 { NULL, NULL, 0, NULL }
 };
 
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static void *_p_CSGSphereTo_p_CSGPrimative(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((CSGPrimative *)  ((CSGSphere *) x));
+}
+static void *_p_CSGInvertTo_p_CSGObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((CSGObject *) (CSGOperation *) ((CSGInvert *) x));
+}
+static void *_p_CSGOperationTo_p_CSGObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((CSGObject *)  ((CSGOperation *) x));
+}
+static void *_p_CSGPrimativeTo_p_CSGObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((CSGObject *)  ((CSGPrimative *) x));
+}
+static void *_p_CSGUnionTo_p_CSGObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((CSGObject *) (CSGOperation *) ((CSGUnion *) x));
+}
+static void *_p_CSGSphereTo_p_CSGObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((CSGObject *) (CSGPrimative *) ((CSGSphere *) x));
+}
+static void *_p_CSGInvertTo_p_CSGOperation(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((CSGOperation *)  ((CSGInvert *) x));
+}
+static void *_p_CSGUnionTo_p_CSGOperation(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((CSGOperation *)  ((CSGUnion *) x));
+}
+static swig_type_info _swigt__p_CSGInvert = {"_p_CSGInvert", "CSGInvert *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_CSGObject = {"_p_CSGObject", "CSGObject *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_CSGOperation = {"_p_CSGOperation", "CSGOperation *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_CSGPrimative = {"_p_CSGPrimative", "CSGPrimative *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_CSGSphere = {"_p_CSGSphere", "CSGSphere *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_CSGUnion = {"_p_CSGUnion", "CSGUnion *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Interval = {"_p_Interval", "Interval *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_IntervalVector = {"_p_IntervalVector", "IntervalVector *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Matrix = {"_p_Matrix", "Matrix *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_Vector = {"_p_Vector", "Vector *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_VoxCoord = {"_p_VoxCoord", "VoxCoord *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_VoxNode = {"_p_VoxNode", "VoxNode *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_VoxTree = {"_p_VoxTree", "VoxTree *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
+static swig_type_info _swigt__p_uint32_t = {"_p_uint32_t", "uint32_t *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_CSGInvert,
+  &_swigt__p_CSGObject,
+  &_swigt__p_CSGOperation,
+  &_swigt__p_CSGPrimative,
+  &_swigt__p_CSGSphere,
+  &_swigt__p_CSGUnion,
   &_swigt__p_Interval,
+  &_swigt__p_IntervalVector,
   &_swigt__p_Matrix,
   &_swigt__p_Vector,
+  &_swigt__p_VoxCoord,
+  &_swigt__p_VoxNode,
+  &_swigt__p_VoxTree,
   &_swigt__p_char,
+  &_swigt__p_uint32_t,
 };
 
+static swig_cast_info _swigc__p_CSGInvert[] = {  {&_swigt__p_CSGInvert, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_CSGObject[] = {  {&_swigt__p_CSGInvert, _p_CSGInvertTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGOperation, _p_CSGOperationTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGObject, 0, 0, 0},  {&_swigt__p_CSGUnion, _p_CSGUnionTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGPrimative, _p_CSGPrimativeTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGSphere, _p_CSGSphereTo_p_CSGObject, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_CSGOperation[] = {  {&_swigt__p_CSGInvert, _p_CSGInvertTo_p_CSGOperation, 0, 0},  {&_swigt__p_CSGOperation, 0, 0, 0},  {&_swigt__p_CSGUnion, _p_CSGUnionTo_p_CSGOperation, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_CSGPrimative[] = {  {&_swigt__p_CSGPrimative, 0, 0, 0},  {&_swigt__p_CSGSphere, _p_CSGSphereTo_p_CSGPrimative, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_CSGSphere[] = {  {&_swigt__p_CSGSphere, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_CSGUnion[] = {  {&_swigt__p_CSGUnion, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Interval[] = {  {&_swigt__p_Interval, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_IntervalVector[] = {  {&_swigt__p_IntervalVector, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Matrix[] = {  {&_swigt__p_Matrix, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Vector[] = {  {&_swigt__p_Vector, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VoxCoord[] = {  {&_swigt__p_VoxCoord, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VoxNode[] = {  {&_swigt__p_VoxNode, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_VoxTree[] = {  {&_swigt__p_VoxTree, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_uint32_t[] = {  {&_swigt__p_uint32_t, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_CSGInvert,
+  _swigc__p_CSGObject,
+  _swigc__p_CSGOperation,
+  _swigc__p_CSGPrimative,
+  _swigc__p_CSGSphere,
+  _swigc__p_CSGUnion,
   _swigc__p_Interval,
+  _swigc__p_IntervalVector,
   _swigc__p_Matrix,
   _swigc__p_Vector,
+  _swigc__p_VoxCoord,
+  _swigc__p_VoxNode,
+  _swigc__p_VoxTree,
   _swigc__p_char,
+  _swigc__p_uint32_t,
 };
 
 

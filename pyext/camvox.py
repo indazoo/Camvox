@@ -101,5 +101,177 @@ class Matrix(_object):
 Matrix_swigregister = _camvox.Matrix_swigregister
 Matrix_swigregister(Matrix)
 
+class CSGObject(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CSGObject, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, CSGObject, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _camvox.new_CSGObject(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _camvox.delete_CSGObject
+    __del__ = lambda self : None;
+CSGObject_swigregister = _camvox.CSGObject_swigregister
+CSGObject_swigregister(CSGObject)
+
+class CSGPrimative(CSGObject):
+    __swig_setmethods__ = {}
+    for _s in [CSGObject]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CSGPrimative, name, value)
+    __swig_getmethods__ = {}
+    for _s in [CSGObject]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, CSGPrimative, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _camvox.new_CSGPrimative(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _camvox.delete_CSGPrimative
+    __del__ = lambda self : None;
+CSGPrimative_swigregister = _camvox.CSGPrimative_swigregister
+CSGPrimative_swigregister(CSGPrimative)
+
+class CSGSphere(CSGPrimative):
+    __swig_setmethods__ = {}
+    for _s in [CSGPrimative]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CSGSphere, name, value)
+    __swig_getmethods__ = {}
+    for _s in [CSGPrimative]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, CSGSphere, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _camvox.new_CSGSphere(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _camvox.delete_CSGSphere
+    __del__ = lambda self : None;
+CSGSphere_swigregister = _camvox.CSGSphere_swigregister
+CSGSphere_swigregister(CSGSphere)
+
+class CSGOperation(CSGObject):
+    __swig_setmethods__ = {}
+    for _s in [CSGObject]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CSGOperation, name, value)
+    __swig_getmethods__ = {}
+    for _s in [CSGObject]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, CSGOperation, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _camvox.new_CSGOperation(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _camvox.delete_CSGOperation
+    __del__ = lambda self : None;
+CSGOperation_swigregister = _camvox.CSGOperation_swigregister
+CSGOperation_swigregister(CSGOperation)
+
+class CSGUnion(CSGOperation):
+    __swig_setmethods__ = {}
+    for _s in [CSGOperation]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CSGUnion, name, value)
+    __swig_getmethods__ = {}
+    for _s in [CSGOperation]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, CSGUnion, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _camvox.new_CSGUnion(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _camvox.delete_CSGUnion
+    __del__ = lambda self : None;
+CSGUnion_swigregister = _camvox.CSGUnion_swigregister
+CSGUnion_swigregister(CSGUnion)
+
+class CSGInvert(CSGOperation):
+    __swig_setmethods__ = {}
+    for _s in [CSGOperation]: __swig_setmethods__.update(getattr(_s,'__swig_setmethods__',{}))
+    __setattr__ = lambda self, name, value: _swig_setattr(self, CSGInvert, name, value)
+    __swig_getmethods__ = {}
+    for _s in [CSGOperation]: __swig_getmethods__.update(getattr(_s,'__swig_getmethods__',{}))
+    __getattr__ = lambda self, name: _swig_getattr(self, CSGInvert, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _camvox.new_CSGInvert(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _camvox.delete_CSGInvert
+    __del__ = lambda self : None;
+CSGInvert_swigregister = _camvox.CSGInvert_swigregister
+CSGInvert_swigregister(CSGInvert)
+
+class VoxCoord(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, VoxCoord, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, VoxCoord, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["v"] = _camvox.VoxCoord_v_set
+    __swig_getmethods__["v"] = _camvox.VoxCoord_v_get
+    if _newclass:v = _swig_property(_camvox.VoxCoord_v_get, _camvox.VoxCoord_v_set)
+    __swig_setmethods__["depth"] = _camvox.VoxCoord_depth_set
+    __swig_getmethods__["depth"] = _camvox.VoxCoord_depth_get
+    if _newclass:depth = _swig_property(_camvox.VoxCoord_depth_get, _camvox.VoxCoord_depth_set)
+    def __init__(self, *args): 
+        this = _camvox.new_VoxCoord(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _camvox.delete_VoxCoord
+    __del__ = lambda self : None;
+    def nextNeighbour(*args): return _camvox.VoxCoord_nextNeighbour(*args)
+    def childCoord(*args): return _camvox.VoxCoord_childCoord(*args)
+    def boundingBox(*args): return _camvox.VoxCoord_boundingBox(*args)
+VoxCoord_swigregister = _camvox.VoxCoord_swigregister
+VoxCoord_swigregister(VoxCoord)
+
+class VoxTree(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, VoxTree, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, VoxTree, name)
+    __repr__ = _swig_repr
+    __swig_setmethods__["max_depth"] = _camvox.VoxTree_max_depth_set
+    __swig_getmethods__["max_depth"] = _camvox.VoxTree_max_depth_get
+    if _newclass:max_depth = _swig_property(_camvox.VoxTree_max_depth_get, _camvox.VoxTree_max_depth_set)
+    __swig_setmethods__["nr_nodes_created"] = _camvox.VoxTree_nr_nodes_created_set
+    __swig_getmethods__["nr_nodes_created"] = _camvox.VoxTree_nr_nodes_created_get
+    if _newclass:nr_nodes_created = _swig_property(_camvox.VoxTree_nr_nodes_created_get, _camvox.VoxTree_nr_nodes_created_set)
+    __swig_setmethods__["nr_nodes_destroyed"] = _camvox.VoxTree_nr_nodes_destroyed_set
+    __swig_getmethods__["nr_nodes_destroyed"] = _camvox.VoxTree_nr_nodes_destroyed_get
+    if _newclass:nr_nodes_destroyed = _swig_property(_camvox.VoxTree_nr_nodes_destroyed_get, _camvox.VoxTree_nr_nodes_destroyed_set)
+    __swig_setmethods__["scale"] = _camvox.VoxTree_scale_set
+    __swig_getmethods__["scale"] = _camvox.VoxTree_scale_get
+    if _newclass:scale = _swig_property(_camvox.VoxTree_scale_get, _camvox.VoxTree_scale_set)
+    def __init__(self, *args): 
+        this = _camvox.new_VoxTree(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _camvox.delete_VoxTree
+    __del__ = lambda self : None;
+    def generatePOVCode(*args): return _camvox.VoxTree_generatePOVCode(*args)
+    def addCSGObject(*args): return _camvox.VoxTree_addCSGObject(*args)
+    def prune(*args): return _camvox.VoxTree_prune(*args)
+VoxTree_swigregister = _camvox.VoxTree_swigregister
+VoxTree_swigregister(VoxTree)
+
+class VoxNode(_object):
+    __swig_setmethods__ = {}
+    __setattr__ = lambda self, name, value: _swig_setattr(self, VoxNode, name, value)
+    __swig_getmethods__ = {}
+    __getattr__ = lambda self, name: _swig_getattr(self, VoxNode, name)
+    __repr__ = _swig_repr
+    def __init__(self, *args): 
+        this = _camvox.new_VoxNode(*args)
+        try: self.this.append(this)
+        except: self.this = this
+    __swig_destroy__ = _camvox.delete_VoxNode
+    __del__ = lambda self : None;
+    def prune(*args): return _camvox.VoxNode_prune(*args)
+    def addCSGObject(*args): return _camvox.VoxNode_addCSGObject(*args)
+    def generatePOVCode(*args): return _camvox.VoxNode_generatePOVCode(*args)
+VoxNode_swigregister = _camvox.VoxNode_swigregister
+VoxNode_swigregister(VoxNode)
+
 
 
