@@ -19,7 +19,6 @@
 
 
 
-
 VPATH = @srcdir@
 pkgdatadir = $(datadir)/@PACKAGE@
 pkglibdir = $(libdir)/@PACKAGE@
@@ -38,7 +37,6 @@ PRE_UNINSTALL = :
 POST_UNINSTALL = :
 build_triplet = @build@
 host_triplet = @host@
-bin_PROGRAMS = camvox$(EXEEXT)
 subdir = camvox
 DIST_COMMON = $(library_include_HEADERS) $(srcdir)/Makefile.am \
 	$(srcdir)/Makefile.in $(srcdir)/camvox-1.0.pc.in
@@ -56,8 +54,8 @@ am__vpath_adj = case $$p in \
     *) f=$$p;; \
   esac;
 am__strip_dir = `echo $$p | sed -e 's|^.*/||'`;
-am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" \
-	"$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(library_includedir)"
+am__installdirs = "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" \
+	"$(DESTDIR)$(library_includedir)"
 libLTLIBRARIES_INSTALL = $(INSTALL)
 LTLIBRARIES = $(lib_LTLIBRARIES)
 libcamvox_la_LIBADD =
@@ -70,18 +68,6 @@ libcamvox_la_OBJECTS = $(am_libcamvox_la_OBJECTS)
 libcamvox_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(libcamvox_la_CXXFLAGS) \
 	$(CXXFLAGS) $(libcamvox_la_LDFLAGS) $(LDFLAGS) -o $@
-binPROGRAMS_INSTALL = $(INSTALL_PROGRAM)
-PROGRAMS = $(bin_PROGRAMS)
-am_camvox_OBJECTS = camvox-camvox.$(OBJEXT) camvox-CSGObject.$(OBJEXT) \
-	camvox-CSGOperation.$(OBJEXT) camvox-CSGInvert.$(OBJEXT) \
-	camvox-CSGUnion.$(OBJEXT) camvox-CSGPrimative.$(OBJEXT) \
-	camvox-CSGSphere.$(OBJEXT) camvox-VoxCoord.$(OBJEXT) \
-	camvox-VoxNode.$(OBJEXT) camvox-VoxTree.$(OBJEXT)
-camvox_OBJECTS = $(am_camvox_OBJECTS)
-camvox_LDADD = $(LDADD)
-camvox_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
-	--mode=link $(CXXLD) $(camvox_CXXFLAGS) $(CXXFLAGS) \
-	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 DEFAULT_INCLUDES = -I. -I$(top_builddir)@am__isrc@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
@@ -94,8 +80,8 @@ CXXLD = $(CXX)
 CXXLINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) \
 	--mode=link $(CXXLD) $(AM_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
-SOURCES = $(libcamvox_la_SOURCES) $(camvox_SOURCES)
-DIST_SOURCES = $(libcamvox_la_SOURCES) $(camvox_SOURCES)
+SOURCES = $(libcamvox_la_SOURCES)
+DIST_SOURCES = $(libcamvox_la_SOURCES)
 pkgconfigDATA_INSTALL = $(INSTALL_DATA)
 DATA = $(pkgconfig_DATA)
 library_includeHEADERS_INSTALL = $(INSTALL_HEADER)
@@ -258,18 +244,6 @@ library_include_HEADERS = camvox.h\
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = camvox-1.0.pc
-camvox_CXXFLAGS = -Wall $(BOOST_CPPFLAGS)
-camvox_SOURCES = camvox.cc\
-			CSGObject.cc\
-			CSGOperation.cc\
-			CSGInvert.cc\
-			CSGUnion.cc\
-			CSGPrimative.cc\
-			CSGSphere.cc\
-			VoxCoord.cc\
-			VoxNode.cc\
-			VoxTree.cc
-
 all: all-am
 
 .SUFFIXES:
@@ -334,37 +308,6 @@ clean-libLTLIBRARIES:
 	done
 libcamvox.la: $(libcamvox_la_OBJECTS) $(libcamvox_la_DEPENDENCIES) 
 	$(libcamvox_la_LINK) -rpath $(libdir) $(libcamvox_la_OBJECTS) $(libcamvox_la_LIBADD) $(LIBS)
-install-binPROGRAMS: $(bin_PROGRAMS)
-	@$(NORMAL_INSTALL)
-	test -z "$(bindir)" || $(MKDIR_P) "$(DESTDIR)$(bindir)"
-	@list='$(bin_PROGRAMS)'; for p in $$list; do \
-	  p1=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
-	  if test -f $$p \
-	     || test -f $$p1 \
-	  ; then \
-	    f=`echo "$$p1" | sed 's,^.*/,,;$(transform);s/$$/$(EXEEXT)/'`; \
-	   echo " $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(binPROGRAMS_INSTALL) '$$p' '$(DESTDIR)$(bindir)/$$f'"; \
-	   $(INSTALL_PROGRAM_ENV) $(LIBTOOL) --mode=install $(binPROGRAMS_INSTALL) "$$p" "$(DESTDIR)$(bindir)/$$f" || exit 1; \
-	  else :; fi; \
-	done
-
-uninstall-binPROGRAMS:
-	@$(NORMAL_UNINSTALL)
-	@list='$(bin_PROGRAMS)'; for p in $$list; do \
-	  f=`echo "$$p" | sed 's,^.*/,,;s/$(EXEEXT)$$//;$(transform);s/$$/$(EXEEXT)/'`; \
-	  echo " rm -f '$(DESTDIR)$(bindir)/$$f'"; \
-	  rm -f "$(DESTDIR)$(bindir)/$$f"; \
-	done
-
-clean-binPROGRAMS:
-	@list='$(bin_PROGRAMS)'; for p in $$list; do \
-	  f=`echo $$p|sed 's/$(EXEEXT)$$//'`; \
-	  echo " rm -f $$p $$f"; \
-	  rm -f $$p $$f ; \
-	done
-camvox$(EXEEXT): $(camvox_OBJECTS) $(camvox_DEPENDENCIES) 
-	@rm -f camvox$(EXEEXT)
-	$(camvox_LINK) $(camvox_OBJECTS) $(camvox_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -372,16 +315,6 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camvox-CSGInvert.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camvox-CSGObject.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camvox-CSGOperation.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camvox-CSGPrimative.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camvox-CSGSphere.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camvox-CSGUnion.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camvox-VoxCoord.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camvox-VoxNode.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camvox-VoxTree.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/camvox-camvox.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGInvert.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGOperation.Plo@am__quote@
@@ -475,146 +408,6 @@ libcamvox_la-VoxTree.lo: VoxTree.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxTree.cc' object='libcamvox_la-VoxTree.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-VoxTree.lo `test -f 'VoxTree.cc' || echo '$(srcdir)/'`VoxTree.cc
-
-camvox-camvox.o: camvox.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-camvox.o -MD -MP -MF $(DEPDIR)/camvox-camvox.Tpo -c -o camvox-camvox.o `test -f 'camvox.cc' || echo '$(srcdir)/'`camvox.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-camvox.Tpo $(DEPDIR)/camvox-camvox.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='camvox.cc' object='camvox-camvox.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-camvox.o `test -f 'camvox.cc' || echo '$(srcdir)/'`camvox.cc
-
-camvox-camvox.obj: camvox.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-camvox.obj -MD -MP -MF $(DEPDIR)/camvox-camvox.Tpo -c -o camvox-camvox.obj `if test -f 'camvox.cc'; then $(CYGPATH_W) 'camvox.cc'; else $(CYGPATH_W) '$(srcdir)/camvox.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-camvox.Tpo $(DEPDIR)/camvox-camvox.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='camvox.cc' object='camvox-camvox.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-camvox.obj `if test -f 'camvox.cc'; then $(CYGPATH_W) 'camvox.cc'; else $(CYGPATH_W) '$(srcdir)/camvox.cc'; fi`
-
-camvox-CSGObject.o: CSGObject.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGObject.o -MD -MP -MF $(DEPDIR)/camvox-CSGObject.Tpo -c -o camvox-CSGObject.o `test -f 'CSGObject.cc' || echo '$(srcdir)/'`CSGObject.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGObject.Tpo $(DEPDIR)/camvox-CSGObject.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGObject.cc' object='camvox-CSGObject.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGObject.o `test -f 'CSGObject.cc' || echo '$(srcdir)/'`CSGObject.cc
-
-camvox-CSGObject.obj: CSGObject.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGObject.obj -MD -MP -MF $(DEPDIR)/camvox-CSGObject.Tpo -c -o camvox-CSGObject.obj `if test -f 'CSGObject.cc'; then $(CYGPATH_W) 'CSGObject.cc'; else $(CYGPATH_W) '$(srcdir)/CSGObject.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGObject.Tpo $(DEPDIR)/camvox-CSGObject.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGObject.cc' object='camvox-CSGObject.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGObject.obj `if test -f 'CSGObject.cc'; then $(CYGPATH_W) 'CSGObject.cc'; else $(CYGPATH_W) '$(srcdir)/CSGObject.cc'; fi`
-
-camvox-CSGOperation.o: CSGOperation.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGOperation.o -MD -MP -MF $(DEPDIR)/camvox-CSGOperation.Tpo -c -o camvox-CSGOperation.o `test -f 'CSGOperation.cc' || echo '$(srcdir)/'`CSGOperation.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGOperation.Tpo $(DEPDIR)/camvox-CSGOperation.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGOperation.cc' object='camvox-CSGOperation.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGOperation.o `test -f 'CSGOperation.cc' || echo '$(srcdir)/'`CSGOperation.cc
-
-camvox-CSGOperation.obj: CSGOperation.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGOperation.obj -MD -MP -MF $(DEPDIR)/camvox-CSGOperation.Tpo -c -o camvox-CSGOperation.obj `if test -f 'CSGOperation.cc'; then $(CYGPATH_W) 'CSGOperation.cc'; else $(CYGPATH_W) '$(srcdir)/CSGOperation.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGOperation.Tpo $(DEPDIR)/camvox-CSGOperation.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGOperation.cc' object='camvox-CSGOperation.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGOperation.obj `if test -f 'CSGOperation.cc'; then $(CYGPATH_W) 'CSGOperation.cc'; else $(CYGPATH_W) '$(srcdir)/CSGOperation.cc'; fi`
-
-camvox-CSGInvert.o: CSGInvert.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGInvert.o -MD -MP -MF $(DEPDIR)/camvox-CSGInvert.Tpo -c -o camvox-CSGInvert.o `test -f 'CSGInvert.cc' || echo '$(srcdir)/'`CSGInvert.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGInvert.Tpo $(DEPDIR)/camvox-CSGInvert.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGInvert.cc' object='camvox-CSGInvert.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGInvert.o `test -f 'CSGInvert.cc' || echo '$(srcdir)/'`CSGInvert.cc
-
-camvox-CSGInvert.obj: CSGInvert.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGInvert.obj -MD -MP -MF $(DEPDIR)/camvox-CSGInvert.Tpo -c -o camvox-CSGInvert.obj `if test -f 'CSGInvert.cc'; then $(CYGPATH_W) 'CSGInvert.cc'; else $(CYGPATH_W) '$(srcdir)/CSGInvert.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGInvert.Tpo $(DEPDIR)/camvox-CSGInvert.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGInvert.cc' object='camvox-CSGInvert.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGInvert.obj `if test -f 'CSGInvert.cc'; then $(CYGPATH_W) 'CSGInvert.cc'; else $(CYGPATH_W) '$(srcdir)/CSGInvert.cc'; fi`
-
-camvox-CSGUnion.o: CSGUnion.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGUnion.o -MD -MP -MF $(DEPDIR)/camvox-CSGUnion.Tpo -c -o camvox-CSGUnion.o `test -f 'CSGUnion.cc' || echo '$(srcdir)/'`CSGUnion.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGUnion.Tpo $(DEPDIR)/camvox-CSGUnion.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGUnion.cc' object='camvox-CSGUnion.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGUnion.o `test -f 'CSGUnion.cc' || echo '$(srcdir)/'`CSGUnion.cc
-
-camvox-CSGUnion.obj: CSGUnion.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGUnion.obj -MD -MP -MF $(DEPDIR)/camvox-CSGUnion.Tpo -c -o camvox-CSGUnion.obj `if test -f 'CSGUnion.cc'; then $(CYGPATH_W) 'CSGUnion.cc'; else $(CYGPATH_W) '$(srcdir)/CSGUnion.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGUnion.Tpo $(DEPDIR)/camvox-CSGUnion.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGUnion.cc' object='camvox-CSGUnion.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGUnion.obj `if test -f 'CSGUnion.cc'; then $(CYGPATH_W) 'CSGUnion.cc'; else $(CYGPATH_W) '$(srcdir)/CSGUnion.cc'; fi`
-
-camvox-CSGPrimative.o: CSGPrimative.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGPrimative.o -MD -MP -MF $(DEPDIR)/camvox-CSGPrimative.Tpo -c -o camvox-CSGPrimative.o `test -f 'CSGPrimative.cc' || echo '$(srcdir)/'`CSGPrimative.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGPrimative.Tpo $(DEPDIR)/camvox-CSGPrimative.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGPrimative.cc' object='camvox-CSGPrimative.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGPrimative.o `test -f 'CSGPrimative.cc' || echo '$(srcdir)/'`CSGPrimative.cc
-
-camvox-CSGPrimative.obj: CSGPrimative.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGPrimative.obj -MD -MP -MF $(DEPDIR)/camvox-CSGPrimative.Tpo -c -o camvox-CSGPrimative.obj `if test -f 'CSGPrimative.cc'; then $(CYGPATH_W) 'CSGPrimative.cc'; else $(CYGPATH_W) '$(srcdir)/CSGPrimative.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGPrimative.Tpo $(DEPDIR)/camvox-CSGPrimative.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGPrimative.cc' object='camvox-CSGPrimative.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGPrimative.obj `if test -f 'CSGPrimative.cc'; then $(CYGPATH_W) 'CSGPrimative.cc'; else $(CYGPATH_W) '$(srcdir)/CSGPrimative.cc'; fi`
-
-camvox-CSGSphere.o: CSGSphere.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGSphere.o -MD -MP -MF $(DEPDIR)/camvox-CSGSphere.Tpo -c -o camvox-CSGSphere.o `test -f 'CSGSphere.cc' || echo '$(srcdir)/'`CSGSphere.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGSphere.Tpo $(DEPDIR)/camvox-CSGSphere.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGSphere.cc' object='camvox-CSGSphere.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGSphere.o `test -f 'CSGSphere.cc' || echo '$(srcdir)/'`CSGSphere.cc
-
-camvox-CSGSphere.obj: CSGSphere.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-CSGSphere.obj -MD -MP -MF $(DEPDIR)/camvox-CSGSphere.Tpo -c -o camvox-CSGSphere.obj `if test -f 'CSGSphere.cc'; then $(CYGPATH_W) 'CSGSphere.cc'; else $(CYGPATH_W) '$(srcdir)/CSGSphere.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-CSGSphere.Tpo $(DEPDIR)/camvox-CSGSphere.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGSphere.cc' object='camvox-CSGSphere.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-CSGSphere.obj `if test -f 'CSGSphere.cc'; then $(CYGPATH_W) 'CSGSphere.cc'; else $(CYGPATH_W) '$(srcdir)/CSGSphere.cc'; fi`
-
-camvox-VoxCoord.o: VoxCoord.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-VoxCoord.o -MD -MP -MF $(DEPDIR)/camvox-VoxCoord.Tpo -c -o camvox-VoxCoord.o `test -f 'VoxCoord.cc' || echo '$(srcdir)/'`VoxCoord.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-VoxCoord.Tpo $(DEPDIR)/camvox-VoxCoord.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxCoord.cc' object='camvox-VoxCoord.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-VoxCoord.o `test -f 'VoxCoord.cc' || echo '$(srcdir)/'`VoxCoord.cc
-
-camvox-VoxCoord.obj: VoxCoord.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-VoxCoord.obj -MD -MP -MF $(DEPDIR)/camvox-VoxCoord.Tpo -c -o camvox-VoxCoord.obj `if test -f 'VoxCoord.cc'; then $(CYGPATH_W) 'VoxCoord.cc'; else $(CYGPATH_W) '$(srcdir)/VoxCoord.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-VoxCoord.Tpo $(DEPDIR)/camvox-VoxCoord.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxCoord.cc' object='camvox-VoxCoord.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-VoxCoord.obj `if test -f 'VoxCoord.cc'; then $(CYGPATH_W) 'VoxCoord.cc'; else $(CYGPATH_W) '$(srcdir)/VoxCoord.cc'; fi`
-
-camvox-VoxNode.o: VoxNode.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-VoxNode.o -MD -MP -MF $(DEPDIR)/camvox-VoxNode.Tpo -c -o camvox-VoxNode.o `test -f 'VoxNode.cc' || echo '$(srcdir)/'`VoxNode.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-VoxNode.Tpo $(DEPDIR)/camvox-VoxNode.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxNode.cc' object='camvox-VoxNode.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-VoxNode.o `test -f 'VoxNode.cc' || echo '$(srcdir)/'`VoxNode.cc
-
-camvox-VoxNode.obj: VoxNode.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-VoxNode.obj -MD -MP -MF $(DEPDIR)/camvox-VoxNode.Tpo -c -o camvox-VoxNode.obj `if test -f 'VoxNode.cc'; then $(CYGPATH_W) 'VoxNode.cc'; else $(CYGPATH_W) '$(srcdir)/VoxNode.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-VoxNode.Tpo $(DEPDIR)/camvox-VoxNode.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxNode.cc' object='camvox-VoxNode.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-VoxNode.obj `if test -f 'VoxNode.cc'; then $(CYGPATH_W) 'VoxNode.cc'; else $(CYGPATH_W) '$(srcdir)/VoxNode.cc'; fi`
-
-camvox-VoxTree.o: VoxTree.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-VoxTree.o -MD -MP -MF $(DEPDIR)/camvox-VoxTree.Tpo -c -o camvox-VoxTree.o `test -f 'VoxTree.cc' || echo '$(srcdir)/'`VoxTree.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-VoxTree.Tpo $(DEPDIR)/camvox-VoxTree.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxTree.cc' object='camvox-VoxTree.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-VoxTree.o `test -f 'VoxTree.cc' || echo '$(srcdir)/'`VoxTree.cc
-
-camvox-VoxTree.obj: VoxTree.cc
-@am__fastdepCXX_TRUE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -MT camvox-VoxTree.obj -MD -MP -MF $(DEPDIR)/camvox-VoxTree.Tpo -c -o camvox-VoxTree.obj `if test -f 'VoxTree.cc'; then $(CYGPATH_W) 'VoxTree.cc'; else $(CYGPATH_W) '$(srcdir)/VoxTree.cc'; fi`
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/camvox-VoxTree.Tpo $(DEPDIR)/camvox-VoxTree.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxTree.cc' object='camvox-VoxTree.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(camvox_CXXFLAGS) $(CXXFLAGS) -c -o camvox-VoxTree.obj `if test -f 'VoxTree.cc'; then $(CYGPATH_W) 'VoxTree.cc'; else $(CYGPATH_W) '$(srcdir)/VoxTree.cc'; fi`
 
 mostlyclean-libtool:
 	-rm -f *.lo
@@ -732,11 +525,9 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LTLIBRARIES) $(PROGRAMS) $(DATA) $(HEADERS)
-install-binPROGRAMS: install-libLTLIBRARIES
-
+all-am: Makefile $(LTLIBRARIES) $(DATA) $(HEADERS)
 installdirs:
-	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(bindir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(library_includedir)"; do \
+	for dir in "$(DESTDIR)$(libdir)" "$(DESTDIR)$(pkgconfigdir)" "$(DESTDIR)$(library_includedir)"; do \
 	  test -z "$$dir" || $(MKDIR_P) "$$dir"; \
 	done
 install: install-am
@@ -765,8 +556,8 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-binPROGRAMS clean-generic clean-libLTLIBRARIES \
-	clean-libtool mostlyclean-am
+clean-am: clean-generic clean-libLTLIBRARIES clean-libtool \
+	mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -788,7 +579,7 @@ install-data-am: install-library_includeHEADERS install-pkgconfigDATA
 
 install-dvi: install-dvi-am
 
-install-exec-am: install-binPROGRAMS install-libLTLIBRARIES
+install-exec-am: install-libLTLIBRARIES
 
 install-html: install-html-am
 
@@ -820,26 +611,25 @@ ps: ps-am
 
 ps-am:
 
-uninstall-am: uninstall-binPROGRAMS uninstall-libLTLIBRARIES \
+uninstall-am: uninstall-libLTLIBRARIES \
 	uninstall-library_includeHEADERS uninstall-pkgconfigDATA
 
 .MAKE: install-am install-strip
 
-.PHONY: CTAGS GTAGS all all-am check check-am clean clean-binPROGRAMS \
-	clean-generic clean-libLTLIBRARIES clean-libtool ctags \
-	distclean distclean-compile distclean-generic \
-	distclean-libtool distclean-tags distdir dvi dvi-am html \
-	html-am info info-am install install-am install-binPROGRAMS \
-	install-data install-data-am install-dvi install-dvi-am \
-	install-exec install-exec-am install-html install-html-am \
-	install-info install-info-am install-libLTLIBRARIES \
-	install-library_includeHEADERS install-man install-pdf \
-	install-pdf-am install-pkgconfigDATA install-ps install-ps-am \
-	install-strip installcheck installcheck-am installdirs \
-	maintainer-clean maintainer-clean-generic mostlyclean \
-	mostlyclean-compile mostlyclean-generic mostlyclean-libtool \
-	pdf pdf-am ps ps-am tags uninstall uninstall-am \
-	uninstall-binPROGRAMS uninstall-libLTLIBRARIES \
+.PHONY: CTAGS GTAGS all all-am check check-am clean clean-generic \
+	clean-libLTLIBRARIES clean-libtool ctags distclean \
+	distclean-compile distclean-generic distclean-libtool \
+	distclean-tags distdir dvi dvi-am html html-am info info-am \
+	install install-am install-data install-data-am install-dvi \
+	install-dvi-am install-exec install-exec-am install-html \
+	install-html-am install-info install-info-am \
+	install-libLTLIBRARIES install-library_includeHEADERS \
+	install-man install-pdf install-pdf-am install-pkgconfigDATA \
+	install-ps install-ps-am install-strip installcheck \
+	installcheck-am installdirs maintainer-clean \
+	maintainer-clean-generic mostlyclean mostlyclean-compile \
+	mostlyclean-generic mostlyclean-libtool pdf pdf-am ps ps-am \
+	tags uninstall uninstall-am uninstall-libLTLIBRARIES \
 	uninstall-library_includeHEADERS uninstall-pkgconfigDATA
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.

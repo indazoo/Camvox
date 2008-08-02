@@ -32,17 +32,4 @@ library_include_HEADERS=camvox.h\
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = camvox-1.0.pc
 
-bin_PROGRAMS = 		camvox
-camvox_CXXFLAGS = -Wall $(BOOST_CPPFLAGS)
-camvox_SOURCES =	camvox.cc\
-			CSGObject.cc\
-			CSGOperation.cc\
-			CSGInvert.cc\
-			CSGUnion.cc\
-			CSGPrimative.cc\
-			CSGSphere.cc\
-			VoxCoord.cc\
-			VoxNode.cc\
-			VoxTree.cc
-
 

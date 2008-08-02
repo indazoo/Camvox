@@ -2,8 +2,9 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.61)
-AC_INIT(CAMVOX, 0.1, Take.Vos@vosgames.nl)
-AM_INIT_AUTOMAKE(test, 0.0.1)
+AC_INIT(camvox, 0.1, Take.Vos@vosgames.nl)
+#AM_INIT_AUTOMAKE(test, 0.0.1)
+AM_INIT_AUTOMAKE()
 AM_CONFIG_HEADER(config.h)
 
 # Checks for programs.
