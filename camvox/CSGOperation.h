@@ -28,6 +28,8 @@ public:
 
 	CSGOperation() {}
 	virtual ~CSGOperation() {}
+	virtual void add(CSGObject *obj);
+	virtual void mergeTransforms(void);
 };
 
 }

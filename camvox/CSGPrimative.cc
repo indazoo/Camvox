@@ -28,9 +28,9 @@ Interval CSGPrimative::characteristic(const IntervalVector &a) const
 box_type_t CSGPrimative::boxType(const IntervalVector &a) const
 {
 	Interval I = characteristic(a);
-	if (I.upper() < 0.0) {
+	if (I.high < 0.0) {
 		return BLACK_BOX;
-	} else if (I.lower() > 0.0) {
+	} else if (I.low > 0.0) {
 		return WHITE_BOX;
 	} else {
 		return GREY_BOX;

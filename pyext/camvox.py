@@ -54,14 +54,18 @@ class Interval(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, Interval, name)
     __repr__ = _swig_repr
+    __swig_setmethods__["low"] = _camvox.Interval_low_set
+    __swig_getmethods__["low"] = _camvox.Interval_low_get
+    if _newclass:low = _swig_property(_camvox.Interval_low_get, _camvox.Interval_low_set)
+    __swig_setmethods__["high"] = _camvox.Interval_high_set
+    __swig_getmethods__["high"] = _camvox.Interval_high_get
+    if _newclass:high = _swig_property(_camvox.Interval_high_get, _camvox.Interval_high_set)
     def __init__(self, *args): 
         this = _camvox.new_Interval(*args)
         try: self.this.append(this)
         except: self.this = this
     __swig_destroy__ = _camvox.delete_Interval
     __del__ = lambda self : None;
-    def lower(*args): return _camvox.Interval_lower(*args)
-    def upper(*args): return _camvox.Interval_upper(*args)
 Interval_swigregister = _camvox.Interval_swigregister
 Interval_swigregister(Interval)
 

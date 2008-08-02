@@ -69,7 +69,7 @@ public:
 	}
 
 	IntervalVector operator*(const IntervalVector &other) const {
-		Vector	result;
+		IntervalVector	result;
 
 		result.x = other.x * m[0][0] + other.y * m[0][1] + other.z * m[0][2] + other.w * m[0][3];
 		result.y = other.x * m[1][0] + other.y * m[1][1] + other.z * m[1][2] + other.w * m[1][3];

@@ -14,6 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+#include <stdio.h>
 #include <camvox/VoxNode.h>
 
 namespace camvox {
@@ -189,12 +190,12 @@ void VoxNode::generatePOVCodeForVoxel(VoxTree &tree, const VoxCoord &coord, int 
 			fprintf(stdout, "box {\n");
 
 			fprintf(stdout, "  <%lf %lf %lf>, <%lf %lf %lf>\n",
-				child_voxel_bound.x.lower(),
-				child_voxel_bound.y.lower(),
-				child_voxel_bound.z.lower(),
-				child_voxel_bound.x.upper(),
-				child_voxel_bound.y.upper(),
-				child_voxel_bound.z.upper()
+				child_voxel_bound.x.low,
+				child_voxel_bound.y.low,
+				child_voxel_bound.z.low,
+				child_voxel_bound.x.high,
+				child_voxel_bound.y.high,
+				child_voxel_bound.z.high
 			);
 
 			//fprintf(stdout, "  texture {\n");

@@ -6,14 +6,15 @@ using namespace camvox;
 
 class Interval {
 public:
+	double low, high;
 	Interval(double low, double high);
+	Interval(double value);
 	~Interval();
-	double lower();
-	double upper();
 };
 
 class Vector {
 public:
+	Vector();
 	Vector(double x, double y, double z);
 	Vector(double x, double y, double z, double w);
 	~Vector();

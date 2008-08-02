@@ -1,8 +1,7 @@
 # used by automake
-#INCLUDES = -I/usr/local/boost_1_35_0
 
 lib_LTLIBRARIES = 	libcamvox.la
-libcamvox_la_CXXFLAGS = -Wall $(BOOST_CPPFLAGS)
+libcamvox_la_CXXFLAGS = -Wall
 libcamvox_la_LDFLAGS =  -release 1.0
 libcamvox_la_SOURCES =	CSGObject.cc\
 			CSGOperation.cc\
