@@ -60,6 +60,8 @@ class Interval(_object):
         except: self.this = this
     __swig_destroy__ = _camvox.delete_Interval
     __del__ = lambda self : None;
+    def lower(*args): return _camvox.Interval_lower(*args)
+    def upper(*args): return _camvox.Interval_upper(*args)
 Interval_swigregister = _camvox.Interval_swigregister
 Interval_swigregister(Interval)
 
@@ -75,14 +77,6 @@ class Vector(_object):
         except: self.this = this
     __swig_destroy__ = _camvox.delete_Vector
     __del__ = lambda self : None;
-    def x_get(*args): return _camvox.Vector_x_get(*args)
-    def x_set(*args): return _camvox.Vector_x_set(*args)
-    def y_get(*args): return _camvox.Vector_y_get(*args)
-    def y_set(*args): return _camvox.Vector_y_set(*args)
-    def z_get(*args): return _camvox.Vector_z_get(*args)
-    def z_set(*args): return _camvox.Vector_z_set(*args)
-    def w_get(*args): return _camvox.Vector_w_get(*args)
-    def w_set(*args): return _camvox.Vector_w_set(*args)
 Vector_swigregister = _camvox.Vector_swigregister
 Vector_swigregister(Vector)
 

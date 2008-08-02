@@ -26,6 +26,8 @@ class CSGPrimative : public CSGObject {
 public:
 	CSGPrimative() {}
 	virtual ~CSGPrimative() {}
+	virtual Interval characteristic(const IntervalVector &a) const;
+	virtual box_type_t boxType(const IntervalVector &a) const;
 };
 
 }

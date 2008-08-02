@@ -24,9 +24,11 @@ namespace camvox {
 
 class CSGSphere : public CSGPrimative {
 public:
-	CSGSphere() {}
+	double diameter;
+
+	CSGSphere(double _diameter);
 	~CSGSphere() {}
-	box_type_t characteristic(const IntervalVector &a) const;
+	Interval characteristic(const IntervalVector &a) const;
 };
 
 }

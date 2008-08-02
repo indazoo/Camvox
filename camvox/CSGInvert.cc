@@ -18,9 +18,9 @@
 
 namespace camvox {
 
-box_type_t CSGInvert::characteristic(const IntervalVector &a) const
+box_type_t CSGInvert::boxType(const IntervalVector &a) const
 {
-	switch (childs[0]->characteristic(a)) {
+	switch (childs[0]->boxType(a)) {
 	case BLACK_BOX:
 		return WHITE_BOX;
 	case GREY_BOX:
