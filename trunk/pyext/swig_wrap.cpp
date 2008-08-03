@@ -2501,24 +2501,25 @@ SWIG_Python_MustGetPtr(PyObject *obj, swig_type_info *ty, int argnum, int flags)
 
 /* -------- TYPES TABLE (BEGIN) -------- */
 
-#define SWIGTYPE_p_CSGDifference swig_types[0]
-#define SWIGTYPE_p_CSGInvert swig_types[1]
-#define SWIGTYPE_p_CSGObject swig_types[2]
-#define SWIGTYPE_p_CSGOperation swig_types[3]
-#define SWIGTYPE_p_CSGPrimative swig_types[4]
-#define SWIGTYPE_p_CSGSphere swig_types[5]
-#define SWIGTYPE_p_CSGUnion swig_types[6]
-#define SWIGTYPE_p_Interval swig_types[7]
-#define SWIGTYPE_p_IntervalVector swig_types[8]
-#define SWIGTYPE_p_Matrix swig_types[9]
-#define SWIGTYPE_p_Vector swig_types[10]
-#define SWIGTYPE_p_VoxCoord swig_types[11]
-#define SWIGTYPE_p_VoxNode swig_types[12]
-#define SWIGTYPE_p_VoxTree swig_types[13]
-#define SWIGTYPE_p_char swig_types[14]
-#define SWIGTYPE_p_uint32_t swig_types[15]
-static swig_type_info *swig_types[17];
-static swig_module_info swig_module = {swig_types, 16, 0, 0, 0, 0};
+#define SWIGTYPE_p_CSGCylinder swig_types[0]
+#define SWIGTYPE_p_CSGDifference swig_types[1]
+#define SWIGTYPE_p_CSGInvert swig_types[2]
+#define SWIGTYPE_p_CSGObject swig_types[3]
+#define SWIGTYPE_p_CSGOperation swig_types[4]
+#define SWIGTYPE_p_CSGPrimative swig_types[5]
+#define SWIGTYPE_p_CSGSphere swig_types[6]
+#define SWIGTYPE_p_CSGUnion swig_types[7]
+#define SWIGTYPE_p_Interval swig_types[8]
+#define SWIGTYPE_p_IntervalVector swig_types[9]
+#define SWIGTYPE_p_Matrix swig_types[10]
+#define SWIGTYPE_p_Vector swig_types[11]
+#define SWIGTYPE_p_VoxCoord swig_types[12]
+#define SWIGTYPE_p_VoxNode swig_types[13]
+#define SWIGTYPE_p_VoxTree swig_types[14]
+#define SWIGTYPE_p_char swig_types[15]
+#define SWIGTYPE_p_uint32_t swig_types[16]
+static swig_type_info *swig_types[18];
+static swig_module_info swig_module = {swig_types, 17, 0, 0, 0, 0};
 #define SWIG_TypeQuery(name) SWIG_TypeQueryModule(&swig_module, &swig_module, name)
 #define SWIG_MangledTypeQuery(name) SWIG_MangledTypeQueryModule(&swig_module, &swig_module, name)
 
@@ -3674,6 +3675,56 @@ SWIGINTERN PyObject *CSGSphere_swigregister(PyObject *SWIGUNUSEDPARM(self), PyOb
   return SWIG_Py_Void();
 }
 
+SWIGINTERN PyObject *_wrap_new_CSGCylinder(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  double arg1 ;
+  double val1 ;
+  int ecode1 = 0 ;
+  PyObject * obj0 = 0 ;
+  CSGCylinder *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:new_CSGCylinder",&obj0)) SWIG_fail;
+  ecode1 = SWIG_AsVal_double(obj0, &val1);
+  if (!SWIG_IsOK(ecode1)) {
+    SWIG_exception_fail(SWIG_ArgError(ecode1), "in method '" "new_CSGCylinder" "', argument " "1"" of type '" "double""'");
+  } 
+  arg1 = static_cast< double >(val1);
+  result = (CSGCylinder *)new CSGCylinder(arg1);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_CSGCylinder, SWIG_POINTER_NEW |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_delete_CSGCylinder(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGCylinder *arg1 = (CSGCylinder *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:delete_CSGCylinder",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGCylinder, SWIG_POINTER_DISOWN |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "delete_CSGCylinder" "', argument " "1"" of type '" "CSGCylinder *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGCylinder * >(argp1);
+  delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *CSGCylinder_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *obj;
+  if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
+  SWIG_TypeNewClientData(SWIGTYPE_p_CSGCylinder, SWIG_NewClientData(obj));
+  return SWIG_Py_Void();
+}
+
 SWIGINTERN PyObject *_wrap_new_CSGOperation(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
   CSGOperation *result = 0 ;
@@ -4706,6 +4757,9 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"new_CSGSphere", _wrap_new_CSGSphere, METH_VARARGS, NULL},
 	 { (char *)"delete_CSGSphere", _wrap_delete_CSGSphere, METH_VARARGS, NULL},
 	 { (char *)"CSGSphere_swigregister", CSGSphere_swigregister, METH_VARARGS, NULL},
+	 { (char *)"new_CSGCylinder", _wrap_new_CSGCylinder, METH_VARARGS, NULL},
+	 { (char *)"delete_CSGCylinder", _wrap_delete_CSGCylinder, METH_VARARGS, NULL},
+	 { (char *)"CSGCylinder_swigregister", CSGCylinder_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CSGOperation", _wrap_new_CSGOperation, METH_VARARGS, NULL},
 	 { (char *)"delete_CSGOperation", _wrap_delete_CSGOperation, METH_VARARGS, NULL},
 	 { (char *)"CSGOperation_add", _wrap_CSGOperation_add, METH_VARARGS, NULL},
@@ -4755,6 +4809,9 @@ static PyMethodDef SwigMethods[] = {
 
 /* -------- TYPE CONVERSION AND EQUIVALENCE RULES (BEGIN) -------- */
 
+static void *_p_CSGCylinderTo_p_CSGPrimative(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((CSGPrimative *)  ((CSGCylinder *) x));
+}
 static void *_p_CSGSphereTo_p_CSGPrimative(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((CSGPrimative *)  ((CSGSphere *) x));
 }
@@ -4773,6 +4830,9 @@ static void *_p_CSGUnionTo_p_CSGObject(void *x, int *SWIGUNUSEDPARM(newmemory)) 
 static void *_p_CSGDifferenceTo_p_CSGObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((CSGObject *) (CSGOperation *) ((CSGDifference *) x));
 }
+static void *_p_CSGCylinderTo_p_CSGObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
+    return (void *)((CSGObject *) (CSGPrimative *) ((CSGCylinder *) x));
+}
 static void *_p_CSGSphereTo_p_CSGObject(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((CSGObject *) (CSGPrimative *) ((CSGSphere *) x));
 }
@@ -4785,6 +4845,7 @@ static void *_p_CSGUnionTo_p_CSGOperation(void *x, int *SWIGUNUSEDPARM(newmemory
 static void *_p_CSGDifferenceTo_p_CSGOperation(void *x, int *SWIGUNUSEDPARM(newmemory)) {
     return (void *)((CSGOperation *)  ((CSGDifference *) x));
 }
+static swig_type_info _swigt__p_CSGCylinder = {"_p_CSGCylinder", "CSGCylinder *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_CSGDifference = {"_p_CSGDifference", "CSGDifference *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_CSGInvert = {"_p_CSGInvert", "CSGInvert *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_CSGObject = {"_p_CSGObject", "CSGObject *", 0, 0, (void*)0, 0};
@@ -4803,6 +4864,7 @@ static swig_type_info _swigt__p_char = {"_p_char", "char *", 0, 0, (void*)0, 0};
 static swig_type_info _swigt__p_uint32_t = {"_p_uint32_t", "uint32_t *", 0, 0, (void*)0, 0};
 
 static swig_type_info *swig_type_initial[] = {
+  &_swigt__p_CSGCylinder,
   &_swigt__p_CSGDifference,
   &_swigt__p_CSGInvert,
   &_swigt__p_CSGObject,
@@ -4821,11 +4883,12 @@ static swig_type_info *swig_type_initial[] = {
   &_swigt__p_uint32_t,
 };
 
+static swig_cast_info _swigc__p_CSGCylinder[] = {  {&_swigt__p_CSGCylinder, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_CSGDifference[] = {  {&_swigt__p_CSGDifference, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_CSGInvert[] = {  {&_swigt__p_CSGInvert, 0, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_CSGObject[] = {  {&_swigt__p_CSGInvert, _p_CSGInvertTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGOperation, _p_CSGOperationTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGObject, 0, 0, 0},  {&_swigt__p_CSGUnion, _p_CSGUnionTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGDifference, _p_CSGDifferenceTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGPrimative, _p_CSGPrimativeTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGSphere, _p_CSGSphereTo_p_CSGObject, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_CSGObject[] = {  {&_swigt__p_CSGInvert, _p_CSGInvertTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGOperation, _p_CSGOperationTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGObject, 0, 0, 0},  {&_swigt__p_CSGUnion, _p_CSGUnionTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGDifference, _p_CSGDifferenceTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGPrimative, _p_CSGPrimativeTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGCylinder, _p_CSGCylinderTo_p_CSGObject, 0, 0},  {&_swigt__p_CSGSphere, _p_CSGSphereTo_p_CSGObject, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_CSGOperation[] = {  {&_swigt__p_CSGInvert, _p_CSGInvertTo_p_CSGOperation, 0, 0},  {&_swigt__p_CSGOperation, 0, 0, 0},  {&_swigt__p_CSGUnion, _p_CSGUnionTo_p_CSGOperation, 0, 0},  {&_swigt__p_CSGDifference, _p_CSGDifferenceTo_p_CSGOperation, 0, 0},{0, 0, 0, 0}};
-static swig_cast_info _swigc__p_CSGPrimative[] = {  {&_swigt__p_CSGPrimative, 0, 0, 0},  {&_swigt__p_CSGSphere, _p_CSGSphereTo_p_CSGPrimative, 0, 0},{0, 0, 0, 0}};
+static swig_cast_info _swigc__p_CSGPrimative[] = {  {&_swigt__p_CSGPrimative, 0, 0, 0},  {&_swigt__p_CSGCylinder, _p_CSGCylinderTo_p_CSGPrimative, 0, 0},  {&_swigt__p_CSGSphere, _p_CSGSphereTo_p_CSGPrimative, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_CSGSphere[] = {  {&_swigt__p_CSGSphere, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_CSGUnion[] = {  {&_swigt__p_CSGUnion, 0, 0, 0},{0, 0, 0, 0}};
 static swig_cast_info _swigc__p_Interval[] = {  {&_swigt__p_Interval, 0, 0, 0},{0, 0, 0, 0}};
@@ -4839,6 +4902,7 @@ static swig_cast_info _swigc__p_char[] = {  {&_swigt__p_char, 0, 0, 0},{0, 0, 0,
 static swig_cast_info _swigc__p_uint32_t[] = {  {&_swigt__p_uint32_t, 0, 0, 0},{0, 0, 0, 0}};
 
 static swig_cast_info *swig_cast_initial[] = {
+  _swigc__p_CSGCylinder,
   _swigc__p_CSGDifference,
   _swigc__p_CSGInvert,
   _swigc__p_CSGObject,

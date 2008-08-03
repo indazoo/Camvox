@@ -5,7 +5,7 @@ tree = camvox.VoxTree()
 tree.max_depth = 8
 tree.scale = 10.0 / 2147483648.0
 
-s1 = camvox.CSGSphere(1.0)
+s1 = camvox.CSGCylinder(1.0)
 s1.translate(camvox.Vector(3.0, 3.0, 3.0))
 
 s2 = camvox.CSGSphere(0.5)
