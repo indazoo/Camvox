@@ -226,6 +226,7 @@ libcamvox_la_SOURCES = CSGObject.cc\
 
 library_includedir = $(includedir)/camvox-1.0/camvox
 library_include_HEADERS = camvox.h\
+			GMath.h\
 			Interval.h\
 			Vector.h\
 			Matrix.h\

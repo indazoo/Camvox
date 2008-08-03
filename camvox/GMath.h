@@ -1,4 +1,4 @@
-/* Vector.h - Homogeious vector class.
+/* GMath.h - Generic mathematical operations
  * Copyright (C) 2008  Take Vos
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,38 +14,27 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#ifndef VECTOR_H
-#define VECTOR_H
-
-#include <camvox/Interval.h>
+#ifndef GMATH_H
+#define GMATH_H
 
 namespace camvox {
 
 template <class T>
-class TVector {
-public:
-	T	x, y, z, w;
-
-	TVector(void) : x(0.0), y(0.0), z(0.0), w(0.0) {}
-	TVector(T _x, T _y, T _z) : x(_x), y(_y), z(_z), w(0.0) {} 
-	TVector(T _x, T _y, T _z, T _w) : x(_x), y(_y), z(_z), w(_w) {}
-
-	TVector operator-() const {
-		return TVector(-x, -y, -z, w);
-	}
-};
-
-typedef TVector<double>		Vector;
-typedef TVector<Interval>	IntervalVector;
-
-static inline Vector operator/(double a, const Vector &b)
+static inline T gmin(T a, T b)
 {
-	return Vector(
-		a / b.x,
-		a / b.y,
-		a / b.z,
-		b.w
-	);
+	return a < b ? a : b;
+}
+
+template <class T>
+static inline T gmax(T a, T b)
+{
+	return a > b ? a : b;
+}
+
+template <class T>
+static inline T gabs(T a)
+{
+	return a < 0 ? -a : a;
 }
 
 }

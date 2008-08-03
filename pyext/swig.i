@@ -24,12 +24,33 @@ class Matrix {
 public:
 	Matrix();
 	~Matrix();
+
+	%extend {
+		char *__str__() {
+			static char temp[256];
+			sprintf(temp, "[[%.02lf, %.02lf, %.02lf, %.02lf], [%.02lf, %.02lf, %.02lf, %.02lf], [%.02lf, %.02lf, %.02lf, %.02lf], [%.02lf, %.02lf, %.02lf, %.02lf]]",
+				$self->m[0][0], $self->m[0][1], $self->m[0][2], $self->m[0][3],
+				$self->m[1][0], $self->m[1][1], $self->m[1][2], $self->m[1][3],
+				$self->m[2][0], $self->m[2][1], $self->m[2][2], $self->m[2][3],
+				$self->m[3][0], $self->m[3][1], $self->m[3][2], $self->m[3][3]
+			);
+			return &temp[0];
+				
+		}
+	}
 };
 
 class CSGObject {
 public:
+	Matrix transform;
+	Matrix total_transform;
+	Matrix total_inv_transform;
+
 	CSGObject();
 	~CSGObject();
+	virtual void translate(const Vector &a);
+	virtual void scale(const Vector &a);
+
 };
 
 class CSGPrimative : public CSGObject {
@@ -48,6 +69,7 @@ class CSGOperation : public CSGObject {
 public:
 	CSGOperation();
 	~CSGOperation();
+	virtual void add(CSGObject *obj);
 };
 
 class CSGUnion : public CSGOperation {
