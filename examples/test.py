@@ -11,7 +11,7 @@ s1.translate(camvox.Vector(3.0, 3.0, 3.0))
 s2 = camvox.CSGSphere(0.5)
 s2.translate(camvox.Vector(3.0, 2.0, 3.0))
 
-u = camvox.CSGDifference()
+u = camvox.CSGIntersection()
 u.add(s1)
 u.add(s2)
 

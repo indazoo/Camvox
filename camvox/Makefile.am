@@ -8,6 +8,7 @@ libcamvox_la_SOURCES =	CSGObject.cc\
 			CSGInvert.cc\
 			CSGUnion.cc\
 			CSGDifference.cc\
+			CSGIntersection.cc\
 			CSGPrimative.cc\
 			CSGSphere.cc\
 			CSGCylinder.cc\
@@ -26,6 +27,7 @@ library_include_HEADERS=camvox.h\
 			CSGInvert.h\
 			CSGUnion.h\
 			CSGDifference.h\
+			CSGIntersection.h\
 			CSGPrimative.h\
 			CSGSPhere.h\
 			CSGCylinder.h\
