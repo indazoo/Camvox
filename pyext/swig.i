@@ -65,6 +65,12 @@ public:
 	~CSGSphere();
 };
 
+class CSGCylinder : public CSGPrimative {
+public:
+	CSGCylinder(double diameter);
+	~CSGCylinder();
+};
+
 class CSGOperation : public CSGObject {
 public:
 	CSGOperation();

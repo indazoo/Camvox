@@ -10,6 +10,7 @@
 #include <camvox/CSGObject.h>
 #include <camvox/CSGPrimative.h>
 #include <camvox/CSGSphere.h>
+#include <camvox/CSGCylinder.h>
 #include <camvox/CSGOperation.h>
 #include <camvox/CSGUnion.h>
 #include <camvox/CSGDifference.h>
