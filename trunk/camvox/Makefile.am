@@ -11,6 +11,7 @@ libcamvox_la_SOURCES =	CSGObject.cc\
 			CSGIntersection.cc\
 			CSGPrimative.cc\
 			CSGSphere.cc\
+			CSGPlane.cc\
 			CSGCylinder.cc\
 			VoxCoord.cc\
 			VoxNode.cc\
@@ -30,6 +31,7 @@ library_include_HEADERS=camvox.h\
 			CSGIntersection.h\
 			CSGPrimative.h\
 			CSGSPhere.h\
+			CSGPlane.h\
 			CSGCylinder.h\
 			VoxCoord.h\
 			VoxNode.h\

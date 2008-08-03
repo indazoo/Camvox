@@ -62,9 +62,9 @@ am_libcamvox_la_OBJECTS = libcamvox_la-CSGObject.lo \
 	libcamvox_la-CSGOperation.lo libcamvox_la-CSGInvert.lo \
 	libcamvox_la-CSGUnion.lo libcamvox_la-CSGDifference.lo \
 	libcamvox_la-CSGIntersection.lo libcamvox_la-CSGPrimative.lo \
-	libcamvox_la-CSGSphere.lo libcamvox_la-CSGCylinder.lo \
-	libcamvox_la-VoxCoord.lo libcamvox_la-VoxNode.lo \
-	libcamvox_la-VoxTree.lo
+	libcamvox_la-CSGSphere.lo libcamvox_la-CSGPlane.lo \
+	libcamvox_la-CSGCylinder.lo libcamvox_la-VoxCoord.lo \
+	libcamvox_la-VoxNode.lo libcamvox_la-VoxTree.lo
 libcamvox_la_OBJECTS = $(am_libcamvox_la_OBJECTS)
 libcamvox_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(libcamvox_la_CXXFLAGS) \
@@ -224,6 +224,7 @@ libcamvox_la_SOURCES = CSGObject.cc\
 			CSGIntersection.cc\
 			CSGPrimative.cc\
 			CSGSphere.cc\
+			CSGPlane.cc\
 			CSGCylinder.cc\
 			VoxCoord.cc\
 			VoxNode.cc\
@@ -243,6 +244,7 @@ library_include_HEADERS = camvox.h\
 			CSGIntersection.h\
 			CSGPrimative.h\
 			CSGSPhere.h\
+			CSGPlane.h\
 			CSGCylinder.h\
 			VoxCoord.h\
 			VoxNode.h\
@@ -327,6 +329,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGInvert.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGOperation.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGPlane.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGPrimative.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGSphere.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGUnion.Plo@am__quote@
@@ -410,6 +413,13 @@ libcamvox_la-CSGSphere.lo: CSGSphere.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGSphere.cc' object='libcamvox_la-CSGSphere.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-CSGSphere.lo `test -f 'CSGSphere.cc' || echo '$(srcdir)/'`CSGSphere.cc
+
+libcamvox_la-CSGPlane.lo: CSGPlane.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-CSGPlane.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-CSGPlane.Tpo -c -o libcamvox_la-CSGPlane.lo `test -f 'CSGPlane.cc' || echo '$(srcdir)/'`CSGPlane.cc
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/libcamvox_la-CSGPlane.Tpo $(DEPDIR)/libcamvox_la-CSGPlane.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGPlane.cc' object='libcamvox_la-CSGPlane.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-CSGPlane.lo `test -f 'CSGPlane.cc' || echo '$(srcdir)/'`CSGPlane.cc
 
 libcamvox_la-CSGCylinder.lo: CSGCylinder.cc
 @am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-CSGCylinder.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-CSGCylinder.Tpo -c -o libcamvox_la-CSGCylinder.lo `test -f 'CSGCylinder.cc' || echo '$(srcdir)/'`CSGCylinder.cc
