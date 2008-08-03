@@ -71,6 +71,12 @@ public:
 	~CSGCylinder();
 };
 
+class CSGPlane : public CSGPrimative {
+public:
+	CSGPlane();
+	~CSGPlane();
+};
+
 class CSGOperation : public CSGObject {
 public:
 	CSGOperation();
