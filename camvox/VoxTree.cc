@@ -35,15 +35,39 @@ void VoxTree::generatePOVCode(void)
 	fprintf(stdout, "background { color Black }\n");
 	fprintf(stdout, "global_settings { ambient_light <0.4, 0.4, 0.4> }\n");
 	fprintf(stdout, "camera {\n");
-	fprintf(stdout, "  location <2.0, 2.0, 2.0>\n");
-	fprintf(stdout, "  look_at <0.5, 0.5, 0.5>\n");
+	fprintf(stdout, "  orthographic\n");
+	fprintf(stdout, "  location <0.0, 8.0, -10.0>\n");
+	fprintf(stdout, "  look_at <5.0, 4.0, 0.0>\n");
 	fprintf(stdout, "}\n");
-	fprintf(stdout, "light_source { <6, 3.0, 2.0> color <3.0, 3.0, 3.0> }\n");
+	fprintf(stdout, "light_source { <-5, 10.0, -10.0> color <2.0, 2.0, 2.0> }\n");
+
+
+	fprintf(stdout, "cylinder {\n");
+	fprintf(stdout, " <0, 0, 0>, <10.0, 0, 0>, 0.1\n");
+	fprintf(stdout, "  texture {\n");
+	fprintf(stdout, "    pigment { color Red }\n");
+	fprintf(stdout, "  }\n");
+	fprintf(stdout, "}\n");
+
+	fprintf(stdout, "cylinder {\n");
+	fprintf(stdout, " <0, 0, 0>, <0.0, 0.0, 10.0>, 0.1\n");
+	fprintf(stdout, "  texture {\n");
+	fprintf(stdout, "    pigment { color Green }\n");
+	fprintf(stdout, "  }\n");
+	fprintf(stdout, "}\n");
+
+	fprintf(stdout, "cylinder {\n");
+	fprintf(stdout, " <0, 0, 0>, <0.0, 10.0, 0.0>, 0.1\n");
+	fprintf(stdout, "  texture {\n");
+	fprintf(stdout, "    pigment { color Blue }\n");
+	fprintf(stdout, "  }\n");
+	fprintf(stdout, "}\n");
+
 
 	fprintf(stdout, "union {\n");
 	root->generatePOVCode(*this, VoxCoord());
 	fprintf(stdout, "  texture {\n");
-	fprintf(stdout, "    pigment { color Blue }\n");
+	fprintf(stdout, "    pigment { color Green }\n");
 	fprintf(stdout, "  }\n");
 	//fprintf(stdout, "  interior {I_Glass_Dispersion1}\n");
 	fprintf(stdout, "}\n");

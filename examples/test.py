@@ -5,18 +5,16 @@ tree = camvox.VoxTree()
 tree.max_depth = 8
 tree.scale = 10.0 / 2147483648.0
 
-s = camvox.CSGSphere(1.0)
-#print s.transform
-#print s.total_transform
-#print s.total_inv_transform
+s1 = camvox.CSGSphere(1.0)
+s1.translate(camvox.Vector(3.0, 3.0, 3.0))
 
-s.translate(camvox.Vector(3.0, 3.0, 3.0))
-s.scale(camvox.Vector(0.2, 0.2, 0.2))
-#s.scale(0.5)
-#print s.transform
-#print s.total_transform
-#print s.total_inv_transform
+s2 = camvox.CSGSphere(0.5)
+s2.translate(camvox.Vector(3.0, 2.0, 3.0))
 
-tree.addCSGObject(s, 0)
+u = camvox.CSGDifference()
+u.add(s1)
+u.add(s2)
+
+tree.addCSGObject(u, 0)
 tree.generatePOVCode()
 

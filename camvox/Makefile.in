@@ -60,9 +60,10 @@ LTLIBRARIES = $(lib_LTLIBRARIES)
 libcamvox_la_LIBADD =
 am_libcamvox_la_OBJECTS = libcamvox_la-CSGObject.lo \
 	libcamvox_la-CSGOperation.lo libcamvox_la-CSGInvert.lo \
-	libcamvox_la-CSGUnion.lo libcamvox_la-CSGPrimative.lo \
-	libcamvox_la-CSGSphere.lo libcamvox_la-VoxCoord.lo \
-	libcamvox_la-VoxNode.lo libcamvox_la-VoxTree.lo
+	libcamvox_la-CSGUnion.lo libcamvox_la-CSGDifference.lo \
+	libcamvox_la-CSGPrimative.lo libcamvox_la-CSGSphere.lo \
+	libcamvox_la-VoxCoord.lo libcamvox_la-VoxNode.lo \
+	libcamvox_la-VoxTree.lo
 libcamvox_la_OBJECTS = $(am_libcamvox_la_OBJECTS)
 libcamvox_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(libcamvox_la_CXXFLAGS) \
@@ -218,6 +219,7 @@ libcamvox_la_SOURCES = CSGObject.cc\
 			CSGOperation.cc\
 			CSGInvert.cc\
 			CSGUnion.cc\
+			CSGDifference.cc\
 			CSGPrimative.cc\
 			CSGSphere.cc\
 			VoxCoord.cc\
@@ -234,6 +236,7 @@ library_include_HEADERS = camvox.h\
 			CSGOperation.h\
 			CSGInvert.h\
 			CSGUnion.h\
+			CSGDifference.h\
 			CSGPrimative.h\
 			CSGSPhere.h\
 			VoxCoord.h\
@@ -313,6 +316,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGDifference.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGInvert.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGOperation.Plo@am__quote@
@@ -371,6 +375,13 @@ libcamvox_la-CSGUnion.lo: CSGUnion.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGUnion.cc' object='libcamvox_la-CSGUnion.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-CSGUnion.lo `test -f 'CSGUnion.cc' || echo '$(srcdir)/'`CSGUnion.cc
+
+libcamvox_la-CSGDifference.lo: CSGDifference.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-CSGDifference.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-CSGDifference.Tpo -c -o libcamvox_la-CSGDifference.lo `test -f 'CSGDifference.cc' || echo '$(srcdir)/'`CSGDifference.cc
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/libcamvox_la-CSGDifference.Tpo $(DEPDIR)/libcamvox_la-CSGDifference.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='CSGDifference.cc' object='libcamvox_la-CSGDifference.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-CSGDifference.lo `test -f 'CSGDifference.cc' || echo '$(srcdir)/'`CSGDifference.cc
 
 libcamvox_la-CSGPrimative.lo: CSGPrimative.cc
 @am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-CSGPrimative.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-CSGPrimative.Tpo -c -o libcamvox_la-CSGPrimative.lo `test -f 'CSGPrimative.cc' || echo '$(srcdir)/'`CSGPrimative.cc
