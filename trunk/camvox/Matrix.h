@@ -184,6 +184,24 @@ public:
 		B.m[2][2] = v.z;
 		return B * (*this);
 	}
+
+	TMatrix rotate(const TVector<T> &v, double angle) const {
+		TMatrix		B = TMatrix();
+		TVector<T>	nv = v.normalize();
+
+		fprintf(stderr, "%lf, %lf, %lf\n", nv.x, nv.y, nv.z);
+
+		B.m[0][0] = (1.0 - gcos(angle)) * (nv.x * nv.x) + (       gcos(angle));
+		B.m[0][1] = (1.0 - gcos(angle)) * (nv.x * nv.y) - (nv.z * gsin(angle));
+		B.m[0][2] = (1.0 - gcos(angle)) * (nv.x * nv.z) + (nv.y * gsin(angle));
+		B.m[1][0] = (1.0 - gcos(angle)) * (nv.x * nv.y) + (nv.z * gsin(angle));
+		B.m[1][1] = (1.0 - gcos(angle)) * (nv.y * nv.y) + (       gcos(angle));
+		B.m[1][2] = (1.0 - gcos(angle)) * (nv.y * nv.z) - (nv.x * gsin(angle));
+		B.m[2][0] = (1.0 - gcos(angle)) * (nv.x * nv.z) - (nv.y * gsin(angle));
+		B.m[2][1] = (1.0 - gcos(angle)) * (nv.y * nv.z) + (nv.x * gsin(angle));
+		B.m[2][2] = (1.0 - gcos(angle)) * (nv.z * nv.z) + (       gcos(angle));
+		return B;
+	}
 };
 
 typedef TMatrix<double>		Matrix;

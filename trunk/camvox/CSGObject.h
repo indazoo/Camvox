@@ -40,6 +40,7 @@ public:
 	virtual void mergeTransforms(void);
 	virtual void translate(const Vector &a);
 	virtual void scale(const Vector &a);
+	virtual void rotate(const Vector &a, double angle);
 	virtual box_type_t boxType(const IntervalVector &a) const;
 };
 

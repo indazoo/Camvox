@@ -17,6 +17,8 @@
 #ifndef GMATH_H
 #define GMATH_H
 
+#include <math.h>
+
 namespace camvox {
 
 template <class T>
@@ -35,6 +37,22 @@ template <class T>
 static inline T gabs(T a)
 {
 	return a < 0 ? -a : a;
+}
+
+static inline double gcos(double a) {
+	return cos(a);
+}
+
+static inline double gsin(double a) {
+	return cos(a);
+}
+
+static inline double gsquare(double a) {
+	return a * a;
+}
+
+static inline double gsqrt(double a) {
+	return sqrt(a);
 }
 
 }

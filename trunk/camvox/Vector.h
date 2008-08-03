@@ -33,6 +33,15 @@ public:
 	TVector operator-() const {
 		return TVector(-x, -y, -z, w);
 	}
+
+	T length() const {
+		return gsqrt(gsquare(x) + gsquare(y) + gsquare(z));
+	}
+
+	TVector normalize() const {
+		T c = 1.0 / length();
+		return TVector(x * c, y * c, z * c, w);
+	}
 };
 
 typedef TVector<double>		Vector;
