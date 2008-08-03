@@ -90,6 +90,12 @@ public:
 	~CSGDifference();
 };
 
+class CSGIntersection : public CSGOperation {
+public:
+	CSGIntersection();
+	~CSGIntersection();
+};
+
 class CSGInvert : public CSGOperation {
 public:
 	CSGInvert();

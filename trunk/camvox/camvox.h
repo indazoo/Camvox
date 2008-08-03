@@ -14,6 +14,7 @@
 #include <camvox/CSGOperation.h>
 #include <camvox/CSGUnion.h>
 #include <camvox/CSGDifference.h>
+#include <camvox/CSGIntersection.h>
 #include <camvox/CSGInvert.h>
 
 #endif
