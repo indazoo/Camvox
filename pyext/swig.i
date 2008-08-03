@@ -50,6 +50,7 @@ public:
 	~CSGObject();
 	virtual void translate(const Vector &a);
 	virtual void scale(const Vector &a);
+	virtual void rotate(const Vector &a, double angle);
 
 };
 

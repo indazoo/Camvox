@@ -1,5 +1,6 @@
 
 import camvox
+from math import *
 
 tree = camvox.VoxTree()
 tree.max_depth = 8
@@ -21,6 +22,7 @@ u = camvox.CSGIntersection()
 u.add(s1)
 u.add(p1)
 u.add(ip)
+u.rotate(camvox.Vector(1.0, 0.0, 0.0), 0.25 * pi);
 
 tree.addCSGObject(u, 0)
 tree.generatePOVCode()

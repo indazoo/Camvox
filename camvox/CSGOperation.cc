@@ -36,6 +36,7 @@ void CSGOperation::add(CSGObject *obj)
 {
 	obj->parent = this;
 	childs.push_back(obj);
+	mergeTransforms();
 }
 
 }

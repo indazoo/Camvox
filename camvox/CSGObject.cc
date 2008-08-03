@@ -50,6 +50,12 @@ void CSGObject::scale(const Vector &a)
 	mergeTransforms();
 }
 
+void CSGObject::rotate(const Vector &a, double angle)
+{
+	transform = transform.rotate(a, angle);
+	mergeTransforms();
+}
+
 box_type_t CSGObject::boxType(const IntervalVector &a) const
 {
 	assert(0);
