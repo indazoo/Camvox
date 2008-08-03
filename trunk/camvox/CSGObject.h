@@ -32,7 +32,6 @@ class CSGObject {
 public:
 	CSGObject	*parent;
 	Matrix		transform;
-	Matrix		inv_transform;
 	Matrix		total_transform;
 	Matrix		total_inv_transform;
 

@@ -96,6 +96,7 @@ class Matrix(_object):
         except: self.this = this
     __swig_destroy__ = _camvox.delete_Matrix
     __del__ = lambda self : None;
+    def __str__(*args): return _camvox.Matrix___str__(*args)
 Matrix_swigregister = _camvox.Matrix_swigregister
 Matrix_swigregister(Matrix)
 
@@ -105,12 +106,23 @@ class CSGObject(_object):
     __swig_getmethods__ = {}
     __getattr__ = lambda self, name: _swig_getattr(self, CSGObject, name)
     __repr__ = _swig_repr
+    __swig_setmethods__["transform"] = _camvox.CSGObject_transform_set
+    __swig_getmethods__["transform"] = _camvox.CSGObject_transform_get
+    if _newclass:transform = _swig_property(_camvox.CSGObject_transform_get, _camvox.CSGObject_transform_set)
+    __swig_setmethods__["total_transform"] = _camvox.CSGObject_total_transform_set
+    __swig_getmethods__["total_transform"] = _camvox.CSGObject_total_transform_get
+    if _newclass:total_transform = _swig_property(_camvox.CSGObject_total_transform_get, _camvox.CSGObject_total_transform_set)
+    __swig_setmethods__["total_inv_transform"] = _camvox.CSGObject_total_inv_transform_set
+    __swig_getmethods__["total_inv_transform"] = _camvox.CSGObject_total_inv_transform_get
+    if _newclass:total_inv_transform = _swig_property(_camvox.CSGObject_total_inv_transform_get, _camvox.CSGObject_total_inv_transform_set)
     def __init__(self, *args): 
         this = _camvox.new_CSGObject(*args)
         try: self.this.append(this)
         except: self.this = this
     __swig_destroy__ = _camvox.delete_CSGObject
     __del__ = lambda self : None;
+    def translate(*args): return _camvox.CSGObject_translate(*args)
+    def scale(*args): return _camvox.CSGObject_scale(*args)
 CSGObject_swigregister = _camvox.CSGObject_swigregister
 CSGObject_swigregister(CSGObject)
 
@@ -162,6 +174,7 @@ class CSGOperation(CSGObject):
         except: self.this = this
     __swig_destroy__ = _camvox.delete_CSGOperation
     __del__ = lambda self : None;
+    def add(*args): return _camvox.CSGOperation_add(*args)
 CSGOperation_swigregister = _camvox.CSGOperation_swigregister
 CSGOperation_swigregister(CSGOperation)
 

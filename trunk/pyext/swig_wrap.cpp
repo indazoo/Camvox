@@ -2659,6 +2659,54 @@ SWIG_AsVal_double (PyObject *obj, double *val)
 
   #define SWIG_From_double   PyFloat_FromDouble 
 
+SWIGINTERN char *Matrix___str__(Matrix *self){
+			static char temp[256];
+			sprintf(temp, "[[%.02lf, %.02lf, %.02lf, %.02lf], [%.02lf, %.02lf, %.02lf, %.02lf], [%.02lf, %.02lf, %.02lf, %.02lf], [%.02lf, %.02lf, %.02lf, %.02lf]]",
+				self->m[0][0], self->m[0][1], self->m[0][2], self->m[0][3],
+				self->m[1][0], self->m[1][1], self->m[1][2], self->m[1][3],
+				self->m[2][0], self->m[2][1], self->m[2][2], self->m[2][3],
+				self->m[3][0], self->m[3][1], self->m[3][2], self->m[3][3]
+			);
+			return &temp[0];
+				
+		}
+
+SWIGINTERN swig_type_info*
+SWIG_pchar_descriptor(void)
+{
+  static int init = 0;
+  static swig_type_info* info = 0;
+  if (!init) {
+    info = SWIG_TypeQuery("_p_char");
+    init = 1;
+  }
+  return info;
+}
+
+
+SWIGINTERNINLINE PyObject *
+SWIG_FromCharPtrAndSize(const char* carray, size_t size)
+{
+  if (carray) {
+    if (size > INT_MAX) {
+      swig_type_info* pchar_descriptor = SWIG_pchar_descriptor();
+      return pchar_descriptor ? 
+	SWIG_NewPointerObj(const_cast< char * >(carray), pchar_descriptor, 0) : SWIG_Py_Void();
+    } else {
+      return PyString_FromStringAndSize(carray, static_cast< int >(size));
+    }
+  } else {
+    return SWIG_Py_Void();
+  }
+}
+
+
+SWIGINTERNINLINE PyObject * 
+SWIG_FromCharPtr(const char *cptr)
+{ 
+  return SWIG_FromCharPtrAndSize(cptr, (cptr ? strlen(cptr) : 0));
+}
+
 
 #include <limits.h>
 #if !defined(SWIG_NO_LLONG_MAX)
@@ -3242,12 +3290,190 @@ fail:
 }
 
 
+SWIGINTERN PyObject *_wrap_Matrix___str__(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  Matrix *arg1 = (Matrix *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  char *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:Matrix___str__",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_Matrix, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "Matrix___str__" "', argument " "1"" of type '" "Matrix *""'"); 
+  }
+  arg1 = reinterpret_cast< Matrix * >(argp1);
+  result = (char *)Matrix___str__(arg1);
+  resultobj = SWIG_FromCharPtr((const char *)result);
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
 SWIGINTERN PyObject *Matrix_swigregister(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *obj;
   if (!PyArg_ParseTuple(args,(char*)"O:swigregister", &obj)) return NULL;
   SWIG_TypeNewClientData(SWIGTYPE_p_Matrix, SWIG_NewClientData(obj));
   return SWIG_Py_Void();
 }
+
+SWIGINTERN PyObject *_wrap_CSGObject_transform_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGObject *arg1 = (CSGObject *) 0 ;
+  Matrix *arg2 = (Matrix *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:CSGObject_transform_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGObject, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CSGObject_transform_set" "', argument " "1"" of type '" "CSGObject *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGObject * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_Matrix, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CSGObject_transform_set" "', argument " "2"" of type '" "Matrix *""'"); 
+  }
+  arg2 = reinterpret_cast< Matrix * >(argp2);
+  if (arg1) (arg1)->transform = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CSGObject_transform_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGObject *arg1 = (CSGObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  Matrix *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:CSGObject_transform_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGObject, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CSGObject_transform_get" "', argument " "1"" of type '" "CSGObject *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGObject * >(argp1);
+  result = (Matrix *)& ((arg1)->transform);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Matrix, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CSGObject_total_transform_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGObject *arg1 = (CSGObject *) 0 ;
+  Matrix *arg2 = (Matrix *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:CSGObject_total_transform_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGObject, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CSGObject_total_transform_set" "', argument " "1"" of type '" "CSGObject *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGObject * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_Matrix, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CSGObject_total_transform_set" "', argument " "2"" of type '" "Matrix *""'"); 
+  }
+  arg2 = reinterpret_cast< Matrix * >(argp2);
+  if (arg1) (arg1)->total_transform = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CSGObject_total_transform_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGObject *arg1 = (CSGObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  Matrix *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:CSGObject_total_transform_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGObject, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CSGObject_total_transform_get" "', argument " "1"" of type '" "CSGObject *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGObject * >(argp1);
+  result = (Matrix *)& ((arg1)->total_transform);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Matrix, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CSGObject_total_inv_transform_set(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGObject *arg1 = (CSGObject *) 0 ;
+  Matrix *arg2 = (Matrix *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:CSGObject_total_inv_transform_set",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGObject, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CSGObject_total_inv_transform_set" "', argument " "1"" of type '" "CSGObject *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGObject * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_Matrix, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CSGObject_total_inv_transform_set" "', argument " "2"" of type '" "Matrix *""'"); 
+  }
+  arg2 = reinterpret_cast< Matrix * >(argp2);
+  if (arg1) (arg1)->total_inv_transform = *arg2;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CSGObject_total_inv_transform_get(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGObject *arg1 = (CSGObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  PyObject * obj0 = 0 ;
+  Matrix *result = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"O:CSGObject_total_inv_transform_get",&obj0)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGObject, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CSGObject_total_inv_transform_get" "', argument " "1"" of type '" "CSGObject *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGObject * >(argp1);
+  result = (Matrix *)& ((arg1)->total_inv_transform);
+  resultobj = SWIG_NewPointerObj(SWIG_as_voidptr(result), SWIGTYPE_p_Matrix, 0 |  0 );
+  return resultobj;
+fail:
+  return NULL;
+}
+
 
 SWIGINTERN PyObject *_wrap_new_CSGObject(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
   PyObject *resultobj = 0;
@@ -3276,6 +3502,72 @@ SWIGINTERN PyObject *_wrap_delete_CSGObject(PyObject *SWIGUNUSEDPARM(self), PyOb
   }
   arg1 = reinterpret_cast< CSGObject * >(argp1);
   delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CSGObject_translate(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGObject *arg1 = (CSGObject *) 0 ;
+  Vector *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:CSGObject_translate",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGObject, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CSGObject_translate" "', argument " "1"" of type '" "CSGObject *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGObject * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_Vector,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CSGObject_translate" "', argument " "2"" of type '" "Vector const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "CSGObject_translate" "', argument " "2"" of type '" "Vector const &""'"); 
+  }
+  arg2 = reinterpret_cast< Vector * >(argp2);
+  (arg1)->translate((Vector const &)*arg2);
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CSGObject_scale(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGObject *arg1 = (CSGObject *) 0 ;
+  Vector *arg2 = 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:CSGObject_scale",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGObject, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CSGObject_scale" "', argument " "1"" of type '" "CSGObject *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGObject * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2, SWIGTYPE_p_Vector,  0  | 0);
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CSGObject_scale" "', argument " "2"" of type '" "Vector const &""'"); 
+  }
+  if (!argp2) {
+    SWIG_exception_fail(SWIG_ValueError, "invalid null reference " "in method '" "CSGObject_scale" "', argument " "2"" of type '" "Vector const &""'"); 
+  }
+  arg2 = reinterpret_cast< Vector * >(argp2);
+  (arg1)->scale((Vector const &)*arg2);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -3408,6 +3700,36 @@ SWIGINTERN PyObject *_wrap_delete_CSGOperation(PyObject *SWIGUNUSEDPARM(self), P
   }
   arg1 = reinterpret_cast< CSGOperation * >(argp1);
   delete arg1;
+  resultobj = SWIG_Py_Void();
+  return resultobj;
+fail:
+  return NULL;
+}
+
+
+SWIGINTERN PyObject *_wrap_CSGOperation_add(PyObject *SWIGUNUSEDPARM(self), PyObject *args) {
+  PyObject *resultobj = 0;
+  CSGOperation *arg1 = (CSGOperation *) 0 ;
+  CSGObject *arg2 = (CSGObject *) 0 ;
+  void *argp1 = 0 ;
+  int res1 = 0 ;
+  void *argp2 = 0 ;
+  int res2 = 0 ;
+  PyObject * obj0 = 0 ;
+  PyObject * obj1 = 0 ;
+  
+  if (!PyArg_ParseTuple(args,(char *)"OO:CSGOperation_add",&obj0,&obj1)) SWIG_fail;
+  res1 = SWIG_ConvertPtr(obj0, &argp1,SWIGTYPE_p_CSGOperation, 0 |  0 );
+  if (!SWIG_IsOK(res1)) {
+    SWIG_exception_fail(SWIG_ArgError(res1), "in method '" "CSGOperation_add" "', argument " "1"" of type '" "CSGOperation *""'"); 
+  }
+  arg1 = reinterpret_cast< CSGOperation * >(argp1);
+  res2 = SWIG_ConvertPtr(obj1, &argp2,SWIGTYPE_p_CSGObject, 0 |  0 );
+  if (!SWIG_IsOK(res2)) {
+    SWIG_exception_fail(SWIG_ArgError(res2), "in method '" "CSGOperation_add" "', argument " "2"" of type '" "CSGObject *""'"); 
+  }
+  arg2 = reinterpret_cast< CSGObject * >(argp2);
+  (arg1)->add(arg2);
   resultobj = SWIG_Py_Void();
   return resultobj;
 fail:
@@ -4323,9 +4645,18 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"Vector_swigregister", Vector_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_Matrix", _wrap_new_Matrix, METH_VARARGS, NULL},
 	 { (char *)"delete_Matrix", _wrap_delete_Matrix, METH_VARARGS, NULL},
+	 { (char *)"Matrix___str__", _wrap_Matrix___str__, METH_VARARGS, NULL},
 	 { (char *)"Matrix_swigregister", Matrix_swigregister, METH_VARARGS, NULL},
+	 { (char *)"CSGObject_transform_set", _wrap_CSGObject_transform_set, METH_VARARGS, NULL},
+	 { (char *)"CSGObject_transform_get", _wrap_CSGObject_transform_get, METH_VARARGS, NULL},
+	 { (char *)"CSGObject_total_transform_set", _wrap_CSGObject_total_transform_set, METH_VARARGS, NULL},
+	 { (char *)"CSGObject_total_transform_get", _wrap_CSGObject_total_transform_get, METH_VARARGS, NULL},
+	 { (char *)"CSGObject_total_inv_transform_set", _wrap_CSGObject_total_inv_transform_set, METH_VARARGS, NULL},
+	 { (char *)"CSGObject_total_inv_transform_get", _wrap_CSGObject_total_inv_transform_get, METH_VARARGS, NULL},
 	 { (char *)"new_CSGObject", _wrap_new_CSGObject, METH_VARARGS, NULL},
 	 { (char *)"delete_CSGObject", _wrap_delete_CSGObject, METH_VARARGS, NULL},
+	 { (char *)"CSGObject_translate", _wrap_CSGObject_translate, METH_VARARGS, NULL},
+	 { (char *)"CSGObject_scale", _wrap_CSGObject_scale, METH_VARARGS, NULL},
 	 { (char *)"CSGObject_swigregister", CSGObject_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CSGPrimative", _wrap_new_CSGPrimative, METH_VARARGS, NULL},
 	 { (char *)"delete_CSGPrimative", _wrap_delete_CSGPrimative, METH_VARARGS, NULL},
@@ -4335,6 +4666,7 @@ static PyMethodDef SwigMethods[] = {
 	 { (char *)"CSGSphere_swigregister", CSGSphere_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CSGOperation", _wrap_new_CSGOperation, METH_VARARGS, NULL},
 	 { (char *)"delete_CSGOperation", _wrap_delete_CSGOperation, METH_VARARGS, NULL},
+	 { (char *)"CSGOperation_add", _wrap_CSGOperation_add, METH_VARARGS, NULL},
 	 { (char *)"CSGOperation_swigregister", CSGOperation_swigregister, METH_VARARGS, NULL},
 	 { (char *)"new_CSGUnion", _wrap_new_CSGUnion, METH_VARARGS, NULL},
 	 { (char *)"delete_CSGUnion", _wrap_delete_CSGUnion, METH_VARARGS, NULL},

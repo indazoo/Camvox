@@ -23,32 +23,30 @@ CSGObject::CSGObject()
 {
 	parent = NULL;
 	transform = Matrix();
-	inv_transform = Matrix();
 	mergeTransforms();
 }
 
+/* mergeTransforms() should be called on any change in geometry parameters.
+ */
 void CSGObject::mergeTransforms(void)
 {
 	if (parent) {
 		total_transform = transform * parent->total_transform;
-		total_inv_transform = parent->total_inv_transform * inv_transform;
 	} else {
 		total_transform = transform;
-		total_inv_transform = inv_transform;
 	}
+	total_inv_transform = total_transform.invert();
 }
 
 void CSGObject::translate(const Vector &a)
 {
 	transform = transform.translate(a);
-	inv_transform = transform.translate(-a);
 	mergeTransforms();
 }
 
 void CSGObject::scale(const Vector &a)
 {
 	transform = transform.scale(a);
-	inv_transform = transform.scale(1.0 / a);
 	mergeTransforms();
 }
 
