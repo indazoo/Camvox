@@ -189,13 +189,14 @@ void VoxNode::generatePOVCodeForVoxel(VoxTree &tree, const VoxCoord &coord, int 
 
 			fprintf(stdout, "box {\n");
 
+			// Our Y and Z axis is switched compared to almost everyone else.
 			fprintf(stdout, "  <%lf %lf %lf>, <%lf %lf %lf>\n",
 				child_voxel_bound.x.low,
-				child_voxel_bound.y.low,
 				child_voxel_bound.z.low,
+				child_voxel_bound.y.low,
 				child_voxel_bound.x.high,
-				child_voxel_bound.y.high,
-				child_voxel_bound.z.high
+				child_voxel_bound.z.high,
+				child_voxel_bound.y.high
 			);
 
 			//fprintf(stdout, "  texture {\n");

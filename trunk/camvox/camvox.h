@@ -12,6 +12,7 @@
 #include <camvox/CSGSphere.h>
 #include <camvox/CSGOperation.h>
 #include <camvox/CSGUnion.h>
+#include <camvox/CSGDifference.h>
 #include <camvox/CSGInvert.h>
 
 #endif

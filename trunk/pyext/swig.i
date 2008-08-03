@@ -78,6 +78,12 @@ public:
 	~CSGUnion();
 };
 
+class CSGDifference : public CSGOperation {
+public:
+	CSGDifference();
+	~CSGDifference();
+};
+
 class CSGInvert : public CSGOperation {
 public:
 	CSGInvert();
