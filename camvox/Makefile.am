@@ -13,9 +13,10 @@ libcamvox_la_SOURCES =	CSGObject.cc\
 			CSGSphere.cc\
 			CSGPlane.cc\
 			CSGCylinder.cc\
+			FreeList.cc\
 			VoxCoord.cc\
-			VoxNode.cc\
 			VoxTree.cc
+
 
 library_includedir=$(includedir)/camvox-1.0/camvox
 library_include_HEADERS=camvox.h\
@@ -33,9 +34,10 @@ library_include_HEADERS=camvox.h\
 			CSGSPhere.h\
 			CSGPlane.h\
 			CSGCylinder.h\
+			FreeList.h\
 			VoxCoord.h\
-			VoxNode.h\
 			VoxTree.h
+
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = camvox-1.0.pc
