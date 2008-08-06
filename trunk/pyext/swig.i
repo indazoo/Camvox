@@ -135,12 +135,3 @@ public:
 	long prune();
 };
 
-class VoxNode {
-public:
-	VoxNode(long data);
-	~VoxNode();
-	long prune(VoxTree &tree, VoxCoord &coord);
-	long addCSGObject(VoxTree &tree, VoxCoord &coord, CSGObject &obj, int layer);
-	void generatePOVCode(VoxTree &tree, VoxCoord &coord);
-};
-

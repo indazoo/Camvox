@@ -5,8 +5,8 @@
 #include <camvox/Vector.h>
 #include <camvox/Matrix.h>
 #include <camvox/VoxCoord.h>
-#include <camvox/VoxNode.h>
 #include <camvox/VoxTree.h>
+#include <camvox/FreeList.h>
 #include <camvox/CSGObject.h>
 #include <camvox/CSGPrimative.h>
 #include <camvox/CSGSphere.h>

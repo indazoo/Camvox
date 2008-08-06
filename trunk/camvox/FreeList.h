@@ -1,4 +1,4 @@
-/* CSGIntersection.cc - All CSG object contained in an union are merged together.
+/* FreeList.h - Management of regions of memory.
  * Copyright (C) 2008  Take Vos
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,31 +14,37 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <camvox/CSGIntersection.h>
+#ifndef FREELIST_H
+#define FREELIST_H
+
+#include <vector>
+#include <stdint.h>
 
 namespace camvox {
 
-box_type_t CSGIntersection::boxType(const IntervalVector &a) const
-{
-	bool grey = false;
+typedef struct free_region_s free_region_t;
 
-	for (unsigned int i = 0; i < childs.size(); i++) {
-		switch (childs[i]->boxType(a)) {
-		case BLACK_BOX:
-			break;
-		case GREY_BOX:
-			grey = true;
-			break;
-		case WHITE_BOX:
-			return WHITE_BOX;
-		}
-	}
+struct free_region_s {
+	uint32_t	start;
+	uint32_t	length;
+};
 
-	if (grey) {
-		return GREY_BOX;
-	} else {
-		return BLACK_BOX;
-	}
+class FreeList {
+protected:
+	uint32_t			nr_items;
+	std::vector<free_region_s *>	regions;
+
+	void merge(std::vector<free_region_t *>::iterator);
+
+public:
+	FreeList(uint32_t _nr_items);
+	~FreeList();
+
+	uint32_t alloc();
+	void free(uint32_t item_nr);
+	uint32_t maxItemNr();
+};
+
 }
 
-}
+#endif

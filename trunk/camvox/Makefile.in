@@ -63,8 +63,8 @@ am_libcamvox_la_OBJECTS = libcamvox_la-CSGObject.lo \
 	libcamvox_la-CSGUnion.lo libcamvox_la-CSGDifference.lo \
 	libcamvox_la-CSGIntersection.lo libcamvox_la-CSGPrimative.lo \
 	libcamvox_la-CSGSphere.lo libcamvox_la-CSGPlane.lo \
-	libcamvox_la-CSGCylinder.lo libcamvox_la-VoxCoord.lo \
-	libcamvox_la-VoxNode.lo libcamvox_la-VoxTree.lo
+	libcamvox_la-CSGCylinder.lo libcamvox_la-FreeList.lo \
+	libcamvox_la-VoxCoord.lo libcamvox_la-VoxTree.lo
 libcamvox_la_OBJECTS = $(am_libcamvox_la_OBJECTS)
 libcamvox_la_LINK = $(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CXXLD) $(libcamvox_la_CXXFLAGS) \
@@ -226,8 +226,8 @@ libcamvox_la_SOURCES = CSGObject.cc\
 			CSGSphere.cc\
 			CSGPlane.cc\
 			CSGCylinder.cc\
+			FreeList.cc\
 			VoxCoord.cc\
-			VoxNode.cc\
 			VoxTree.cc
 
 library_includedir = $(includedir)/camvox-1.0/camvox
@@ -246,8 +246,8 @@ library_include_HEADERS = camvox.h\
 			CSGSPhere.h\
 			CSGPlane.h\
 			CSGCylinder.h\
+			FreeList.h\
 			VoxCoord.h\
-			VoxNode.h\
 			VoxTree.h
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -333,8 +333,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGPrimative.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGSphere.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-CSGUnion.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-FreeList.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-VoxCoord.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-VoxNode.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-VoxTree.Plo@am__quote@
 
 .cc.o:
@@ -428,19 +428,19 @@ libcamvox_la-CSGCylinder.lo: CSGCylinder.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-CSGCylinder.lo `test -f 'CSGCylinder.cc' || echo '$(srcdir)/'`CSGCylinder.cc
 
+libcamvox_la-FreeList.lo: FreeList.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-FreeList.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-FreeList.Tpo -c -o libcamvox_la-FreeList.lo `test -f 'FreeList.cc' || echo '$(srcdir)/'`FreeList.cc
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/libcamvox_la-FreeList.Tpo $(DEPDIR)/libcamvox_la-FreeList.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='FreeList.cc' object='libcamvox_la-FreeList.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-FreeList.lo `test -f 'FreeList.cc' || echo '$(srcdir)/'`FreeList.cc
+
 libcamvox_la-VoxCoord.lo: VoxCoord.cc
 @am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-VoxCoord.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-VoxCoord.Tpo -c -o libcamvox_la-VoxCoord.lo `test -f 'VoxCoord.cc' || echo '$(srcdir)/'`VoxCoord.cc
 @am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/libcamvox_la-VoxCoord.Tpo $(DEPDIR)/libcamvox_la-VoxCoord.Plo
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxCoord.cc' object='libcamvox_la-VoxCoord.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-VoxCoord.lo `test -f 'VoxCoord.cc' || echo '$(srcdir)/'`VoxCoord.cc
-
-libcamvox_la-VoxNode.lo: VoxNode.cc
-@am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-VoxNode.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-VoxNode.Tpo -c -o libcamvox_la-VoxNode.lo `test -f 'VoxNode.cc' || echo '$(srcdir)/'`VoxNode.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/libcamvox_la-VoxNode.Tpo $(DEPDIR)/libcamvox_la-VoxNode.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxNode.cc' object='libcamvox_la-VoxNode.lo' libtool=yes @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-VoxNode.lo `test -f 'VoxNode.cc' || echo '$(srcdir)/'`VoxNode.cc
 
 libcamvox_la-VoxTree.lo: VoxTree.cc
 @am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-VoxTree.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-VoxTree.Tpo -c -o libcamvox_la-VoxTree.lo `test -f 'VoxTree.cc' || echo '$(srcdir)/'`VoxTree.cc
