@@ -4,6 +4,8 @@
 using namespace camvox;
 %}
 
+typedef unsigned int uint32_t;
+
 class Interval {
 public:
 	double low, high;
@@ -121,6 +123,24 @@ public:
 	IntervalVector boundingBox(double scale);
 };
 
+typedef uint32_t voxel_t;
+
+typedef enum {
+        VOX_OP_OR = 0,
+        VOX_OP_AND,
+        VOX_OP_XOR,
+        VOX_OP_TST
+} vox_op_t;
+
+bool voxIsNodeNr(voxel_t data);
+uint32_t voxGetNodeNr(voxel_t data);
+voxel_t voxSetNodeNr(uint32_t node_nr);
+voxel_t voxSetDontPrune(void);
+bool voxIsDontPrune(voxel_t data);
+vox_op_t voxGetOperation(voxel_t data);
+uint32_t voxGetLayers(voxel_t data);
+voxel_t voxSetLayersAndOperation(uint32_t mask, vox_op_t op);
+
 class VoxTree {
 public:
 	int	max_depth;
@@ -131,7 +151,11 @@ public:
 	VoxTree();
 	~VoxTree();
 	void generatePOVCode();
-	long addCSGObject(CSGObject &obj, int layer);
-	long prune();
+	void addCSGObject(CSGObject *obj, voxel_t *new_data);
+	void addCSGObjectOR(const CSGObject *obj, uint32_t layers);
+	void addCSGObjectAND(const CSGObject *obj, uint32_t layers);
+	void addCSGObjectXOR(const CSGObject *obj, uint32_t layers);
+	uint32_t addCSGObjectTST(const CSGObject *obj);
+	void prune();
 };
 
