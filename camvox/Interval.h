@@ -19,10 +19,10 @@
 
 #include <camvox/GMath.h>
 
-#include <fenv.h>
-
 namespace camvox {
 
+/* This interval class likes the number to be rounded down.
+ */
 template <class T>
 class TInterval {
 public:
@@ -40,59 +40,41 @@ public:
 	~TInterval() {}
 
 	TInterval operator+(const TInterval &other) const {
-		int orig = fegetround();
-
-		fesetround(FE_DOWNWARD);
 		T low = this->low + other.low;
 		T high = (-this->high) + (-other.high);
-		fesetround(orig);
 
 		return TInterval(low, -high);
 	}
 
 	TInterval operator-(const TInterval &other) const {
-		int orig = fegetround();
-
-		fesetround(FE_DOWNWARD);
 		T low = this->low + (-other.high);
 		T high = (-this->high) + other.low;
-		fesetround(orig);
 
 		return TInterval(low, -high);
 	}
 
 	TInterval operator*(const TInterval &other) const {
-		int orig = fegetround();
-
-		fesetround(FE_DOWNWARD);
 		T low = gmin(
 				gmin(this->low * other.low, this->low * other.high),
 				gmin(this->high * other.low, this->high * other.high)
 		);
-		fesetround(FE_UPWARD);
 		T high = gmax(
 				gmax(this->low * other.low, this->low * other.high),
 				gmax(this->high * other.low, this->high * other.high)
 		);
-		fesetround(orig);
 
 		return TInterval(low, high);
 	}
 
 	TInterval operator/(const TInterval &other) const {
-		int orig = fegetround();
-
-		fesetround(FE_DOWNWARD);
 		T low = gmin(
 				gmin(this->low / other.low, this->low / other.high),
 				gmin(this->high / other.low, this->high / other.high)
 		);
-		fesetround(FE_UPWARD);
 		T high = gmax(
 				gmax(this->low / other.low, this->low / other.high),
 				gmax(this->high / other.low, this->high / other.high)
 		);
-		fesetround(orig);
 
 		return TInterval(low, high);
 	}
@@ -104,27 +86,19 @@ public:
 	}
 
 	TInterval square(void) const {
-		int orig = fegetround();
 		TInterval tmp = this->abs();
 
-		fesetround(FE_DOWNWARD);
 		T low = gmin(tmp.low * tmp.low, tmp.high * tmp.low);
-		fesetround(FE_UPWARD);
 		T high = gmax(tmp.high * tmp.high, tmp.low * tmp.high);
-		fesetround(orig);
 
 		return TInterval(low, high);
 	}
 
 	TInterval squareroot(void) const {
-		int orig = fegetround();
 		TInterval tmp = this->abs();
 
-		fesetround(FE_DOWNWARD);
 		T low = sqrt(tmp.low);
-		fesetround(FE_UPWARD);
 		T high = sqrt(tmp.high);
-		fesetround(orig);
 
 		return TInterval(low, high);
 	}

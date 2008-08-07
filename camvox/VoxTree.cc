@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <fenv.h>
 #include <camvox/VoxTree.h>
 
 namespace camvox {
@@ -230,7 +231,14 @@ uint32_t VoxTree::addCSGObjectToNode(uint32_t node_nr, const VoxCoord &coord, co
 
 long VoxTree::addCSGObject(const CSGObject &obj, int layer)
 {
+	int orig_round = fegetround();
+
+	// The interval arithmatic used in these calls like the FPU to
+	// round everything down.
+	fesetround(FE_DOWNWARD);
 	return addCSGObjectToNode(root, VoxCoord(), obj, layer);
+
+	fesetround(orig_round);
 }
 
 void VoxTree::generatePOVCodeForVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index)
