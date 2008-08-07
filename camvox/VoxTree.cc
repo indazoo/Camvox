@@ -17,6 +17,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <assert.h>
 #include <camvox/VoxTree.h>
 
 namespace camvox {
@@ -82,14 +83,14 @@ void VoxTree::checkSize(void)
 	}
 }
 
-uint32_t VoxTree::pruneVoxel(vox_node_t *node, const VoxCoord &coord, int voxel_index)
+uint32_t VoxTree::pruneVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index)
 {
 	VoxCoord voxel_coord = coord.childCoord(voxel_index);
-	uint32_t voxel_data = node->voxels[voxel_index];
+	uint32_t voxel_data = nodes[node_nr].voxels[voxel_index];
 
 	if (voxel_data & NODE_FLAG) {
 		// There already exists a child object. Walk the childtree.
-		uint32_t tmp_data = pruneNode(&nodes[voxel_data & NODE_MASK], voxel_coord);
+		uint32_t tmp_data = pruneNode(voxel_data & NODE_MASK, voxel_coord);
 
 		if (tmp_data == DONT_PRUNE) {
 			// The data is different in the child node, so dont prune.
@@ -99,7 +100,7 @@ uint32_t VoxTree::pruneVoxel(vox_node_t *node, const VoxCoord &coord, int voxel_
 			free(voxel_data & NODE_MASK);
 
 			// Set the current voxel to the color of the child node.
-			node->voxels[voxel_index] = tmp_data;
+			nodes[node_nr].voxels[voxel_index] = tmp_data;
 			return tmp_data;
 		}
 	} else {
@@ -108,13 +109,13 @@ uint32_t VoxTree::pruneVoxel(vox_node_t *node, const VoxCoord &coord, int voxel_
 	}
 }
 
-uint32_t VoxTree::pruneNode(vox_node_t *node, const VoxCoord &coord)
+uint32_t VoxTree::pruneNode(uint32_t node_nr, const VoxCoord &coord)
 {
 	uint32_t	data = 0;
 	bool		dont_prune = false;
 
 	for (int voxel_index = 0; voxel_index < 8; voxel_index++) {
-		uint32_t tmp_data = pruneVoxel(node, coord, voxel_index);
+		uint32_t tmp_data = pruneVoxel(node_nr, coord, voxel_index);
 		if (tmp_data == DONT_PRUNE) {
 			// There was a child tree.
 			dont_prune = true;
@@ -135,15 +136,16 @@ uint32_t VoxTree::pruneNode(vox_node_t *node, const VoxCoord &coord)
 
 long VoxTree::prune(void)
 {
-	return pruneNode(&nodes[root], VoxCoord());
+	return pruneNode(root, VoxCoord());
 }
 
-uint32_t VoxTree::addCSGObjectToVoxel(vox_node_t *node, const VoxCoord &coord, int voxel_index, const CSGObject &obj, int layer)
+uint32_t VoxTree::addCSGObjectToVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index, const CSGObject &obj, int layer)
 {
 	VoxCoord	voxel_coord = coord.childCoord(voxel_index);
-	uint32_t	voxel_data = node->voxels[voxel_index];
+	uint32_t	voxel_data = nodes[node_nr].voxels[voxel_index];
 	IntervalVector	voxel_bound = voxel_coord.boundingBox(scale);
 	const CSGObject	*bt = obj.boxType(voxel_bound);
+
 
 	if (!(voxel_data & NODE_FLAG)) {
 		// There is just data at this level.
@@ -176,14 +178,14 @@ uint32_t VoxTree::addCSGObjectToVoxel(vox_node_t *node, const VoxCoord &coord, i
 		}
 
 		// Record the new value.
-		node->voxels[voxel_index] = voxel_data;
+		nodes[node_nr].voxels[voxel_index] = voxel_data;
 	}
 
 	if (voxel_data & NODE_FLAG) {
 		// There already was a child node, or the previous part created this child node.
 		// Walk the tree. We will use the simplyfied CSGTree.
 		// The CSGTree, could even be a BLACK_BOX or WHITE_BOX, which is really fast to test for.
-		uint32_t tmp_data = addCSGObjectToNode(&nodes[voxel_data & NODE_MASK], voxel_coord, *bt, layer);
+		uint32_t tmp_data = addCSGObjectToNode(voxel_data & NODE_MASK, voxel_coord, *bt, layer);
 
 		if (tmp_data == DONT_PRUNE) {
 			// The data is unequal, so we can not prune the child probject
@@ -193,7 +195,7 @@ uint32_t VoxTree::addCSGObjectToVoxel(vox_node_t *node, const VoxCoord &coord, i
 			free(voxel_data & NODE_MASK);
 
 			// Record the data from the child node.
-			node->voxels[voxel_index] = tmp_data;
+			nodes[node_nr].voxels[voxel_index] = tmp_data;
 			return tmp_data;
 		}
 	} else {
@@ -201,13 +203,13 @@ uint32_t VoxTree::addCSGObjectToVoxel(vox_node_t *node, const VoxCoord &coord, i
 	}
 }
 
-uint32_t VoxTree::addCSGObjectToNode(vox_node_t *node, const VoxCoord &coord, const CSGObject &obj, int layer)
+uint32_t VoxTree::addCSGObjectToNode(uint32_t node_nr, const VoxCoord &coord, const CSGObject &obj, int layer)
 {
 	uint32_t	data = 0;
 	bool		dont_prune = false;
 
 	for (int voxel_index = 0; voxel_index < 8; voxel_index++) {
-		uint32_t tmp_data = addCSGObjectToVoxel(node, coord, voxel_index, obj, layer);
+		uint32_t tmp_data = addCSGObjectToVoxel(node_nr, coord, voxel_index, obj, layer);
 		if (tmp_data == DONT_PRUNE) {
 			// There is a child tree.
 			dont_prune = true;
@@ -228,17 +230,17 @@ uint32_t VoxTree::addCSGObjectToNode(vox_node_t *node, const VoxCoord &coord, co
 
 long VoxTree::addCSGObject(const CSGObject &obj, int layer)
 {
-	return addCSGObjectToNode(&nodes[root], VoxCoord(), obj, layer);
+	return addCSGObjectToNode(root, VoxCoord(), obj, layer);
 }
 
-void VoxTree::generatePOVCodeForVoxel(vox_node_t *node, const VoxCoord &coord, int voxel_index)
+void VoxTree::generatePOVCodeForVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index)
 {
 	VoxCoord	voxel_coord = coord.childCoord(voxel_index);
-	uint32_t 	voxel_data = node->voxels[voxel_index];
+	uint32_t 	voxel_data = nodes[node_nr].voxels[voxel_index];
 
 	if (voxel_data & NODE_FLAG) {
 		// There already exists a child object. Walk the childtree.
-		generatePOVCodeForNode(&nodes[voxel_data & NODE_MASK], voxel_coord);
+		generatePOVCodeForNode(voxel_data & NODE_MASK, voxel_coord);
 
 	} else {
 		if (voxel_data & 1) {
@@ -259,10 +261,10 @@ void VoxTree::generatePOVCodeForVoxel(vox_node_t *node, const VoxCoord &coord, i
 	}
 }
 
-void VoxTree::generatePOVCodeForNode(vox_node_t *node, const VoxCoord &coord)
+void VoxTree::generatePOVCodeForNode(uint32_t node_nr, const VoxCoord &coord)
 {
 	for (int voxel_index = 0; voxel_index < 8; voxel_index++) {
-		generatePOVCodeForVoxel(node, coord, voxel_index);
+		generatePOVCodeForVoxel(node_nr, coord, voxel_index);
 	}
 }
 
@@ -305,7 +307,7 @@ void VoxTree::generatePOVCode(void)
 
 	fprintf(stdout, "union {\n");
 
-	generatePOVCodeForNode(&nodes[root], VoxCoord());
+	generatePOVCodeForNode(root, VoxCoord());
 
 	fprintf(stdout, "  texture {\n");
 	fprintf(stdout, "    pigment { color Green }\n");
