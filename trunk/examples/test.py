@@ -3,7 +3,7 @@ import camvox
 from math import *
 
 tree = camvox.VoxTree()
-tree.max_depth = 8
+tree.max_depth = 14
 tree.scale = 10.0 / 2147483648.0
 
 s1 = camvox.CSGCylinder(1.0)

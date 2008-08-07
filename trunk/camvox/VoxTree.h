@@ -33,12 +33,12 @@ const uint32_t NODE_FLAG = 0x8000000;
 
 class VoxTree {
 protected:
-	uint32_t pruneVoxel(vox_node_t *node, const VoxCoord &coord, int voxel_index);
-	uint32_t pruneNode(vox_node_t *node, const VoxCoord &coord);
-	uint32_t addCSGObjectToVoxel(vox_node_t *node, const VoxCoord &coord, int voxel_index, const CSGObject &obj, int layer);
-	uint32_t addCSGObjectToNode(vox_node_t *node, const VoxCoord &coord, const CSGObject &obj, int layer);
-	void generatePOVCodeForVoxel(vox_node_t *node, const VoxCoord &coord, int voxel_index);
-	void generatePOVCodeForNode(vox_node_t *node, const VoxCoord &coord);
+	uint32_t pruneVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index);
+	uint32_t pruneNode(uint32_t node_nr, const VoxCoord &coord);
+	uint32_t addCSGObjectToVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index, const CSGObject &obj, int layer);
+	uint32_t addCSGObjectToNode(uint32_t node_nr, const VoxCoord &coord, const CSGObject &obj, int layer);
+	void generatePOVCodeForVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index);
+	void generatePOVCodeForNode(uint32_t node_nr, const VoxCoord &coord);
 public:
 	FreeList	free_list;
 	int		nodes_size;
