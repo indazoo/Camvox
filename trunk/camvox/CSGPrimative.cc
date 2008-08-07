@@ -25,7 +25,7 @@ Interval CSGPrimative::characteristic(const IntervalVector &a) const
 	return 0.0;
 }
 
-box_type_t CSGPrimative::boxType(const IntervalVector &a) const
+const CSGObject *CSGPrimative::boxType(const IntervalVector &a) const
 {
 	Interval I = characteristic(a);
 	if (I.high < 0.0) {
@@ -33,7 +33,8 @@ box_type_t CSGPrimative::boxType(const IntervalVector &a) const
 	} else if (I.low > 0.0) {
 		return WHITE_BOX;
 	} else {
-		return GREY_BOX;
+		// We need to be reevaluated.
+		return this;
 	}
 }
 

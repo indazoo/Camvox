@@ -25,7 +25,7 @@ class CSGUnion : public CSGOperation {
 public:
 	CSGUnion() {}
 	~CSGUnion() {}
-	box_type_t boxType(const IntervalVector &a) const;
+	const CSGObject *boxType(const IntervalVector &a) const;
 };
 
 }

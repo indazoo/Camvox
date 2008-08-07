@@ -25,7 +25,7 @@ class CSGInvert : public CSGOperation {
 public:
 	CSGInvert() {}
 	~CSGInvert() {}
-	box_type_t boxType(const IntervalVector &a) const;
+	const CSGObject *boxType(const IntervalVector &a) const;
 };
 
 }

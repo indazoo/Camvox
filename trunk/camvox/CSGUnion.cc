@@ -18,24 +18,31 @@
 
 namespace camvox {
 
-box_type_t CSGUnion::boxType(const IntervalVector &a) const
+const CSGObject *CSGUnion::boxType(const IntervalVector &a) const
 {
-	bool grey = false;
+	int		nr_grey = 0;
+	const CSGObject	*bt;
+	const CSGObject	*grey_bt = NULL;
 	
 	for (unsigned int i = 0; i < childs.size(); i++) {
-		switch (childs[i]->boxType(a)) {
-		case BLACK_BOX:
+		bt = childs[i]->boxType(a);
+		if (bt == BLACK_BOX) {
 			return BLACK_BOX;
-		case GREY_BOX:
-			grey = true;
-			break;
-		case WHITE_BOX:
-			break;
+		} else if (bt == WHITE_BOX) {
+			// Don't do anything, all the boxes need to be white to return white.
+		} else {
+			// We can no longer return white, but we could return black.
+			nr_grey++;
+			grey_bt = bt;
 		}
 	}
-	if (grey) {
-		// One of the boxes is grey.
-		return GREY_BOX;
+
+	if (nr_grey == 1) {
+		// Only one box was grey, so only that needs to be evaluated.
+		return grey_bt;
+	} else if (nr_grey > 1) {
+		// We need to be evaluated, because more boxes are grey.
+		return this;
 	} else {
 		// All boxes are white.
 		return WHITE_BOX;

@@ -18,19 +18,32 @@
 
 namespace camvox {
 
-box_type_t CSGInvert::boxType(const IntervalVector &a) const
+const CSGObject *CSGInvert::boxType(const IntervalVector &a) const
 {
-	switch (childs[0]->boxType(a)) {
-	case BLACK_BOX:
-		return WHITE_BOX;
-	case GREY_BOX:
-		return GREY_BOX;
-	case WHITE_BOX:
-		return BLACK_BOX;
+	bool grey = false;
+	const CSGObject *bt;
+
+	for (unsigned int i = 0; i < childs.size(); i++) {
+		bt = childs[i]->boxType(a);
+		if (bt == BLACK_BOX) {
+			// Don't do anything. All of the boxes need to be black
+			// to return white.
+
+		} else if (bt == WHITE_BOX) {
+			return BLACK_BOX;
+
+		} else {
+			// Mark as grey, so we won't return white. We don't return white
+			// emidiatly, cause any white box would imediatly return black.
+			grey = true;
+		}
 	}
 
-	// Shut up the compiler.
-	return GREY_BOX;
+	if (grey) {
+		return this;
+	} else {
+		return WHITE_BOX;
+	}
 }
 
 }

@@ -18,38 +18,44 @@
 
 namespace camvox {
 
-box_type_t CSGDifference::boxType(const IntervalVector &a) const
+const CSGObject *CSGDifference::boxType(const IntervalVector &a) const
 {
+	const CSGObject *bt;
+	const CSGObject *grey_bt = NULL;
 	bool grey = false;
 
 	// It should at least be inside the first child	
-	switch (childs[0]->boxType(a)) {
-	case WHITE_BOX:
+	bt = childs[0]->boxType(a);
+	if (bt == WHITE_BOX) {
 		return WHITE_BOX;
-	case GREY_BOX:
-		grey = true;
-		break;
-	case BLACK_BOX:
-		break;
+	} else if (bt == BLACK_BOX) {
+		// We still need to check if something is subtracted.
+	} else {
+		// We may be there, but also check if something is subtracted.
+		grey_bt = bt;
 	}
 
 	// All the other childs are subtracted
 	for (unsigned int i = 1; i < childs.size(); i++) {
-		switch (childs[i]->boxType(a)) {
-		case BLACK_BOX:
+		bt = childs[i]->boxType(a);
+		if (bt == BLACK_BOX) {
 			return WHITE_BOX;
-		case GREY_BOX:
+		} else if (bt == WHITE_BOX) {
+			// Don't do anything, could be grey.
+		} else {
+			// Don't return anything, could be black.
 			grey = true;
-			break;
-		case WHITE_BOX:
-			break;
 		}
 	}
+
 	if (grey) {
-		// One of the boxes is grey.
-		return GREY_BOX;
+		// We need to be reevaluated.
+		return this;
+	} else if (grey_bt) {
+		// Nothing is subtracted so only our primary object needs to be reevaluated.
+		return grey_bt;
 	} else {
-	// All boxes are white, so the original object is still there.
+		// All secondary boxes are white, so the primary object is still there.
 		return BLACK_BOX;
 	}
 }

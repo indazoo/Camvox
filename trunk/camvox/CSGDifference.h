@@ -25,7 +25,7 @@ class CSGDifference : public CSGOperation {
 public:
 	CSGDifference() {}
 	~CSGDifference() {}
-	box_type_t boxType(const IntervalVector &a) const;
+	const CSGObject *boxType(const IntervalVector &a) const;
 };
 
 }

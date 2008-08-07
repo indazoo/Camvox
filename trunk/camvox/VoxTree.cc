@@ -142,22 +142,19 @@ uint32_t VoxTree::addCSGObjectToVoxel(vox_node_t *node, const VoxCoord &coord, i
 {
 	VoxCoord	voxel_coord = coord.childCoord(voxel_index);
 	uint32_t	voxel_data = node->voxels[voxel_index];
+	IntervalVector	voxel_bound = voxel_coord.boundingBox(scale);
+	const CSGObject	*bt = obj.boxType(voxel_bound);
 
 	if (!(voxel_data & NODE_FLAG)) {
 		// There is just data at this level.
-		IntervalVector voxel_bound = voxel_coord.boundingBox(scale);
-		switch(obj.boxType(voxel_bound)) {
-		case BLACK_BOX:
+		if (bt == BLACK_BOX) {
 			// Set the voxel.
 			voxel_data |= (1 << layer);
-			break;
-
-		case WHITE_BOX:
+		} else if (bt == WHITE_BOX) {
 			// Clear the voxel.
 			voxel_data &= ~(1 << layer);
-			break;
 
-		case GREY_BOX:
+		} else {
 			//fprintf(stderr, "depth %i\n", voxel_coord.depth);
 			if (voxel_coord.depth > max_depth) {
 				// We are too deep, so we set the voxel.
@@ -176,7 +173,6 @@ uint32_t VoxTree::addCSGObjectToVoxel(vox_node_t *node, const VoxCoord &coord, i
 
 				voxel_data = child_node_nr | NODE_FLAG;
 			}
-			break;
 		}
 
 		// Record the new value.
@@ -185,8 +181,9 @@ uint32_t VoxTree::addCSGObjectToVoxel(vox_node_t *node, const VoxCoord &coord, i
 
 	if (voxel_data & NODE_FLAG) {
 		// There already was a child node, or the previous part created this child node.
-		// Walk the tree.
-		uint32_t tmp_data = addCSGObjectToNode(&nodes[voxel_data & NODE_MASK], voxel_coord, obj, layer);
+		// Walk the tree. We will use the simplyfied CSGTree.
+		// The CSGTree, could even be a BLACK_BOX or WHITE_BOX, which is really fast to test for.
+		uint32_t tmp_data = addCSGObjectToNode(&nodes[voxel_data & NODE_MASK], voxel_coord, *bt, layer);
 
 		if (tmp_data == DONT_PRUNE) {
 			// The data is unequal, so we can not prune the child probject
