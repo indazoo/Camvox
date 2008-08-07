@@ -22,12 +22,6 @@
 
 namespace camvox {
 
-typedef enum {
-	WHITE_BOX = -1,		// Completely Outside
-	GREY_BOX,		// Location Indeterminate
-	BLACK_BOX		// Completely Inside
-} box_type_t;
-
 class CSGObject {
 public:
 	CSGObject	*parent;
@@ -41,8 +35,12 @@ public:
 	virtual void translate(const Vector &a);
 	virtual void scale(const Vector &a);
 	virtual void rotate(const Vector &a, double angle);
-	virtual box_type_t boxType(const IntervalVector &a) const;
+	virtual const CSGObject *boxType(const IntervalVector &a) const;
 };
+
+// These are standard objects that boxType will return.
+extern CSGObject *WHITE_BOX;
+extern CSGObject *BLACK_BOX;
 
 }
 #endif

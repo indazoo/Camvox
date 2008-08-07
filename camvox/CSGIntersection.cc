@@ -18,24 +18,31 @@
 
 namespace camvox {
 
-box_type_t CSGIntersection::boxType(const IntervalVector &a) const
+const CSGObject *CSGIntersection::boxType(const IntervalVector &a) const
 {
-	bool grey = false;
+	const CSGObject *bt;
+	const CSGObject *grey_bt = NULL;
+	int nr_grey = 0;
 
 	for (unsigned int i = 0; i < childs.size(); i++) {
-		switch (childs[i]->boxType(a)) {
-		case BLACK_BOX:
-			break;
-		case GREY_BOX:
-			grey = true;
-			break;
-		case WHITE_BOX:
+		bt = childs[i]->boxType(a);
+		if (bt == BLACK_BOX) {
+			// Don't do anything, could be grey.
+		} else if (bt == WHITE_BOX) {
 			return WHITE_BOX;
+		} else {
+			// Don't return anything, could be white.
+			nr_grey++;
+			grey_bt = bt;
 		}
 	}
 
-	if (grey) {
-		return GREY_BOX;
+	if (nr_grey == 1) {
+		// Only one object needs to be reevaluated.
+		return grey_bt;
+	} else if (nr_grey > 1) {
+		// We need to be reevaluated.
+		return this;
 	} else {
 		return BLACK_BOX;
 	}

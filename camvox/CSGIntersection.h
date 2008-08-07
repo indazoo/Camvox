@@ -25,7 +25,7 @@ class CSGIntersection : public CSGOperation {
 public:
 	CSGIntersection() {}
 	~CSGIntersection() {}
-	box_type_t boxType(const IntervalVector &a) const;
+	const CSGObject *boxType(const IntervalVector &a) const;
 };
 
 }

@@ -19,6 +19,9 @@
 
 namespace camvox {
 
+CSGObject *WHITE_BOX = new CSGObject();
+CSGObject *BLACK_BOX = new CSGObject();
+
 CSGObject::CSGObject()
 {
 	parent = NULL;
@@ -56,10 +59,9 @@ void CSGObject::rotate(const Vector &a, double angle)
 	mergeTransforms();
 }
 
-box_type_t CSGObject::boxType(const IntervalVector &a) const
+const CSGObject *CSGObject::boxType(const IntervalVector &a) const
 {
-	assert(0);
-	return GREY_BOX;
+	return this;
 }
 
 }
