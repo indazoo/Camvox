@@ -1,9 +1,10 @@
 
 import camvox
+import sys
 from math import *
 
 tree = camvox.VoxTree()
-tree.max_depth = 14
+tree.max_depth = 10
 tree.scale = 10.0 / 2147483648.0
 
 s1 = camvox.CSGCylinder(1.0)
@@ -25,5 +26,6 @@ u.add(ip)
 u.rotate(camvox.Vector(1.0, 0.0, 0.0), 0.25 * pi);
 
 tree.addCSGObject(u, 0)
+print >>sys.stderr, tree.nr_nodes_created, tree.nr_nodes_destroyed, tree.nr_nodes_created - tree.nr_nodes_destroyed
 tree.generatePOVCode()
 
