@@ -23,20 +23,80 @@
 
 namespace camvox {
 
+/*
+ * A voxel value is overloaded quite a bit, so that as little memory as possible can be used.
+ * 
+ * 1nnnnnnn nnnnnnnn nnnnnnnn nnnnnnnn	   n = node number
+ * 0oo      WWWWWWWW NNNNNNNN llllllll     l = layers
+ *                                         W = longitude of the normal on the xy-plane, x-axis is 0.
+ *                                         N = latitude of the normal above the xy-plane, xy-plane is 0.
+ *                                         o = layer operation (not stored in the voxel).
+ *                                             0 OR       Add object to layers
+ *                                             1 AND      Remove object from layers
+ *                                             2 XOR      Toggle object from layers
+ *                                             3 TST      return layers that intersect with object
+ */
+
+
+typedef uint32_t voxel_t;
+
+typedef enum {
+	VOX_OP_OR = 0,
+	VOX_OP_AND,
+	VOX_OP_XOR,
+	VOX_OP_TST
+} vox_op_t;
+
 typedef struct {
-	uint32_t	voxels[8];
+	voxel_t	voxels[8];
 } vox_node_t;
 
-const uint32_t DONT_PRUNE = 0xfffffff;
-const uint32_t NODE_MASK = 0x7ffffff;
-const uint32_t NODE_FLAG = 0x8000000;
+static inline bool voxIsNodeNr(voxel_t data)
+{
+	return (data & 0x80000000) == 0x80000000;
+}
+
+static inline uint32_t voxGetNodeNr(voxel_t data)
+{
+	return data & 0x7fffffff;
+}
+
+static inline voxel_t voxSetNodeNr(uint32_t node_nr)
+{
+	return node_nr | 0x80000000;
+}
+
+static inline voxel_t voxSetDontPrune(void)
+{
+	return 0xffffffff;
+}
+
+static inline bool voxIsDontPrune(voxel_t data)
+{
+	return data == 0xffffffff;
+}
+
+static inline vox_op_t voxGetOperation(voxel_t data)
+{
+	return (vox_op_t)(data >> 29);
+}
+
+static inline uint32_t voxGetLayers(voxel_t data)
+{
+	return data & 0xff;
+}
+
+static inline voxel_t voxSetLayersAndOperation(uint32_t mask, vox_op_t op)
+{
+	return (op << 29) | mask;
+}
 
 class VoxTree {
 protected:
-	uint32_t pruneVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index);
-	uint32_t pruneNode(uint32_t node_nr, const VoxCoord &coord);
-	uint32_t addCSGObjectToVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index, const CSGObject &obj, int layer);
-	uint32_t addCSGObjectToNode(uint32_t node_nr, const VoxCoord &coord, const CSGObject &obj, int layer);
+	voxel_t pruneVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index);
+	voxel_t pruneNode(uint32_t node_nr, const VoxCoord &coord);
+	voxel_t addCSGObjectToVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index, const CSGObject *obj, voxel_t *new_data);
+	voxel_t addCSGObjectToNode(uint32_t node_nr, const VoxCoord &coord, const CSGObject *obj, voxel_t *new_data);
 	void generatePOVCodeForVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index);
 	void generatePOVCodeForNode(uint32_t node_nr, const VoxCoord &coord);
 public:
@@ -59,8 +119,12 @@ public:
 
 	VoxTree(void);
 	void generatePOVCode(void);
-	long addCSGObject(const CSGObject &obj, int layer);
-	long prune(void);
+	void addCSGObject(const CSGObject *obj, voxel_t *new_data);
+	void addCSGObjectOR(const CSGObject *obj, uint32_t layers);
+	void addCSGObjectAND(const CSGObject *obj, uint32_t layers);
+	void addCSGObjectXOR(const CSGObject *obj, uint32_t layers);
+	uint32_t addCSGObjectTST(const CSGObject *obj);
+	void prune(void);
 };
 
 }
