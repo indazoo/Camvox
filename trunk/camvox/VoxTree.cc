@@ -23,30 +23,6 @@
 
 namespace camvox {
 
-inline vox_node_t *VoxTree::nr2ptr(uint32_t node_nr) const
-{
-	return nodes + node_nr;
-}
-
-inline uint32_t VoxTree::ptr2nr(const vox_node_t *node) const
-{
-	return node - nodes;
-}
-
-inline void VoxTree::free(uint32_t node_nr)
-{
-	free_list.free(node_nr);
-	nr_nodes_destroyed++;
-}
-
-inline uint32_t VoxTree::alloc(void)
-{
-	uint32_t ret = free_list.alloc();
-	checkSize();
-	nr_nodes_created++;
-	return ret;
-}
-
 VoxTree::VoxTree(void) : free_list(0x7ffffffe), nr_nodes_created(0), nr_nodes_destroyed(0)
 {
 	// Start with a lot of voxels.
@@ -62,6 +38,25 @@ VoxTree::VoxTree(void) : free_list(0x7ffffffe), nr_nodes_created(0), nr_nodes_de
 
 	max_depth = 3;
 	scale = 1.0;
+}
+
+VoxTree::~VoxTree(void)
+{
+	delete nodes;
+}
+
+inline void VoxTree::free(uint32_t node_nr)
+{
+	free_list.free(node_nr);
+	nr_nodes_destroyed++;
+}
+
+inline uint32_t VoxTree::alloc(void)
+{
+	uint32_t ret = free_list.alloc();
+	checkSize();
+	nr_nodes_created++;
+	return ret;
 }
 
 void VoxTree::checkSize(void)
@@ -83,6 +78,7 @@ void VoxTree::checkSize(void)
 		nodes_size = new_nodes_size;
 	}
 }
+
 
 voxel_t VoxTree::pruneVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index)
 {

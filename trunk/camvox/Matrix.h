@@ -22,6 +22,18 @@
 
 namespace camvox {
 
+/** Gauss-Jordan elimination.
+ * Basically converts the the augmented matrix, until the first half is
+ * an identity matrix.
+ *
+ * This is useful to invert a matrix by augmenting it with a identity matrix, after
+ * this function the right side of the augmented matrix contains the inverted
+ * original matrix.
+ *
+ * @param m[H][W]	The augmented matrix. It will return the augmented matrix with
+ *			the leftside being the identity matrix.
+ * @returns true if successful.
+ */
 template <class T, int H, int W>
 bool gauss_jordan(T m[H][W])
 {
@@ -77,12 +89,17 @@ bool gauss_jordan(T m[H][W])
 	return true;
 }
 
-
+/** An affine transformation matrix.
+ * An 4 x 4 transformation matrix to scale, shear, rotate and translate
+ * homogeious vectors and points.
+ */
 template <class T>
 class TMatrix {
 public:
-	T m[4][4];
+	T m[4][4];	///< the 4 x 4 matrix.
 
+	/** Construct an identity matrix.
+	 */
 	TMatrix(void) {
 		for (int r = 0; r < 4; r++) {
 			for (int c = 0; c < 4; c++) {
@@ -91,6 +108,8 @@ public:
 		}
 	}
 
+	/** Multiply the matrix by a scalar.
+	 */
 	TMatrix operator*(const T &other) const {
 		TMatrix	result;
 
@@ -102,6 +121,8 @@ public:
 		return result;
 	}
 
+	/** Cross product of two matrices.
+	 */
 	TMatrix operator*(const TMatrix &other) const {
 		TMatrix	result;
 
@@ -117,6 +138,8 @@ public:
 		return result;
 	}
 
+	/** Transform a Vector by this matrix.
+	 */
 	Vector operator*(const Vector &other) const {
 		Vector	result;
 
@@ -127,6 +150,9 @@ public:
 		return result;
 	}
 
+	/** Transform an IntervalVector by this matrix.
+	 * An IntervalVector is like an axis-aligned bounded box.
+	 */
 	IntervalVector operator*(const IntervalVector &other) const {
 		IntervalVector	result;
 
@@ -137,6 +163,8 @@ public:
 		return result;
 	}
 
+	/** Calculate the inversion of this matrix.
+	 */
 	TMatrix invert(void) const {
 		double	a[4][8];
 		TMatrix	result;
@@ -167,6 +195,11 @@ public:
 		return result;
 	}
 
+	/** Add a translation operation to this matrix.
+	 *
+	 * @param v Translation vector
+	 * @returns A new matrix with the translation applied.
+	 */
 	TMatrix translate(const Vector &v) const {
 		TMatrix	B = TMatrix();
 
@@ -176,6 +209,11 @@ public:
 		return B * (*this);
 	}
 
+	/** Add a scale operation to this matrix.
+	 *
+	 * @param v Vector with scale values along each axis.
+	 * @returns A new matrix with the scale applied.
+	 */
 	TMatrix scale(const Vector &v) const {
 		TMatrix	B = TMatrix();
 
@@ -185,6 +223,14 @@ public:
 		return B * (*this);
 	}
 
+	/** Add a rotation operation to this matrix.
+	 * The rotation is around a vector oriented at the origin. The rotation is
+	 * clockwise if one looks from the origin along the vector.
+	 *
+	 * @param v The rotation is along this vector.
+	 * @param angle The rotation is radians around the vector.
+	 * @returns A new matrix with the rotation applied.
+	 */
 	TMatrix rotate(const TVector<T> &v, double angle) const {
 		TMatrix		B = TMatrix();
 		TVector<T>	nv = v.normalize();
