@@ -21,23 +21,63 @@
 
 namespace camvox {
 
+/** A homogenious vector and point class.
+ * A homogenious 3D vector has 4 values: x, y, z, w.
+ * The w value can have one of two values; 0.0 means it is a vector,
+ * while 1.0 means it is a point.
+ *
+ * Both a point and a vector can be multiplied by a 4 x 4 affine Matrix;
+ * to be scaled, sheared, rotated and translated (translation only for points).
+ * normal 3D points multiplied by a 3 x 3 matrix needed a seperate translation step.
+ *
+ * This vector template is compatible with both floating point values and with interval values.
+ * @see TMatrix
+ * @see TInterval
+ */
 template <class T>
 class TVector {
 public:
-	T	x, y, z, w;
+	T	x;	///< x-axis value.
+	T	y;	///< y-axis value.
+	T	z;	///< z-axis value.
+	T	w;	///< 0.0 means vector, 1.0 means point.
 
+	/** Construct a zero vector.
+	 */
 	TVector(void) : x(0.0), y(0.0), z(0.0), w(0.0) {}
+
+	/** Construct a vector.
+	 * @param _x	x-axis value
+	 * @param _y	y-axis value
+	 * @param _z	z-axis value
+	 */
 	TVector(T _x, T _y, T _z) : x(_x), y(_y), z(_z), w(0.0) {} 
+
+	/** Construct a vector or point.
+	 * @param _x	x-axis value
+	 * @param _y	y-axis value
+	 * @param _z	z-axis value
+	 * @param _w	0.0 means vector, 1.0 means point
+	 */
 	TVector(T _x, T _y, T _z, T _w) : x(_x), y(_y), z(_z), w(_w) {}
 
+	/** Invert the vector.
+	 * Or mirror the point throught the origin.
+	 */
 	TVector operator-() const {
 		return TVector(-x, -y, -z, w);
 	}
 
+	/** Return the length of the vector.
+	 * Or the distance between the point and the origin.
+	 */
 	T length() const {
 		return gsqrt(gsquare(x) + gsquare(y) + gsquare(z));
 	}
 
+	/** Return a vector with a length of 1.0 in the same orientation as the original vector.
+	 * Or translate the point to lay on the surface of a unit sphere.
+	 */
 	TVector normalize() const {
 		T c = 1.0 / length();
 		return TVector(x * c, y * c, z * c, w);
@@ -47,6 +87,7 @@ public:
 typedef TVector<double>		Vector;
 typedef TVector<Interval>	IntervalVector;
 
+/*
 static inline Vector operator/(double a, const Vector &b)
 {
 	return Vector(
@@ -56,6 +97,7 @@ static inline Vector operator/(double a, const Vector &b)
 		b.w
 	);
 }
+*/
 
 }
 
