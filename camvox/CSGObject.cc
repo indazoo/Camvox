@@ -34,8 +34,11 @@ CSGObject::CSGObject()
 void CSGObject::mergeTransforms(void)
 {
 	if (parent) {
-		total_transform = transform * parent->total_transform;
+		fprintf(stderr, "have parent\n");
+		//total_transform = transform * parent->total_transform;
+		total_transform = parent->total_transform * transform;
 	} else {
+		fprintf(stderr, "don't have parent\n");
 		total_transform = transform;
 	}
 	total_inv_transform = total_transform.invert();
@@ -56,7 +59,9 @@ void CSGObject::scale(const Vector &a)
 void CSGObject::rotate(const Vector &a, double angle)
 {
 	transform = transform.rotate(a, angle);
+	fprintf(stderr, "merge for rotate\n");
 	mergeTransforms();
+	fprintf(stderr, "/merge for rotate\n");
 }
 
 const CSGObject *CSGObject::boxType(const IntervalVector &a) const

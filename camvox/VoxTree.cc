@@ -23,7 +23,12 @@
 
 namespace camvox {
 
-VoxTree::VoxTree(void) : free_list(0x7ffffffe), nr_nodes_created(0), nr_nodes_destroyed(0)
+VoxTree::VoxTree(double _size) :
+	free_list(0x7ffffffe),
+	size(_size),
+	scale(_size / 2147483648.0),
+	nr_nodes_created(0),
+	nr_nodes_destroyed(0)
 {
 	// Start with a lot of voxels.
 	nodes_size = 0x100000;
@@ -37,7 +42,6 @@ VoxTree::VoxTree(void) : free_list(0x7ffffffe), nr_nodes_created(0), nr_nodes_de
 	}
 
 	max_depth = 3;
-	scale = 1.0;
 }
 
 VoxTree::~VoxTree(void)
@@ -61,11 +65,11 @@ inline uint32_t VoxTree::alloc(void)
 
 void VoxTree::checkSize(void)
 {
-	uint32_t max_node_nr = free_list.maxItemNr();
+	uint32_t array_size = free_list.arraySize();
 
-	if (__builtin_expect(max_node_nr > (uint32_t)(nodes_size - 1), 0)) {
+	if (__builtin_expect(array_size > nodes_size, 0)) {
 		// Calculate a new size and create the new nodes.
-		uint32_t new_nodes_size = max_node_nr + max_node_nr / 2;
+		uint32_t new_nodes_size = array_size + array_size / 2;
 		vox_node_t *new_nodes = new vox_node_t [new_nodes_size];
 
 		// Copy the old voxels. The free list should have these
@@ -324,28 +328,31 @@ void VoxTree::generatePOVCode(void)
 	fprintf(stdout, "global_settings { ambient_light <0.4, 0.4, 0.4> }\n");
 	fprintf(stdout, "camera {\n");
 	fprintf(stdout, "  orthographic\n");
-	fprintf(stdout, "  location <0.0, 8.0, -10.0>\n");
-	fprintf(stdout, "  look_at <5.0, 4.0, 0.0>\n");
+	fprintf(stdout, "  location <0.0, %lf, %lf>\n", size, -size * 0.8);
+	fprintf(stdout, "  look_at <%lf, %lf, 0.0>\n", size * 0.5, size * 0.4);
 	fprintf(stdout, "}\n");
-	fprintf(stdout, "light_source { <-5, 10.0, -10.0> color <2.0, 2.0, 2.0> }\n");
+	fprintf(stdout, "light_source { <%lf, %lf, %lf> color <%lf, %lf, %lf> }\n",
+		-size * 0.5, size, -size,
+		2.0, 2.0, 2.0
+	);
 
 
 	fprintf(stdout, "cylinder {\n");
-	fprintf(stdout, " <0, 0, 0>, <10.0, 0, 0>, 0.1\n");
+	fprintf(stdout, " <0, 0, 0>, <%lf, 0, 0>, 0.1\n", size);
 	fprintf(stdout, "  texture {\n");
 	fprintf(stdout, "    pigment { color Red }\n");
 	fprintf(stdout, "  }\n");
 	fprintf(stdout, "}\n");
 
 	fprintf(stdout, "cylinder {\n");
-	fprintf(stdout, " <0, 0, 0>, <0.0, 0.0, 10.0>, 0.1\n");
+	fprintf(stdout, " <0, 0, 0>, <0.0, 0.0, %lf>, 0.1\n", size);
 	fprintf(stdout, "  texture {\n");
 	fprintf(stdout, "    pigment { color Green }\n");
 	fprintf(stdout, "  }\n");
 	fprintf(stdout, "}\n");
 
 	fprintf(stdout, "cylinder {\n");
-	fprintf(stdout, " <0, 0, 0>, <0.0, 10.0, 0.0>, 0.1\n");
+	fprintf(stdout, " <0, 0, 0>, <0.0, %lf, 0.0>, 0.1\n", size);
 	fprintf(stdout, "  texture {\n");
 	fprintf(stdout, "    pigment { color Blue }\n");
 	fprintf(stdout, "  }\n");

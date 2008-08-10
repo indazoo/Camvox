@@ -106,5 +106,9 @@ public:
 
 typedef TInterval<double>	Interval;
 
+static inline Interval gsquare(Interval a) {
+	return a.square();
+}
+
 }
 #endif

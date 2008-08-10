@@ -17,32 +17,62 @@
 #ifndef FREELIST_H
 #define FREELIST_H
 
-#include <vector>
+#include <list>
 #include <stdint.h>
 
 namespace camvox {
 
 typedef struct free_region_s free_region_t;
 
+/** A region of free items.
+ */
 struct free_region_s {
-	uint32_t	start;
-	uint32_t	length;
+	uint32_t	start;		///< The first item of this region.
+	uint32_t	length;		///< The number of items in this region.
 };
 
+/** This class manages free items.
+ * If one would have an array fixed sized items, one would like
+ * to know which of these items are still free.
+ *
+ * With this class we have a list of all the items that are not
+ * yet used by the application.
+ */
 class FreeList {
-protected:
-	uint32_t			nr_items;
-	std::vector<free_region_s *>	regions;
+private:
+	uint32_t			nr_items;	///< The number of items this class manages.
+	std::list<free_region_t *>	regions;	///< A set of regions, see @see struct free_region_s.
 
-	void merge(std::vector<free_region_t *>::iterator);
+	/** Merges two regions together, leaving one.
+	 */
+	void merge(std::list<free_region_t *>::iterator);
 
 public:
+	/** Construct a new free list.
+	 * @param _nr_items maximum number of items to manage
+	 */
 	FreeList(uint32_t _nr_items);
+
+	/** Destruct the free list.
+	 */
 	~FreeList();
 
+	/** Get a free item.
+	 * @returns a free item.
+	 */
 	uint32_t alloc();
+
+	/** Give back an item.
+	 * @param item_nr the item to bring back to the free list.
+	 */
 	void free(uint32_t item_nr);
-	uint32_t maxItemNr();
+
+	/** Find out how large the array is.
+	 * This is used to figure out how large the item array needs
+	 * to be as a mimimum.
+	 * @returns The minimum array size to hold all items.
+	 */
+	uint32_t arraySize();
 };
 
 }

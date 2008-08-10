@@ -15,6 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#include <camvox/Exceptions.h>
 #include <camvox/FreeList.h>
 
 namespace camvox {
@@ -27,14 +28,15 @@ FreeList::FreeList(uint32_t _nr_items) : nr_items(_nr_items), regions()
 	a->start = 0;
 	a->length = nr_items;
 
-	regions.push_back(a);
+	regions.push_front(a);
 }
 
 FreeList::~FreeList()
 {
 	// Delete all the regions, don't bother removing them from the list.
-	for (unsigned int i = 0; i < regions.size(); i++) {
-		delete regions[i];
+	std::list<free_region_t *>::iterator i;
+	for (i = regions.begin(); i != regions.end(); ++i) {
+		delete *i;
 	}
 }
 
@@ -44,25 +46,29 @@ uint32_t FreeList::alloc()
 	uint32_t	item_nr;
 
 	// Get the item from the back of the list.
-	a = regions.back();
-	item_nr = a->start + (a->length - 1);
+	a = *(regions.begin());
+
+	// Get the first item.
+	item_nr = a->start;
 
 	// Remove the item from the region.
+	a->start++;
 	a->length--;
 	if (!a->length) {
 		// Remove the region from the list.
-		regions.pop_back();
+		regions.pop_front();
 		delete a;
 	}
 
 	// Return the item in reverse.
-	return (nr_items - 1) - item_nr;
+	return item_nr;
 }
 
-void FreeList::merge(std::vector<free_region_t *>::iterator i)
+void FreeList::merge(std::list<free_region_t *>::iterator i)
 {
 	free_region_t	*a = *i;
-	free_region_t	*b = *(i + 1);
+	i++;
+	free_region_t	*b = *i;
 
 	// Check if the two regions are connected.
 	if ((a->start + a->length) == b->start) {
@@ -70,7 +76,7 @@ void FreeList::merge(std::vector<free_region_t *>::iterator i)
 		a->length+= b->length;
 
 		// Remove the second region.
-		regions.erase(i + 1);
+		regions.erase(i);
 		delete b;
 	}
 }
@@ -79,60 +85,74 @@ void FreeList::free(uint32_t item_nr)
 {
 	free_region_t	*a;
 
-	// Reverse the item.
-	item_nr = (nr_items - 1) - item_nr;
-
 	// Find the region where the item will fit in.
-	std::vector<free_region_t *>::reverse_iterator i;
-	for (i = regions.rbegin(); i != regions.rend(); ++i) {
+	std::list<free_region_t *>::iterator i;
+	for (i = regions.begin(); i != regions.end(); ++i) {
 		a = *i;
 
+		if (item_nr < (a->start - 1)) {
+			// Our item is somewhere before this region.
+			a = new free_region_t;
+			a->start = item_nr;
+			a->length = 1;
+
+			// This region needs to be inserted before this.
+			regions.insert(i, a);
+			return;
+		}
+
 		if (item_nr == (a->start - 1)) {
-			// Our item is exactly before this region.
-			// Return the item.
+			// Our item is imediatly in front of this region.
 			a->start--;
 			a->length++;
 
-			// Only merge if it is not the 0th entry.
-			if ((i + 1) != regions.rend()) {
-				merge(i.base() - 1);
+			// Only try to merge if this is not the first entry.
+			if (i != regions.begin()) {
+				i--;
+				merge(i);
 			}
 			return;
 		}
 
-		if (item_nr < a->start) {
-			// Our item need to be found earlier.
-			continue;
+		if (item_nr < (a->start + a->length)) {
+			// Our item is inside this region.
+			fprintf(stderr, "%u < %u + %u\n", (unsigned)item_nr, (unsigned)a->start, (unsigned)a->length);
+			throw bad_index;
 		}
 
 		if (item_nr == (a->start + a->length)) {
-			// Our item is exactly behind this region.
-			// Return the item.
+			// Our item is imediatly after this region.
 			a->length++;
 
-			// Only merge if it is not the nth entry.
-			if (i != regions.rbegin()) {
-				merge(i.base());
+			// Only try to merge if this is not the last entry.
+			std::list<free_region_t *>::iterator j = i;
+			j++;
+			if (j != regions.end()) {
+				merge(i);
 			}
 			return;
 		}
-
-		// Create a new region and insert it after the current region.
-		a = new free_region_t;
-		a->start = item_nr;
-		a->length = 1;
-		regions.insert(i.base() + 1, a);
-		return;
 	}
+
+	// Create new region with only our item.
+	a = new free_region_t;
+	a->start = item_nr;
+	a->length = 1;
+
+	// This region needs to be appended after the last region.
+	regions.push_back(a);
+	return;
 }
 
-uint32_t FreeList::maxItemNr(void)
+uint32_t FreeList::arraySize(void)
 {
-	// Check how much is removed from the first region.
-	free_region_t *a = regions[0];
+	// Check where the last region starts.
+	std::list<free_region_t *>::iterator i = regions.end();
+	i--;
+	free_region_t *a = *i;
 
-	// Return the number of items that should be on the right side of this region.
-	return nr_items - a->length;
+	// Return the last item number that was allocated
+	return a->start;
 }
 
 }

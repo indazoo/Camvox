@@ -27,10 +27,20 @@ static inline T gmin(T a, T b)
 	return a < b ? a : b;
 }
 
+static inline double gmin(double a, double b)
+{
+	return fmin(a, b);
+}
+
 template <class T>
 static inline T gmax(T a, T b)
 {
 	return a > b ? a : b;
+}
+
+static inline double gmax(double a, double b)
+{
+	return fmax(a, b);
 }
 
 template <class T>
@@ -39,12 +49,17 @@ static inline T gabs(T a)
 	return a < 0 ? -a : a;
 }
 
+static inline double gabd(double a)
+{
+	return fabs(a);
+}
+
 static inline double gcos(double a) {
 	return cos(a);
 }
 
 static inline double gsin(double a) {
-	return cos(a);
+	return sin(a);
 }
 
 static inline double gsquare(double a) {

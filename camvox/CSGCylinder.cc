@@ -18,15 +18,14 @@
 
 namespace camvox {
 
-CSGCylinder::CSGCylinder(double _diameter)
+CSGCylinder::CSGCylinder(double _diameter) : diameter(_diameter)
 {
-	diameter = _diameter;
 }
 
 Interval CSGCylinder::characteristic(const IntervalVector &a) const
 {
 	IntervalVector b = total_inv_transform * a;
-	return (b.x.square() + b.y.square() - diameter);
+	return (gsquare(b.x) + gsquare(b.y) - gsquare(diameter));
 }
 
 }
