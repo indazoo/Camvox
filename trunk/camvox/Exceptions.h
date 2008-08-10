@@ -1,4 +1,4 @@
-/* CSGOperation.cc - Abstract baseclass for all boolean CSG operations.
+/* Exceptions.h - Exceptions that can be thrown.
  * Copyright (C) 2008  Take Vos
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,25 +14,22 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-#include <camvox/CSGOperation.h>
+#ifndef EXCEPTIONS_H
+#define EXCEPTIONS_H
+
+#include <exception>
 
 namespace camvox {
 
-void CSGOperation::mergeTransforms(void)
+class bad_index : public std::exception
 {
-	CSGObject::mergeTransforms();
-
-	for (unsigned int i = 0; i < childs.size(); i++) {
-		fprintf(stderr, "child %i\n", i);
-		childs[i]->mergeTransforms();
+	virtual const char *what() const throw()
+	{
+		return "This index can not be used.";
 	}
-}
 
-void CSGOperation::add(CSGObject *obj)
-{
-	obj->parent = this;
-	childs.push_back(obj);
-	mergeTransforms();
-}
+} bad_index;
 
 }
+
+#endif

@@ -101,9 +101,11 @@ static inline voxel_t voxSetLayersAndOperation(uint32_t mask, vox_op_t op)
 class VoxTree {
 private:
 	FreeList	free_list;
-	int		nodes_size;
+	uint32_t	nodes_size;
 	vox_node_t	*nodes;
 	uint32_t	root;
+	double		size;		///< The length of each axis of voxel space.
+	double		scale;		///< The size of the smallest possible voxel.
 
 	/** Alocate a new oct-tree node.
 	 * This takes a node from the free list, this is garanteed to be
@@ -161,9 +163,12 @@ public:
 	uint64_t	nr_nodes_created;	///< A counter showing the number of nodes created.
 	uint64_t	nr_nodes_destroyed;	///< A counter showing the number of nodes removed.
 	int		max_depth;		///< The maximum depth at which the reevaluation of a CSG object stops.
-	double		scale;			///< The size of the smallest possible voxel.
 
-	VoxTree(void);
+	/** Construct a voxel space.
+	 * @param _size		size of each axis of the voxel space in mm, inches or anything else.
+	 *			but make sure that you keep units consistant troughout.
+	 */
+	VoxTree(double _size);
 	~VoxTree(void);
 
 	/** Generate POV-RAY code.

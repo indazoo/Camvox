@@ -146,9 +146,8 @@ public:
 	int	max_depth;
 	int	nr_nodes_created;
 	int	nr_nodes_destroyed;
-	double	scale;
 
-	VoxTree();
+	VoxTree(double _size);
 	~VoxTree();
 	void generatePOVCode();
 	void addCSGObject(CSGObject *obj, voxel_t *new_data);

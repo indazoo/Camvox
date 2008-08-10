@@ -22,36 +22,64 @@
 
 namespace camvox {
 
-/* VoxCoord is an object that describes the position in oct-tree voxel space.
- *
- * The top-box that encapsulated the full voxel space, has coord (0, 0, 0, depth=0).
+/** VoxCoord is an object that describes the position in oct-tree voxel space.
+ * The root voxel that encapsulated the full voxel space, has coord (0, 0, 0, depth=0).
  * The coord describes the near/left/bottom corner. The far/right/top corner has
- * coord (0x8000, 0x8000, 0x8000, depth=0). There are no boxes outside of these
+ * coord (0x8000, 0x8000, 0x8000, depth=0). There are no voxels outside of these
  * bounds, because it leads to an integer overflow when calculating the outer bound.
  *
- * The depth attribute is the size of the box, 0 is the outer box, 1 is 1/8 of the outer box.
+ * There are 8 voxels inside the root voxel, they have the following coords:
+ * <ul>
+ * <li>(0x0000, 0x0000, 0x0000, depth=1)</li>
+ * <li>(0x4000, 0x0000, 0x0000, depth=1)</li>
+ * <li>(0x0000, 0x4000, 0x0000, depth=1)</li>
+ * <li>(0x4000, 0x4000, 0x0000, depth=1)</li>
+ * <li>(0x0000, 0x0000, 0x4000, depth=1)</li>
+ * <li>(0x4000, 0x0000, 0x4000, depth=1)</li>
+ * <li>(0x0000, 0x4000, 0x4000, depth=1)</li>
+ * <li>(0x4000, 0x4000, 0x4000, depth=1) opposite corner is (0x8000, 0x8000, 0x8000, depth=1)</li>
+ * </ul>
  *
- * There are 8 boxes inside the top-box, they have the following coords:
- *    (0x0000, 0x0000, 0x0000, depth=1)
- *    (0x4000, 0x0000, 0x0000, depth=1)
- *    (0x0000, 0x4000, 0x0000, depth=1)
- *    (0x4000, 0x4000, 0x0000, depth=1)
- *    (0x0000, 0x0000, 0x4000, depth=1)
- *    (0x4000, 0x0000, 0x4000, depth=1)
- *    (0x0000, 0x4000, 0x4000, depth=1)
- *    (0x4000, 0x4000, 0x4000, depth=1) bounded by (0x8000, 0x8000, 0x8000, depth=1)
- *
+ * This can continue until depth = 30, i.e. the 31th level. At his level each voxel has only the size of 1.
  */
 class VoxCoord {
 public:
-	uint32_t	v[3];
-	int		depth;
+	uint32_t	v[3];	///< 3D coordinate of the left,near,bottom corner of a voxel box.
+	int		depth;	///< Depth within the oct-tree.
 
+	/** Construct a new coord identifying the root voxel in the oct-tree.
+	 */
 	VoxCoord(void);
+
+	/** Copy constructor.
+	 */
 	VoxCoord(const VoxCoord &a);
+
+	/** Copy operator.
+	 */
 	VoxCoord &operator=(const VoxCoord &a);
+
+	/** Get the coord of a neighbour voxel at the same oct-tree depth.
+	 * To get the other corner of this voxel, one would specify (1, 1, 1)
+	 * on this method.
+	 * 
+	 * @param x	number of voxels away on the x-axis.
+	 * @param y	number of voxels away on the y-axis.
+	 * @param z	number of voxels away on the z-axis.
+	 * @returns The new voxel coord pointing to a neighbour voxel.
+	 */
 	VoxCoord nextNeighbour(int x, int y, int z) const;
+
+	/** Get the coord of a child voxel at the next depth of the oct-tree.
+	 * @param child_index	An index pointing to one of the eight childs of an oct-tree node.
+	 * @returns The new voxel coord pointing to a child voxel.
+	 */
 	VoxCoord childCoord(int child_index) const;
+
+	/** Get the axis aligned bounding box describing this voxel in cartesion coords.
+	 * @param scale		The size of the smalles voxel.
+	 * @returns An IntervalVector describing the axis aligned bounding box.
+	 */
 	IntervalVector boundingBox(double scale) const;
 };
 

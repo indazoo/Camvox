@@ -18,15 +18,14 @@
 
 namespace camvox {
 
-CSGSphere::CSGSphere(double _diameter)
+CSGSphere::CSGSphere(double _diameter) : diameter(_diameter)
 {
-	diameter = _diameter;
 }
 
 Interval CSGSphere::characteristic(const IntervalVector &a) const
 {
 	IntervalVector b = total_inv_transform * a;
-	return (b.x.square() + b.y.square() + b.z.square() - diameter);
+	return (gsquare(b.x) + gsquare(b.y) + gsquare(b.z) - gsquare(diameter));
 }
 
 }

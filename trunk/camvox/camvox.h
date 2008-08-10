@@ -1,6 +1,8 @@
 #ifndef CAMVOX_H
 #define CAMVOX_H
 
+#include <camvox/Exceptions.h>
+#include <camvox/GMath.h>
 #include <camvox/Interval.h>
 #include <camvox/Vector.h>
 #include <camvox/Matrix.h>
