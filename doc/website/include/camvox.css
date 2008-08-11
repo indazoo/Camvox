@@ -12,37 +12,110 @@ body {
 	background-color:	#f0e4a8;
 	color:			#876240;
 	margin:			0px;
+	font-family:		Tahoma, Geneva;
 }
 
-div.title {
+body * {
+	font-family:		Tahoma, Geneva;
+	font-size:		12px;
+}
+
+table.title {
 	width:			100%;
-	height:			20px;
 	background-color:	#876240;
 	color:			#f0e4a8;
-	padding:		10px;
-	font-size:		20px;
+	margin:			0px;
+	padding:		0px;
+	border-spacing:		0px;
+	font-size:		10px;
 }
 
-div.menu {
+td.title_logo {
+	width:			189px;
+	height:			37px;
+	padding:		0px;
+	margin:			0px;
+	text-align:		left;
+}
+
+td.title_logo a {
+	margin:			0px;
+	padding:		0px;
+}
+
+td.title_logo img {
+	border:			0px;
+	margin:			0px;
+	padding:		0px;
+	vertical-align:		middle;
+}
+
+td.title_sourceforge {
+	width:			125px;
+	height:			37px;
+	padding:		0px;
+	margin:			0px;
+	text-align:		right;
+}
+
+td.title_sourceforge a {
+	margin:			0px;
+	padding:		0px;
+}
+
+td.title_sourceforge img {
+	border:			0px;
+	margin:			0px;
+	padding:		0px;
+	vertical-align:		middle;
+}
+
+table.menu {
 	width:			100%;
-	height:			20px;
 	background-color:	#deae66;
+	border-spacing:		0px;
+	margin-bottom:		30px;
 }
 
-span.menu {
-	width:			250px;
+td.menu {
+	width:			150px;
+	text-align:		center;
+	padding:		2px;
 }
 
-span.menu a {
+td.menu:hover {
+	background-color:	#e6683e;
+}
+
+td.menu_last {
+}
+
+td.menu a {
 	color:			#876240;
+	text-decoration:	none;
 }
 
-p {
-	padding:		20px;
-}
 
 img.corner_image {
 	float:			right;
 }
 
+h1 {
+	margin-left:		20px;
+	font-size:		14px;
+	color:			#e6683e;
+
+}
+
+p {
+	margin-left:		20px;
+}
+
+ul {
+	list-style-image:	url('../images/item_disk.gif');
+}
+
+a {
+	color:			#e6683e;
+}
 
