@@ -21,5 +21,5 @@
 <td class="menu"><a href="contact.html">contact</a></td>
 <td class="menu_last">&nbsp</td>
 </tr></table>
-<img class="corner_image" src="include/corner_image.png" alt="corner image"/>
+<img class="corner_image" src="images/corner_image.png" alt="corner image"/>
 
