@@ -1,0 +1,25 @@
+#!/usr/bin/env python
+
+from Cheetah.Template import Template
+import os
+import os.path
+
+srcdir = os.getcwd() + "/src"
+dstdir = os.getcwd() + "/website"
+
+os.chdir(srcdir)
+
+namespace = {}
+
+for path, dirnames, filenames in os.walk(srcdir):
+	for filename in filenames:
+		srcfilename = os.path.join(path, filename)
+		dstfilename = dstdir + srcfilename[len(srcdir):]
+
+		if not srcfilename.endswith(".html"):
+			continue
+
+		mytemplate = Template(file = srcfilename, searchList = namespace)
+		open(dstfilename, "w").write(mytemplate.__str__())
+
+
