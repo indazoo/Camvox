@@ -117,5 +117,17 @@ ul {
 
 a {
 	color:			#e6683e;
+	text-decoration:	none;
+}
+
+code {
+	display:		block;
+	background-color:	#77996e;
+	color:			#f0e4a8;
+	font-family:		Lucida Console, Monaco, monospace;
+	margin-left:		20px;
+	margin-right:		20px;
+	margin-top:		40px;
+	padding:		10px;
 }
 

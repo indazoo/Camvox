@@ -10,4 +10,5 @@ DEPENDENCIES
 Python		http://www.python.org/
 swig		http://www.swig.org/
 doxygen		http://www.doxygen.org/
+cheetah		http://www.cheetahtemplate.org/
 
