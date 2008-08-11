@@ -8,14 +8,18 @@
   <link rel="stylesheet" href="include/camvox.css" type="text/css"/>
  </head>
   <body>
-<div class="title">
-CAM.VOX
-</div>
-<div class="menu">
-<span class="menu"><a href="index.html">home</a></span>
-<span class="menu"><a href="download.html">download</a></span>
-<span class="menu"><a href="documentation.html">documentation</a></span>
-<span class="menu"><a href="contact.html">contact</a></span>
-</div>
+<table class="title"><tr>
+<td class="title_logo"><a href="http://camvox.sourceforge.net"><img width="189" height="37" src="images/logo.gif" alt="logo"/></a></td>
+<td class="title_middle"></td>
+<td class="title_sourceforge"><a href="http://sourceforge.net"><img src="http://sflogo.sourceforge.net/sflogo.php?group_id=235658&amp;type=2" width="125" height="37" alt="SourceForge.net Logo" /></a></td>
+</tr></table>
+<table class="menu"><tr>
+<td class="menu"><a href="index.html">home</a></td>
+<td class="menu"><a href="http://sourceforge.net/projects/camvox/">project pages</a></td>
+<td class="menu"><a href="download.html">download</a></td>
+<td class="menu"><a href="documentation.html">documentation</a></td>
+<td class="menu"><a href="contact.html">contact</a></td>
+<td class="menu_last">&nbsp</td>
+</tr></table>
 <img class="corner_image" src="include/corner_image.png" alt="corner image"/>
 
