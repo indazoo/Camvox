@@ -1,0 +1,48 @@
+
+/*
+	Luv Deficit Disorder palette:
+	Butter:		#f0e4a8
+	Dusky Peach:	#deae66
+	Rock-A-Hula:	#e6683e
+	Arabian Cocoa:	#876240
+	Hideous Green:	#77996e
+*/
+
+body {
+	background-color:	#f0e4a8;
+	color:			#876240;
+	margin:			0px;
+}
+
+div.title {
+	width:			100%;
+	height:			20px;
+	background-color:	#876240;
+	color:			#f0e4a8;
+	padding:		10px;
+	font-size:		20px;
+}
+
+div.menu {
+	width:			100%;
+	height:			20px;
+	background-color:	#deae66;
+}
+
+span.menu {
+	width:			250px;
+}
+
+span.menu a {
+	color:			#876240;
+}
+
+p {
+	padding:		20px;
+}
+
+img.corner_image {
+	float:			right;
+}
+
+
