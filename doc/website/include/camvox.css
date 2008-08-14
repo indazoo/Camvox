@@ -91,6 +91,8 @@ td.menu_last {
 }
 
 td.menu a {
+	display:		block;
+	width:			150px;
 	color:			#876240;
 	text-decoration:	none;
 }
@@ -129,5 +131,15 @@ code {
 	margin-right:		20px;
 	margin-top:		40px;
 	padding:		10px;
+}
+
+div.figure {
+	float:			center;
+}
+div.figure p {
+	text-align:		center;
+	font-size:		10px;
+	text-indent:		0px;
+	color:			#e6683e;
 }
 

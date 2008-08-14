@@ -2,7 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
  <head>
-  <title>camvox - Home</title>
+  <title>camvox - Documentation</title>
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
   <meta http-equiv="Content-Style-Type" content="text/css" />
   <link rel="stylesheet" href="include/camvox.css" type="text/css"/>
@@ -23,19 +23,21 @@
 </tr></table>
 
 
-<h1>Downloads</h1>
-<p>CAMVOX does not currently have any direct downloads available, because the project is not yet end user ready.
-If you like access to the sources, please look at the subversion section.
+<h1>Documentation</h1>
+<p>This page is a short user manual. The first few chapters explain the concepts, which is followed by
+some examples.
 </p>
 
-<h1>Subversion access</h1>
-<p>CAMVOX is hosted at the sourceforge svn repository. Anyone will have read-only access, if you like read-write
-access please contact the maintainer: <a href="mailto:Take.Vos@vosgames.nl">&lt;Take.Vos@vosgames.nl&gt;</a>.
+<h1>Coordinate system</h1>
+<div class="figure">
+ <p><img width="250" height="191" src="images/coordsystem.gif" alt="Coordinate System"/></p>
+ <p>fig: Coordinate System</p>
+</div>
+<p>Our coordinate system is <a href="http://en.wikipedia.org/wiki/Right-hand_rule">right handed</a>; with the x-axis pointing
+to the right, the y-axis moving away from us and the z-axis pointing up.
+Rotation has a <a href="http://en.wikipedia.org/wiki/Right_hand_grip_rule">right handed grip</a>, which means that
+if you look from the origin of a vector the rotation is clock wise around this vector.
 </p>
-
-<code>
-svn checkout https://camvox.svn.sourceforge.net/svnroot/camvox/trunk camvox
-</code>
 
  </body>
 </html>
