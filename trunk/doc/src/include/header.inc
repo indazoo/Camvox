@@ -1,6 +1,6 @@
-<?xml version="1.0 encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
  <head>
   <title>camvox - $title</title>
   <meta http-equiv="content-type" content="text/html;charset=utf-8" />
@@ -19,7 +19,6 @@
 <td class="menu"><a href="download.html">download</a></td>
 <td class="menu"><a href="documentation.html">documentation</a></td>
 <td class="menu"><a href="contact.html">contact</a></td>
-<td class="menu_last">&nbsp</td>
+<td class="menu_last"></td>
 </tr></table>
-<img class="corner_image" src="images/corner_image.png" alt="corner image"/>
 

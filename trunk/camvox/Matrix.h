@@ -231,7 +231,8 @@ public:
 	 * @param angle The rotation is radians around the vector.
 	 * @returns A new matrix with the rotation applied.
 	 */
-	TMatrix rotate(const TVector<T> &v, double angle) const {
+	TMatrix rotate(const TVector<T> &v, double _angle) const {
+		double		angle = -_angle;
 		TMatrix		B = TMatrix();
 		TVector<T>	nv = v.normalize();
 

@@ -47,7 +47,7 @@ def crank_shaft():
 # Move to center
 
 cr = crank_shaft()
-cr.rotate(camvox.Vector(0.0, 1.0, 0.0), -0.5 * pi)
+cr.rotate(camvox.Vector(0.0, 1.0, 0.0), 0.5 * pi)
 cr.translate(camvox.Vector(25.0, 10.0, 10.0))
 
 

@@ -69,7 +69,7 @@ def CappedCylinder(r = 0.5, h = 1.0):
 	p1 = Plane()
 	p1.translate(camvox.Vector(0.0, 0.0, h * 0.5))
 	p2 = Plane()
-	p2.rotate(camvox.Vector(1.0, 0.0, 0.0), math.pi)
+	p2.rotate(camvox.Vector(1.0, 0.0, 0.0), -math.pi)
 	p2.translate(camvox.Vector(0.0, 0.0, h * -0.5))
 	return Intersection(c, p1, p2)
 
@@ -82,23 +82,23 @@ def Box(w = 1.0, d = 1.0, h = 1.0):
 	p1.translate(camvox.Vector(0.0, 0.0, h * 0.5))
 
 	p2 = Plane()
-	p2.rotate(camvox.Vector(1.0, 0.0, 0.0), math.pi)
+	p2.rotate(camvox.Vector(1.0, 0.0, 0.0), -math.pi)
 	p2.translate(camvox.Vector(0.0, 0.0, h * -0.5))
 
 	p3 = Plane()
-	p3.rotate(camvox.Vector(0.0, 1.0, 0.0), math.pi * -0.5)
+	p3.rotate(camvox.Vector(0.0, 1.0, 0.0), math.pi * 0.5)
 	p3.translate(camvox.Vector(w * 0.5, 0.0, 0.0))
 
 	p4 = Plane()
-	p4.rotate(camvox.Vector(0.0, 1.0, 0.0), math.pi * 0.5)
+	p4.rotate(camvox.Vector(0.0, 1.0, 0.0), math.pi * -0.5)
 	p4.translate(camvox.Vector(w * -0.5, 0.0, 0.0))
 
 	p5 = Plane()
-	p5.rotate(camvox.Vector(1.0, 0.0, 0.0), math.pi * 0.5)
+	p5.rotate(camvox.Vector(1.0, 0.0, 0.0), math.pi * -0.5)
 	p5.translate(camvox.Vector(0.0, d * 0.5, 0.0))
 
 	p6 = Plane()
-	p6.rotate(camvox.Vector(1.0, 0.0, 0.0), math.pi * -0.5)
+	p6.rotate(camvox.Vector(1.0, 0.0, 0.0), math.pi * 0.5)
 	p6.translate(camvox.Vector(0.0, d * -0.5, 0.0))
 
 	return Intersection(p1, p2, p3, p4, p5, p6)
