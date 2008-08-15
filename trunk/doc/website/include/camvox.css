@@ -6,6 +6,7 @@
 	Rock-A-Hula:	#e6683e
 	Arabian Cocoa:	#876240
 	Hideous Green:	#77996e
+	Hideous lightGreen:	#baefac
 */
 
 body {
@@ -74,7 +75,6 @@ table.menu {
 	width:			100%;
 	background-color:	#deae66;
 	border-spacing:		0px;
-	margin-bottom:		30px;
 }
 
 td.menu {
@@ -87,15 +87,29 @@ td.menu:hover {
 	background-color:	#e6683e;
 }
 
-td.menu_last {
-}
-
 td.menu a {
 	display:		block;
 	width:			150px;
 	color:			#876240;
 	text-decoration:	none;
 }
+
+td.menu_current {
+	width:			150px;
+	text-align:		center;
+	padding:		2px;
+	background-color:	#e6683e;
+}
+
+td.menu_current a {
+	display:		block;
+	width:			150px;
+	color:			#876240;
+	text-decoration:	none;
+}
+td.menu_last {
+}
+
 
 
 img.corner_image {
@@ -106,7 +120,19 @@ h1 {
 	margin-left:		20px;
 	font-size:		14px;
 	color:			#e6683e;
+}
 
+h2 {
+	margin-left:		20px;
+	font-size:		12px;
+	color:			#e6683e;
+}
+
+h3 {
+	margin-left:		20px;
+	font-size:		12px;
+	font-style:		italic;
+	color:			#e6683e;
 }
 
 p {
