@@ -47,12 +47,15 @@ public:
 	Matrix transform;
 	Matrix total_transform;
 	Matrix total_inv_transform;
+        double resolution;
+        double total_resolution;
 
 	CSGObject();
 	~CSGObject();
 	virtual void translate(const Vector &a);
 	virtual void scale(const Vector &a);
 	virtual void rotate(const Vector &a, double angle);
+	virtual void setResolution(double _resolution);
 
 };
 
@@ -121,6 +124,7 @@ public:
 	VoxCoord nextNeighbour(int x, int y, int z);
 	VoxCoord childCoord(int child_index);
 	IntervalVector boundingBox(double scale);
+	double size(double scale);
 };
 
 
@@ -166,7 +170,6 @@ public:
 
 class VoxTree {
 public:
-	int	max_depth;
 	int	nr_nodes_created;
 	int	nr_nodes_destroyed;
 

@@ -96,7 +96,6 @@ private:
 public:
 	uint64_t	nr_nodes_created;	///< A counter showing the number of nodes created.
 	uint64_t	nr_nodes_destroyed;	///< A counter showing the number of nodes removed.
-	int		max_depth;		///< The maximum depth at which the reevaluation of a CSG object stops.
 
 	/** Construct a voxel space.
 	 * @param _size		size of each axis of the voxel space in mm, inches or anything else.

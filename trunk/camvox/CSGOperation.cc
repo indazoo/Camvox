@@ -23,8 +23,16 @@ void CSGOperation::mergeTransforms(void)
 	CSGObject::mergeTransforms();
 
 	for (unsigned int i = 0; i < childs.size(); i++) {
-		//fprintf(stderr, "child %i\n", i);
 		childs[i]->mergeTransforms();
+	}
+}
+
+void CSGOperation::mergeResolutions(void)
+{
+	CSGObject::mergeResolutions();
+
+	for (unsigned int i = 0; i < childs.size(); i++) {
+		childs[i]->mergeResolutions();
 	}
 }
 

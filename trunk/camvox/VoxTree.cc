@@ -40,8 +40,6 @@ VoxTree::VoxTree(double _size) :
 	for (int i = 0; i < 8; i++) {
 		node->voxels[i].setLayers(0);
 	}
-
-	max_depth = 3;
 }
 
 VoxTree::~VoxTree(void)
@@ -186,7 +184,7 @@ Voxel VoxTree::addCSGObjectToVoxel(uint32_t node_nr, const VoxCoord &coord, int 
 
 		} else {
 			//fprintf(stderr, "depth %i\n", voxel_coord.depth);
-			if (voxel_coord.depth > max_depth) {
+			if (voxel_coord.size(scale) < obj->total_resolution) {
 				// We are too deep, so we don't do anything to the voxel.
 				switch (csg_op.edge_op) {
 				case VOX_OP_OR:
