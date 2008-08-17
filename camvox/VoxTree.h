@@ -17,83 +17,17 @@
 #ifndef VOXTREE_H
 #define VOXTREE_H
 
+#include <camvox/Voxel.h>
+#include <camvox/VoxOperation.h>
 #include <camvox/VoxCoord.h>
 #include <camvox/CSGObject.h>
 #include <camvox/FreeList.h>
 
 namespace camvox {
 
-typedef uint32_t voxel_t;
-
-/** Voxel operations.
- * These are the operations that can be made on the voxel volume.
- */
-typedef enum {
-	VOX_OP_OR = 0,	///< binary OR layer masks when inside CSG object.
-	VOX_OP_AND,	///< binary AND layer masks when inside CSG object.
-	VOX_OP_XOR,	///< binary XOR layer masks when inside CSG object.
-	VOX_OP_TST	///< return layers that are inside CSG object.
-} vox_op_t;
-
-/** An voxel oct-tree node.
- * Contains all 8 child voxels two for each dimension.
- */
 typedef struct {
-	/** A value of a voxel.
-	 * A voxel value is overloaded quite a bit, so that as little memory as possible can be used.
-	 * 
-	 * 1nnnnnnn nnnnnnnn nnnnnnnn nnnnnnnn	   n = node number
-	 * 0oo      WWWWWWWW NNNNNNNN llllllll     l = layers
-	 *                                         W = longitude of the normal on the xy-plane, x-axis is 0.
-	 *                                         N = latitude of the normal above the xy-plane, xy-plane is 0.
-	 *                                         o = layer operation (not stored in the voxel).
-	 *                                             0 OR       Add object to layers
-	 *                                             1 AND      Remove object from layers
-	 *                                             2 XOR      Toggle object from layers
-	 *                                             3 TST      return layers that intersect with object
-	 */
-	voxel_t	voxels[8];
+	Voxel	voxels[8];
 } vox_node_t;
-
-static inline bool voxIsNodeNr(voxel_t data)
-{
-	return (data & 0x80000000) == 0x80000000;
-}
-
-static inline uint32_t voxGetNodeNr(voxel_t data)
-{
-	return data & 0x7fffffff;
-}
-
-static inline voxel_t voxSetNodeNr(uint32_t node_nr)
-{
-	return node_nr | 0x80000000;
-}
-
-static inline voxel_t voxSetDontPrune(void)
-{
-	return 0xffffffff;
-}
-
-static inline bool voxIsDontPrune(voxel_t data)
-{
-	return data == 0xffffffff;
-}
-
-static inline vox_op_t voxGetOperation(voxel_t data)
-{
-	return (vox_op_t)(data >> 29);
-}
-
-static inline uint32_t voxGetLayers(voxel_t data)
-{
-	return data & 0xff;
-}
-
-static inline voxel_t voxSetLayersAndOperation(uint32_t mask, vox_op_t op)
-{
-	return (op << 29) | mask;
-}
 
 /** An VoxTree instance holds a complete oct-tree of voxels.
  * The VoxTree includes the memory menagement of all of the nodes in the octtree.
@@ -132,22 +66,22 @@ private:
 	/** Optimizes the voxel tree.
 	 * @see void pruneVoxel(void)
 	 */
-	voxel_t pruneVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index);
+	Voxel pruneVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index);
 
 	/** Optimizes the voxel tree.
 	 * @see void pruneVoxel(void)
 	 */
-	voxel_t pruneNode(uint32_t node_nr, const VoxCoord &coord);
+	Voxel pruneNode(uint32_t node_nr, const VoxCoord &coord);
 
 	/** Adds an CSG object to a voxel.
-	 * @see void addCSGObject(CSGObject *obj, voxel_t *new_data)
+	 * @see void addCSGObject(CSGObject *obj, VoxOperation *new_data)
 	 */
-	voxel_t addCSGObjectToVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index, const CSGObject *obj, voxel_t *new_data);
+	Voxel addCSGObjectToVoxel(uint32_t node_nr, const VoxCoord &coord, int voxel_index, const CSGObject *obj, VoxOperation &csg_op);
 
 	/** Adds an CSG object to a voxel.
-	 * @see void addCSGObject(CSGObject *obj, voxel_t *new_data)
+	 * @see void addCSGObject(CSGObject *obj, VoxOperation *new_data)
 	 */
-	voxel_t addCSGObjectToNode(uint32_t node_nr, const VoxCoord &coord, const CSGObject *obj, voxel_t *new_data);
+	Voxel addCSGObjectToNode(uint32_t node_nr, const VoxCoord &coord, const CSGObject *obj, VoxOperation &csg_op);
 
 	/** Generate POVRAY code.
 	 * @see void generatePOVCode(void)
@@ -182,27 +116,7 @@ public:
 	 * @param new_data The new data and the command to be executed when
 	 *        a voxel is inside the CSG Object.
 	 */
-	void addCSGObject(const CSGObject *obj, voxel_t *new_data);
-
-	/** Render an CSG object into voxel space.
-	 * @see void addCSGObject(const CSGObject *obj, voxel_t *new_data)
-	 */
-	void addCSGObjectOR(const CSGObject *obj, uint32_t layers);
-
-	/** Render an CSG object into voxel space.
-	 * @see void addCSGObject(const CSGObject *obj, voxel_t *new_data)
-	 */
-	void addCSGObjectAND(const CSGObject *obj, uint32_t layers);
-
-	/** Render an CSG object into voxel space.
-	 * @see void addCSGObject(const CSGObject *obj, voxel_t *new_data)
-	 */
-	void addCSGObjectXOR(const CSGObject *obj, uint32_t layers);
-
-	/** Make a collision test between CSG object and voxel space.
-	 * @see void addCSGObject(const CSGObject *obj, voxel_t *new_data)
-	 */
-	uint32_t addCSGObjectTST(const CSGObject *obj);
+	void addCSGObject(const CSGObject *obj, VoxOperation &csg_op);
 
 	/** Reduce the memory footprint of the voxel space.
 	 * addCSGObject* alreay automatically prune, so this function
@@ -212,4 +126,5 @@ public:
 };
 
 }
+
 #endif

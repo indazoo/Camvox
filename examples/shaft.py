@@ -50,10 +50,17 @@ cr = crank_shaft()
 cr.rotate(camvox.Vector(0.0, 1.0, 0.0), 0.5 * pi)
 cr.translate(camvox.Vector(25.0, 10.0, 10.0))
 
+operation = camvox.VoxOperation()
+operation.inside_mask.setLayers(1)
+operation.outside_mask.setLayers(0)
+operation.edge_mask.setLayers(0)
+operation.inside_op = camvox.VOX_OP_OR;
+operation.outside_op = camvox.VOX_OP_NOP;
+operation.edge_op = camvox.VOX_OP_NOP;
 
 tree = camvox.VoxTree(50.0)
 tree.max_depth = 8
-tree.addCSGObjectOR(cr, 1)
+tree.addCSGObject(cr, operation)
 
 print >>sys.stderr, tree.nr_nodes_created, tree.nr_nodes_destroyed, tree.nr_nodes_created - tree.nr_nodes_destroyed
 tree.generatePOVCode()

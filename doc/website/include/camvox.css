@@ -159,6 +159,10 @@ code {
 	padding:		10px;
 }
 
+pre {
+	font-family:		Lucida Console, Monaco, monospace;
+}
+
 div.figure {
 	float:			center;
 }
