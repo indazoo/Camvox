@@ -6,6 +6,8 @@
 #include <camvox/Interval.h>
 #include <camvox/Vector.h>
 #include <camvox/Matrix.h>
+#include <camvox/Voxel.h>
+#include <camvox/VoxOperation.h>
 #include <camvox/VoxCoord.h>
 #include <camvox/VoxTree.h>
 #include <camvox/FreeList.h>

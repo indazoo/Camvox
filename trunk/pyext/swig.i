@@ -123,23 +123,46 @@ public:
 	IntervalVector boundingBox(double scale);
 };
 
-typedef uint32_t voxel_t;
 
 typedef enum {
         VOX_OP_OR = 0,
         VOX_OP_AND,
         VOX_OP_XOR,
-        VOX_OP_TST
+        VOX_OP_TST,
+        VOX_OP_NOP
 } vox_op_t;
 
-bool voxIsNodeNr(voxel_t data);
-uint32_t voxGetNodeNr(voxel_t data);
-voxel_t voxSetNodeNr(uint32_t node_nr);
-voxel_t voxSetDontPrune(void);
-bool voxIsDontPrune(voxel_t data);
-vox_op_t voxGetOperation(voxel_t data);
-uint32_t voxGetLayers(voxel_t data);
-voxel_t voxSetLayersAndOperation(uint32_t mask, vox_op_t op);
+class VoxOperation {
+public: 
+        Voxel           inside_mask;
+        Voxel           outside_mask;
+        Voxel           edge_mask;
+        vox_op_t        inside_op;
+        vox_op_t        outside_op;
+        vox_op_t        edge_op;
+        double          collision_size[32];
+};
+
+class Voxel {
+public:
+        uint32_t        value;
+
+        Voxel();
+        Voxel(uint32_t _value);
+        Voxel(Voxel &other);
+
+        bool operator!=(Voxel &other);
+
+        bool isNodeNr(void);
+        bool isLayers(void);
+        bool isDontPrune(void);
+
+        uint32_t getNodeNr(void);
+        uint32_t getLayers(void);
+
+        void setNodeNr(uint32_t node_nr);
+        void setLayers(uint32_t layers);
+};
 
 class VoxTree {
 public:
@@ -150,11 +173,7 @@ public:
 	VoxTree(double _size);
 	~VoxTree();
 	void generatePOVCode();
-	void addCSGObject(CSGObject *obj, voxel_t *new_data);
-	void addCSGObjectOR(const CSGObject *obj, uint32_t layers);
-	void addCSGObjectAND(const CSGObject *obj, uint32_t layers);
-	void addCSGObjectXOR(const CSGObject *obj, uint32_t layers);
-	uint32_t addCSGObjectTST(const CSGObject *obj);
+	void addCSGObject(CSGObject *obj, VoxOperation &operation);
 	void prune();
 };
 
