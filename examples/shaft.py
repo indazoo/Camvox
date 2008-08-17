@@ -27,6 +27,7 @@ def crank_shaft():
 	l17.translate(camvox.Vector(0.0, 0.0, 4.0))
 
 	c20 = CappedCylinder(2.0, 10.0)
+	c20.setResolution(0.1)
 
 	l22 = linkage()
 	l22.rotate(camvox.Vector(0.0, 0.0, 1.0), pi)
@@ -49,17 +50,17 @@ def crank_shaft():
 cr = crank_shaft()
 cr.rotate(camvox.Vector(0.0, 1.0, 0.0), 0.5 * pi)
 cr.translate(camvox.Vector(25.0, 10.0, 10.0))
+cr.setResolution(0.3)
 
 operation = camvox.VoxOperation()
-operation.inside_mask.setLayers(1)
+operation.inside_mask.setLayers(0)
 operation.outside_mask.setLayers(0)
-operation.edge_mask.setLayers(0)
-operation.inside_op = camvox.VOX_OP_OR;
+operation.edge_mask.setLayers(1)
+operation.inside_op = camvox.VOX_OP_NOP;
 operation.outside_op = camvox.VOX_OP_NOP;
-operation.edge_op = camvox.VOX_OP_NOP;
+operation.edge_op = camvox.VOX_OP_OR;
 
 tree = camvox.VoxTree(50.0)
-tree.max_depth = 8
 tree.addCSGObject(cr, operation)
 
 print >>sys.stderr, tree.nr_nodes_created, tree.nr_nodes_destroyed, tree.nr_nodes_created - tree.nr_nodes_destroyed

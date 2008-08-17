@@ -32,15 +32,11 @@ a specific meaning:
  <li>Layer 3: The finishing layer around the model; it will be used to keep track of what parts of the model
      has been finished. During roughing this layer must be untouched.</li>
  <li>Layer 4: The material to be removed after finishing; To detach the model from the spruse.</li>
- <li>Layer 5: The material to be removed after later 6..</li>
- <li>Layer 6: The material to be removed after layer 7.</li>
- <li>Layer 7: The material to be removed after layer 8.</li>
- <li>Layer 8: The first material to be removed, for example cutting of excess material before clamping the
+ <li>Layer 5: The material to be removed after later 6.</li>
+ <li>Layer 6..29: The material to be removed at different sections.</li>
+ <li>Layer 30: The first material to be removed, for example cutting of excess material before clamping the
      material securely.
 </ul>
-
-<p>When rendering an object in layer 2, layer 3 will automatically be generated as a skin around layer 2.
-</p>
 
 <h1>Voxel value</h1>
 <p>Because memory is at a premium for voxel space a single voxel occupies 32 bits. These 32 bits have
@@ -55,26 +51,15 @@ different meanings in different contexts.
   </ul>
  </td>
 </tr><tr>
- <td><pre>0------- -------- -------- llllllll</pre></td>
+ <td><pre>01llllll llllllll llllllll llllllll</pre></td>
  <td>This is a leaf node in the oct-tree.
   <ul>
-   <li>l = The 8 layers</li>
+   <li>l = The 30 layers</li>
   </ul>
  </td>
 </tr><tr>
- <td><pre>0ooooooo oooooooo oooooooo -----1--</pre></td>
- <td>This is the finishing skin of an object, at layer 3.
-  <ul>
-   <li>c = CSG Object number for fast access to the actual CSG Object.</li>
-  </ul>
- </td>
-</tr><tr>
- <td><pre>0sssssss ssssssss ssssssss llllllll</pre></td>
- <td>This voxel value is returned when doing a collision test.
-  <ul>
-   <li>l = A mask of 8 layers, set when that layer has collided.</li>
-   <li>s = total cubic size of layers being hit.</li>
-  </ul>
+ <td><pre>00000000 00000000 00000000 00000000</pre></td>
+ <td>This value is used internally to mean that not all childs have the same value.
  </td>
 </tr>
 </table>

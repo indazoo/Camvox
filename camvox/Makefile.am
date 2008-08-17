@@ -14,7 +14,6 @@ libcamvox_la_SOURCES =	CSGObject.cc\
 			CSGPlane.cc\
 			CSGCylinder.cc\
 			FreeList.cc\
-			VoxCoord.cc\
 			VoxTree.cc
 
 
@@ -36,7 +35,6 @@ library_include_HEADERS=camvox.h\
 			CSGPlane.h\
 			CSGCylinder.h\
 			FreeList.h\
-			VoxCoord.h\
 			VoxTree.h
 
 

@@ -30,6 +30,7 @@ public:
 	virtual ~CSGOperation() {}
 	virtual void add(CSGObject *obj);
 	virtual void mergeTransforms(void);
+	virtual void mergeResolutions(void);
 };
 
 }

@@ -28,13 +28,17 @@ public:
 	Matrix		transform;
 	Matrix		total_transform;
 	Matrix		total_inv_transform;
+	double		resolution;
+	double		total_resolution;
 
 	CSGObject();
 	virtual ~CSGObject() {}
+	virtual void mergeResolutions(void);
 	virtual void mergeTransforms(void);
 	virtual void translate(const Vector &a);
 	virtual void scale(const Vector &a);
 	virtual void rotate(const Vector &a, double angle);
+	virtual void setResolution(double _resolution);
 	virtual const CSGObject *boxType(const IntervalVector &a) const;
 };
 

@@ -49,15 +49,31 @@ public:
 
 	/** Construct a new coord identifying the root voxel in the oct-tree.
 	 */
-	VoxCoord(void);
+	VoxCoord(void) {
+		v[0] = 0;
+		v[1] = 0;
+		v[2] = 0;
+		depth = 0;
+	}
 
 	/** Copy constructor.
 	 */
-	VoxCoord(const VoxCoord &a);
+	VoxCoord(const VoxCoord &a) {
+		v[0] = a.v[0];
+		v[1] = a.v[1];
+		v[2] = a.v[2];
+		depth = a.depth;
+	}
 
 	/** Copy operator.
 	 */
-	VoxCoord &operator=(const VoxCoord &a);
+	VoxCoord &operator=(const VoxCoord &a) {
+		v[0] = a.v[0];
+		v[1] = a.v[1];
+		v[2] = a.v[2];
+		depth = a.depth;
+		return *this;
+	}
 
 	/** Get the coord of a neighbour voxel at the same oct-tree depth.
 	 * To get the other corner of this voxel, one would specify (1, 1, 1)
@@ -68,19 +84,51 @@ public:
 	 * @param z	number of voxels away on the z-axis.
 	 * @returns The new voxel coord pointing to a neighbour voxel.
 	 */
-	VoxCoord nextNeighbour(int x, int y, int z) const;
+	VoxCoord nextNeighbour(int x, int y, int z) const {
+		VoxCoord r = *this;
+
+		uint32_t movement = 0x80000000 >> depth;
+		r.v[0]+= movement * x;
+		r.v[1]+= movement * y;
+		r.v[2]+= movement * z;
+		return r;
+	}
 
 	/** Get the coord of a child voxel at the next depth of the oct-tree.
 	 * @param child_index	An index pointing to one of the eight childs of an oct-tree node.
 	 * @returns The new voxel coord pointing to a child voxel.
 	 */
-	VoxCoord childCoord(int child_index) const;
+	VoxCoord childCoord(int child_index) const {
+		VoxCoord r = *this;
+		r.depth++;
+
+		return r.nextNeighbour(child_index & 1, (child_index >> 1) & 1, (child_index >> 2) & 1);
+	}
 
 	/** Get the axis aligned bounding box describing this voxel in cartesion coords.
 	 * @param scale		The size of the smalles voxel.
 	 * @returns An IntervalVector describing the axis aligned bounding box.
 	 */
-	IntervalVector boundingBox(double scale) const;
+	IntervalVector boundingBox(double scale) const {
+		VoxCoord opposite = nextNeighbour(1, 1, 1);
+
+		IntervalVector	r = IntervalVector(
+			Interval(v[0] * scale, opposite.v[0] * scale),
+			Interval(v[1] * scale, opposite.v[1] * scale),
+			Interval(v[2] * scale, opposite.v[2] * scale),
+			1.0
+		);
+
+		// Return an interval vector bounded around this voxel .
+		return r;
+	}
+
+	/** The size of this voxel.
+	 * @returns the size of this voxel in the scale of the oct tree.
+	 */
+	double size(double scale) const {
+		return (0x80000000 >> depth) * scale;
+	}
 };
 
 }

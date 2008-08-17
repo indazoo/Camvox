@@ -26,7 +26,24 @@ CSGObject::CSGObject()
 {
 	parent = NULL;
 	transform = Matrix();
+	resolution = 1.0;
+	mergeResolutions();
 	mergeTransforms();
+}
+
+/* mergeResolution() should be called on any change in resolution.
+ */
+void CSGObject::mergeResolutions(void)
+{
+	if (parent) {
+		if (parent->total_resolution < this->resolution) {
+			total_resolution = parent->total_resolution;
+		} else {
+			total_resolution = this->resolution;
+		}
+	} else {
+		total_resolution = this->resolution;
+	}
 }
 
 /* mergeTransforms() should be called on any change in geometry parameters.
@@ -34,11 +51,8 @@ CSGObject::CSGObject()
 void CSGObject::mergeTransforms(void)
 {
 	if (parent) {
-		//fprintf(stderr, "have parent\n");
-		//total_transform = transform * parent->total_transform;
 		total_transform = parent->total_transform * transform;
 	} else {
-		//fprintf(stderr, "don't have parent\n");
 		total_transform = transform;
 	}
 	total_inv_transform = total_transform.invert();
@@ -59,9 +73,13 @@ void CSGObject::scale(const Vector &a)
 void CSGObject::rotate(const Vector &a, double angle)
 {
 	transform = transform.rotate(a, angle);
-	//fprintf(stderr, "merge for rotate\n");
 	mergeTransforms();
-	//fprintf(stderr, "/merge for rotate\n");
+}
+
+void CSGObject::setResolution(double _resolution)
+{
+	resolution = _resolution;
+	mergeResolutions();
 }
 
 const CSGObject *CSGObject::boxType(const IntervalVector &a) const
