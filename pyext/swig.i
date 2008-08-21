@@ -44,6 +44,7 @@ public:
 
 class CSGObject {
 public:
+        uint32_t id;
 	Matrix transform;
 	Matrix total_transform;
 	Matrix total_inv_transform;
@@ -144,6 +145,7 @@ public:
         vox_op_t        inside_op;
         vox_op_t        outside_op;
         vox_op_t        edge_op;
+        bool            set_edge_obj;
         double          collision_size[32];
 };
 

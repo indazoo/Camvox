@@ -18,9 +18,15 @@
 #define VOXEL_H
 
 #include <stdint.h>
+#include <camvox/CSGObject.h>
 
 namespace camvox {
 
+/** Value of a voxel.
+ * 00000000 00000000 00000000 00000000		Al child voxels are the same.
+ * 1nnnnnnn nnnnnnnn nnnnnnnn nnnnnnnn		Node number.
+ * 01cccccc cccccccc cccccccc llllllll		CSGobject + layer mask.
+ */
 class Voxel {
 public:
 	uint32_t	value;
@@ -66,15 +72,21 @@ public:
 		value = (layers & 0x3fffffff) | 0x40000000;
 	}
 
+	void setCSGObject(const CSGObject *obj) {
+		uint32_t id = obj->id;
+
+		value = (value & 0xffffff) | ((id << 8) & 0x3fffff00);
+	}
+
 	void setDontPrune(void) {
 		value = 0;
 	}
 
-	bool isNodeNr(void) {
+	bool isNodeNr(void) const {
 		return (value & 0x80000000) == 0x80000000;
 	}
 
-	bool isLayers(void) {
+	bool isLayers(void) const {
 		return (value & 0xc0000000) == 0x40000000;
 	}
 
@@ -92,6 +104,11 @@ public:
 
 	uint32_t getLayers(void) const {
 		return value & 0x3fffffff;
+	}
+
+	CSGObject *getCSGObject(void) const {
+		uint32_t id = (value & 0x3fffff00) >> 8;
+		return csgobject_list[id];
 	}
 };
 

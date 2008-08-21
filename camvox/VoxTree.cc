@@ -196,9 +196,13 @@ Voxel VoxTree::addCSGObjectToVoxel(uint32_t node_nr, const VoxCoord &coord, int 
 				case VOX_OP_XOR:
 					voxel_data.xorLayers(csg_op.edge_mask);
 					break;
+					break;
 				case VOX_OP_NOP:
 				case VOX_OP_TST:
 					break;
+				}
+				if (csg_op.set_edge_obj) {
+					voxel_data.setCSGObject(obj);
 				}
 
 			} else {
