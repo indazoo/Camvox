@@ -40,6 +40,7 @@ public:
 	vox_op_t	inside_op;
 	vox_op_t	outside_op;
 	vox_op_t	edge_op;
+	bool		set_edge_obj;
 	double		collision_size[32];
 };
 

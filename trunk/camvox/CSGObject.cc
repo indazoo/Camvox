@@ -22,13 +22,23 @@ namespace camvox {
 CSGObject *WHITE_BOX = new CSGObject();
 CSGObject *BLACK_BOX = new CSGObject();
 
+std::vector<CSGObject *>	csgobject_list;
+
 CSGObject::CSGObject()
 {
+	id = csgobject_list.size();
+	csgobject_list.push_back(this);
+
 	parent = NULL;
 	transform = Matrix();
 	resolution = 1.0;
 	mergeResolutions();
 	mergeTransforms();
+}
+
+CSGObject::~CSGObject()
+{
+	csgobject_list[id] = NULL;
 }
 
 /* mergeResolution() should be called on any change in resolution.

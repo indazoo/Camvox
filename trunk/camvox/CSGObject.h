@@ -19,11 +19,13 @@
 
 #include <camvox/Vector.h>
 #include <camvox/Matrix.h>
+#include <vector>
 
 namespace camvox {
 
 class CSGObject {
 public:
+	uint32_t	id;
 	CSGObject	*parent;
 	Matrix		transform;
 	Matrix		total_transform;
@@ -32,7 +34,7 @@ public:
 	double		total_resolution;
 
 	CSGObject();
-	virtual ~CSGObject() {}
+	virtual ~CSGObject();
 	virtual void mergeResolutions(void);
 	virtual void mergeTransforms(void);
 	virtual void translate(const Vector &a);
@@ -45,6 +47,8 @@ public:
 // These are standard objects that boxType will return.
 extern CSGObject *WHITE_BOX;
 extern CSGObject *BLACK_BOX;
+
+extern std::vector<CSGObject *>	csgobject_list;
 
 }
 #endif
