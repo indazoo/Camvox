@@ -112,15 +112,14 @@ public:
 	IntervalVector boundingBox(double scale) const {
 		VoxCoord opposite = nextNeighbour(1, 1, 1);
 
-		IntervalVector	r = IntervalVector(
-			Interval(v[0] * scale, opposite.v[0] * scale),
-			Interval(v[1] * scale, opposite.v[1] * scale),
-			Interval(v[2] * scale, opposite.v[2] * scale),
+		double half_size = scale * 1073741824.0;
+
+		return IntervalVector(
+			Interval(v[0] * scale - half_size, opposite.v[0] * scale - half_size),
+			Interval(v[1] * scale - half_size, opposite.v[1] * scale - half_size),
+			Interval(v[2] * scale - half_size, opposite.v[2] * scale - half_size),
 			1.0
 		);
-
-		// Return an interval vector bounded around this voxel .
-		return r;
 	}
 
 	/** The size of this voxel.
