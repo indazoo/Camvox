@@ -49,11 +49,11 @@ def crank_shaft():
 
 cr = crank_shaft()
 cr.rotate(camvox.Vector(0.0, 1.0, 0.0), 0.5 * pi)
-cr.translate(camvox.Vector(25.0, 10.0, 10.0))
+#cr.translate(camvox.Vector(25.0, 10.0, 10.0))
 cr.setResolution(0.3)
 
 operation = camvox.VoxOperation()
-operation.inside_mask.setLayers(0)
+operation.inside_mask.setLayers(1)
 operation.outside_mask.setLayers(0)
 operation.edge_mask.setLayers(1)
 operation.inside_op = camvox.VOX_OP_NOP;

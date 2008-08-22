@@ -299,7 +299,7 @@ void VoxTree::generatePOVCodeForVoxel(uint32_t node_nr, const VoxCoord &coord, i
 
 			// Our Y and Z axis is switched compared to almost everyone else.
 			fprintf(stdout, "box {\n");
-			fprintf(stdout, "  <%lf %lf %lf>, <%lf %lf %lf>\n",
+			fprintf(stdout, "  <%lf, %lf, %lf>, <%lf, %lf, %lf>\n",
 				voxel_bound.x.low,
 				voxel_bound.z.low,
 				voxel_bound.y.low,
@@ -325,14 +325,14 @@ void VoxTree::generatePOVCode(void)
 	fprintf(stdout, "#include \"glass.inc\"\n\n");
 
 	fprintf(stdout, "background { color Black }\n");
-	fprintf(stdout, "global_settings { ambient_light <0.4, 0.4, 0.4> }\n");
+	fprintf(stdout, "global_settings { ambient_light <1.2, 1.2, 1.2> }\n");
 	fprintf(stdout, "camera {\n");
 	fprintf(stdout, "  orthographic\n");
-	fprintf(stdout, "  location <0.0, %lf, %lf>\n", size, -size * 0.8);
-	fprintf(stdout, "  look_at <%lf, %lf, 0.0>\n", size * 0.5, size * 0.4);
+	fprintf(stdout, "  location <%lf, %lf, %lf>\n", -size * 0.4, size * 0.4, -size * 0.8);
+	fprintf(stdout, "  look_at <0.0, 0.0, 0.0>\n");
 	fprintf(stdout, "}\n");
 	fprintf(stdout, "light_source { <%lf, %lf, %lf> color <%lf, %lf, %lf> }\n",
-		-size * 0.5, size, -size,
+		-size * 0.5, size * 0.4, -size,
 		2.0, 2.0, 2.0
 	);
 
