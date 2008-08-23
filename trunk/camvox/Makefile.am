@@ -14,7 +14,10 @@ libcamvox_la_SOURCES =	CSGObject.cc\
 			CSGPlane.cc\
 			CSGCylinder.cc\
 			FreeList.cc\
-			VoxTree.cc
+			VoxTree.cc\
+			VoxTree_prune.cc\
+			VoxTree_addCSGObject.cc\
+			VoxTree_generatePOVCode.cc
 
 
 library_includedir=$(includedir)/camvox-1.0/camvox

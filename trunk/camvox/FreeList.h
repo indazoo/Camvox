@@ -18,6 +18,7 @@
 #define FREELIST_H
 
 #include <list>
+#include <exception>
 #include <stdint.h>
 
 namespace camvox {
@@ -73,6 +74,21 @@ public:
 	 * @returns The minimum array size to hold all items.
 	 */
 	uint32_t arraySize();
+};
+
+class FreeList_err : public std::exception {
+	const char *msg;
+public:
+	FreeList_err(const char *_msg) {
+		msg = _msg;
+	}
+
+	virtual ~FreeList_err() throw () {
+	}
+
+	virtual const char* what() const throw () {
+		return msg;
+	}
 };
 
 }
