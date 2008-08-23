@@ -45,7 +45,11 @@ uint32_t FreeList::alloc()
 	free_region_t	*a;
 	uint32_t	item_nr;
 
-	// Get the item from the back of the list.
+	if (regions.size() == 0) {
+		throw new FreeList_err("No more items in the free list left.");
+	}
+
+	// Get the item from the start of the list.
 	a = *(regions.begin());
 
 	// Get the first item.
@@ -60,7 +64,7 @@ uint32_t FreeList::alloc()
 		delete a;
 	}
 
-	// Return the item in reverse.
+	// Return the item.
 	return item_nr;
 }
 
@@ -116,8 +120,7 @@ void FreeList::free(uint32_t item_nr)
 
 		if (item_nr < (a->start + a->length)) {
 			// Our item is inside this region.
-			fprintf(stderr, "%u < %u + %u\n", (unsigned)item_nr, (unsigned)a->start, (unsigned)a->length);
-			throw bad_index;
+			throw FreeList_err("Item to be freed is already in free list.");
 		}
 
 		if (item_nr == (a->start + a->length)) {
