@@ -93,6 +93,11 @@ private:
 	 */
 	void generatePOVCodeForNode(uint32_t node_nr, const VoxCoord &coord);
 
+
+	uint8_t getVoxelLayers(uint32_t node_nr, const VoxCoord &coord, const VoxCoord &end_coord, int voxel_index) const;
+
+	uint8_t getNodeLayers(uint32_t node_nr, const VoxCoord &coord, const VoxCoord &end_coord) const;
+
 public:
 	uint64_t	nr_nodes_created;	///< A counter showing the number of nodes created.
 	uint64_t	nr_nodes_destroyed;	///< A counter showing the number of nodes removed.
@@ -122,6 +127,14 @@ public:
 	 * rarelly needs to be called.
 	 */
 	void prune(void);
+
+	/** Find the value at the coord.
+	 */
+	uint8_t getLayers(const VoxCoord &coord) const;
+
+	/** Find all coords that are part of the skin.
+	 */
+	void getSkin(uint8_t layers, double resolution, std::vector<VoxCoord> &coords) const;
 };
 
 }

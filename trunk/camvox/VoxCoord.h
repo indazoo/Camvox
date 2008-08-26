@@ -44,34 +44,39 @@ namespace camvox {
  */
 class VoxCoord {
 public:
-	uint32_t	v[3];	///< 3D coordinate of the left,near,bottom corner of a voxel box.
 	int		depth;	///< Depth within the oct-tree.
+	uint32_t	x;	///< 3D x-axis of the left,near,bottom corner of a voxel box.
+	uint32_t	y;	///< 3D y-axis of the left,near,bottom corner of a voxel box.
+	uint32_t	z;	///< 3D z-axis of the left,near,bottom corner of a voxel box.
 
 	/** Construct a new coord identifying the root voxel in the oct-tree.
 	 */
-	VoxCoord(void) {
-		v[0] = 0;
-		v[1] = 0;
-		v[2] = 0;
-		depth = 0;
-	}
+	VoxCoord(void) : depth(0), x(0), y(0), z(0) {}
 
 	/** Copy constructor.
 	 */
-	VoxCoord(const VoxCoord &a) {
-		v[0] = a.v[0];
-		v[1] = a.v[1];
-		v[2] = a.v[2];
-		depth = a.depth;
+	VoxCoord(const VoxCoord &other) : depth(other.depth), x(other.x), y(other.y), z(other.z) {}
+
+	/** Create a coord at a specific depth.
+	 * @param depth	at what level is this voxel, 0 is root.
+	 * @param x	number of voxels right at this depth.
+	 * @param y	number of voxels away at this depth.
+	 * @param z	number of voxels up at this depth.
+	 */
+	VoxCoord(int _depth, int _x = 0, int _y = 0, int _z = 0) : depth(_depth) {
+		uint32_t movement = 0x80000000 >> depth;
+		x = movement * _x;
+		y = movement * _y;
+		z = movement * _z;
 	}
 
 	/** Copy operator.
 	 */
-	VoxCoord &operator=(const VoxCoord &a) {
-		v[0] = a.v[0];
-		v[1] = a.v[1];
-		v[2] = a.v[2];
-		depth = a.depth;
+	VoxCoord &operator=(const VoxCoord &other) {
+		depth = other.depth;
+		x = other.x;
+		y = other.y;
+		z = other.z;
 		return *this;
 	}
 
@@ -84,13 +89,13 @@ public:
 	 * @param z	number of voxels away on the z-axis.
 	 * @returns The new voxel coord pointing to a neighbour voxel.
 	 */
-	VoxCoord nextNeighbour(int x, int y, int z) const {
+	VoxCoord nextNeighbour(int _x, int _y, int _z) const {
 		VoxCoord r = *this;
 
 		uint32_t movement = 0x80000000 >> depth;
-		r.v[0]+= movement * x;
-		r.v[1]+= movement * y;
-		r.v[2]+= movement * z;
+		r.x+= movement * _x;
+		r.y+= movement * _y;
+		r.z+= movement * _z;
 		return r;
 	}
 
@@ -115,9 +120,9 @@ public:
 		double half_size = scale * 1073741824.0;
 
 		return IntervalVector(
-			Interval(v[0] * scale - half_size, opposite.v[0] * scale - half_size),
-			Interval(v[1] * scale - half_size, opposite.v[1] * scale - half_size),
-			Interval(v[2] * scale - half_size, opposite.v[2] * scale - half_size),
+			Interval(x * scale - half_size, opposite.x * scale - half_size),
+			Interval(y * scale - half_size, opposite.y * scale - half_size),
+			Interval(z * scale - half_size, opposite.z * scale - half_size),
 			1.0
 		);
 	}
@@ -127,6 +132,16 @@ public:
 	 */
 	double size(double scale) const {
 		return (0x80000000 >> depth) * scale;
+	}
+
+	int indexAtDepth(int _depth) const {
+		uint32_t mask = (0x80000000 >> _depth);
+
+		return (
+			((x & mask) ? 1 : 0) |
+			((y & mask) ? 2 : 0) |
+			((z & mask) ? 4 : 0)
+		);
 	}
 };
 

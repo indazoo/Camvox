@@ -1,4 +1,5 @@
 %module camvox
+%include "std_vector.i"
 %{
 #include <camvox/camvox.h>
 using namespace camvox;
@@ -117,8 +118,10 @@ public:
 
 class VoxCoord {
 public:
-	uint32_t	v[3];
 	int		depth;
+	uint32_t	x;
+	uint32_t	y;
+	uint32_t	z;
 
 	VoxCoord();
 	~VoxCoord();
@@ -158,6 +161,7 @@ public:
         Voxel(Voxel &other);
 
         bool operator!=(Voxel &other);
+        bool operator==(Voxel &other);
 
         bool isNodeNr(void);
         bool isLayers(void);
@@ -170,6 +174,8 @@ public:
         void setLayers(uint32_t layers);
 };
 
+%template(vectorVoxCoord)       std::vector<VoxCoord>;
+
 class VoxTree {
 public:
 	int	nr_nodes_created;
@@ -180,5 +186,6 @@ public:
 	void generatePOVCode();
 	void addCSGObject(CSGObject *obj, VoxOperation &operation);
 	void prune();
+	void getSkin(int layers, double resolution, std::vector<VoxCoord> &coords);
 };
 
