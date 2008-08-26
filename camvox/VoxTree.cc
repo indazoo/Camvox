@@ -38,7 +38,7 @@ VoxTree::VoxTree(double _size) :
 	root = alloc();
 	vox_node_t *node = &nodes[root];
 	for (int i = 0; i < 8; i++) {
-		node->voxels[i].setLayers(0);
+		node->voxels[i] = Voxel(0);
 	}
 }
 
@@ -47,13 +47,13 @@ VoxTree::~VoxTree(void)
 	delete nodes;
 }
 
-inline void VoxTree::free(uint32_t node_nr)
+void VoxTree::free(uint32_t node_nr)
 {
 	free_list.free(node_nr);
 	nr_nodes_destroyed++;
 }
 
-inline uint32_t VoxTree::alloc(void)
+uint32_t VoxTree::alloc(void)
 {
 	uint32_t ret = free_list.alloc();
 	checkSize();

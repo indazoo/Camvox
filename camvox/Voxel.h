@@ -18,9 +18,25 @@
 #define VOXEL_H
 
 #include <stdint.h>
+#include <exception>
 #include <camvox/CSGObject.h>
 
 namespace camvox {
+
+class Voxel_err : public std::exception {
+	const char *msg;
+public:
+	Voxel_err(const char *_msg) {
+		msg = _msg;
+	}
+
+	virtual ~Voxel_err() throw () {
+	}
+
+	virtual const char* what() const throw () {
+		return msg;
+	}
+};
 
 /** Value of a voxel.
  * 00000000 00000000 00000000 00000000		Al child voxels are the same.
@@ -31,17 +47,13 @@ class Voxel {
 public:
 	uint32_t	value;
 
-	Voxel() {
-		value = 0;
+	Voxel() : value(0) {}
+
+	Voxel(uint32_t layers) : value(0) {
+		setLayers(layers);
 	}
 
-	Voxel(uint32_t _value) {
-		value = _value;
-	}
-
-	Voxel(const Voxel &other) {
-		value = other.value;
-	}
+	Voxel(const Voxel &other) : value(other.value) {}
 
 	Voxel &operator=(const Voxel &other) {
 		value = other.value;
@@ -52,30 +64,53 @@ public:
 		return value != other.value;
 	}
 
+	bool operator==(const Voxel &other) const {
+		return value == other.value;
+	}
+
 	void orLayers(const Voxel &other) {
-		value|= other.value;
+		setLayers(getLayers() | other.getLayers());
 	}
 
 	void andLayers(const Voxel &other) {
-		value&= other.value;
+		setLayers(getLayers() & other.getLayers());
 	}
 
 	void xorLayers(const Voxel &other) {
-		value^= other.value;
+		setLayers(getLayers() ^ other.getLayers());
 	}
 
 	void setNodeNr(uint32_t node_nr) {
+		if (__builtin_expect(node_nr > 0x7fffffff, 0)) {
+			throw Voxel_err("Node number may not be larger than 0x7fffffff.");
+		}
 		value = node_nr | 0x80000000;
 	}
 
 	void setLayers(uint32_t layers) {
-		value = (layers & 0x3fffffff) | 0x40000000;
+		if (__builtin_expect(layers > 0xff, 0)) {
+			throw Voxel_err("Layers may only be 8 bit.");
+		}
+
+		if (__builtin_expect(isLayers(), 1)) {
+			value = (value & 0xffffff00) | layers;
+		} else {
+			value = layers | 0x40000000;
+		}
 	}
 
 	void setCSGObject(const CSGObject *obj) {
 		uint32_t id = obj->id;
 
-		value = (value & 0xffffff) | ((id << 8) & 0x3fffff00);
+		if (__builtin_expect(id > 0x3fffff, 0)) {
+			throw Voxel_err("CSGObject is may not be larger than 0x3fffff.");
+		}
+
+		if (__builtin_expect(isLayers(), 1)) {
+			value = (value & 0xc00000ff) | (id << 8);
+		} else {
+			value = (id << 8) | 0x40000000;
+		}
 	}
 
 	void setDontPrune(void) {
@@ -99,14 +134,26 @@ public:
 	}
 
 	uint32_t getNodeNr(void) const {
+		if (__builtin_expect(!isNodeNr(), 0)) {
+			throw Voxel_err("Voxel is not a node number.");
+		}
+
 		return value & 0x7fffffff;
 	}
 
 	uint32_t getLayers(void) const {
-		return value & 0x3fffffff;
+		if (__builtin_expect(!isLayers(), 0)) {
+			throw Voxel_err("Voxel is not a layer.");
+		}
+
+		return value & 0x000000ff;
 	}
 
 	CSGObject *getCSGObject(void) const {
+		if (__builtin_expect(!isLayers(), 0)) {
+			throw Voxel_err("Voxel is not a layer.");
+		}
+
 		uint32_t id = (value & 0x3fffff00) >> 8;
 		return csgobject_list[id];
 	}
