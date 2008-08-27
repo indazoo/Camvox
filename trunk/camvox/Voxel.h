@@ -49,7 +49,7 @@ public:
 
 	Voxel() : value(0) {}
 
-	Voxel(uint32_t layers) : value(0) {
+	Voxel(uint8_t layers) : value(0) {
 		setLayers(layers);
 	}
 
@@ -87,11 +87,7 @@ public:
 		value = node_nr | 0x80000000;
 	}
 
-	void setLayers(uint32_t layers) {
-		if (__builtin_expect(layers > 0xff, 0)) {
-			throw Voxel_err("Layers may only be 8 bit.");
-		}
-
+	void setLayers(uint8_t layers) {
 		if (__builtin_expect(isLayers(), 1)) {
 			value = (value & 0xffffff00) | layers;
 		} else {
@@ -141,7 +137,7 @@ public:
 		return value & 0x7fffffff;
 	}
 
-	uint32_t getLayers(void) const {
+	uint8_t getLayers(void) const {
 		if (__builtin_expect(!isLayers(), 0)) {
 			throw Voxel_err("Voxel is not a layer.");
 		}

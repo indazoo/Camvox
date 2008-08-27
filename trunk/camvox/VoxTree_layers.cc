@@ -81,7 +81,7 @@ void VoxTree::getSkin(uint8_t layers, double resolution, std::vector<VoxCoord> &
 				VoxCoord neighbour = VoxCoord(depth, x2, y2, z2);
 
 				if (getLayers(neighbour) == 0) {
-					fprintf(stderr, "(%i %i %i) %i| %x %x %x\n", x, y, z, coord.depth, coord.x, coord.y, coord.z);
+					//fprintf(stderr, "(%i %i %i) %i| %x %x %x\n", x, y, z, coord.depth, coord.x, coord.y, coord.z);
 					coords.push_back(coord);
 					goto next;
 				}

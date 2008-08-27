@@ -236,8 +236,6 @@ public:
 		TMatrix		B = TMatrix();
 		TVector<T>	nv = v.normalize();
 
-		fprintf(stderr, "%lf, %lf, %lf\n", nv.x, nv.y, nv.z);
-
 		B.m[0][0] = (1.0 - gcos(angle)) * (nv.x * nv.x) + (       gcos(angle));
 		B.m[0][1] = (1.0 - gcos(angle)) * (nv.x * nv.y) + (nv.z * gsin(angle));
 		B.m[0][2] = (1.0 - gcos(angle)) * (nv.x * nv.z) - (nv.y * gsin(angle));
