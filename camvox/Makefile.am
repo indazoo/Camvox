@@ -16,7 +16,7 @@ libcamvox_la_SOURCES =	CSGObject.cc\
 			FreeList.cc\
 			VoxTree.cc\
 			VoxTree_prune.cc\
-			VoxTree_value.cc\
+			VoxTree_layers.cc\
 			VoxTree_addCSGObject.cc\
 			VoxTree_generatePOVCode.cc
 

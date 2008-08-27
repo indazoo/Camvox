@@ -65,7 +65,7 @@ am_libcamvox_la_OBJECTS = libcamvox_la-CSGObject.lo \
 	libcamvox_la-CSGSphere.lo libcamvox_la-CSGPlane.lo \
 	libcamvox_la-CSGCylinder.lo libcamvox_la-FreeList.lo \
 	libcamvox_la-VoxTree.lo libcamvox_la-VoxTree_prune.lo \
-	libcamvox_la-VoxTree_value.lo \
+	libcamvox_la-VoxTree_layers.lo \
 	libcamvox_la-VoxTree_addCSGObject.lo \
 	libcamvox_la-VoxTree_generatePOVCode.lo
 libcamvox_la_OBJECTS = $(am_libcamvox_la_OBJECTS)
@@ -256,7 +256,7 @@ libcamvox_la_SOURCES = CSGObject.cc\
 			FreeList.cc\
 			VoxTree.cc\
 			VoxTree_prune.cc\
-			VoxTree_value.cc\
+			VoxTree_layers.cc\
 			VoxTree_addCSGObject.cc\
 			VoxTree_generatePOVCode.cc
 
@@ -367,8 +367,8 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-VoxTree.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-VoxTree_addCSGObject.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-VoxTree_generatePOVCode.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-VoxTree_layers.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-VoxTree_prune.Plo@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libcamvox_la-VoxTree_value.Plo@am__quote@
 
 .cc.o:
 @am__fastdepCXX_TRUE@	$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -482,12 +482,12 @@ libcamvox_la-VoxTree_prune.lo: VoxTree_prune.cc
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-VoxTree_prune.lo `test -f 'VoxTree_prune.cc' || echo '$(srcdir)/'`VoxTree_prune.cc
 
-libcamvox_la-VoxTree_value.lo: VoxTree_value.cc
-@am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-VoxTree_value.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-VoxTree_value.Tpo -c -o libcamvox_la-VoxTree_value.lo `test -f 'VoxTree_value.cc' || echo '$(srcdir)/'`VoxTree_value.cc
-@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/libcamvox_la-VoxTree_value.Tpo $(DEPDIR)/libcamvox_la-VoxTree_value.Plo
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxTree_value.cc' object='libcamvox_la-VoxTree_value.lo' libtool=yes @AMDEPBACKSLASH@
+libcamvox_la-VoxTree_layers.lo: VoxTree_layers.cc
+@am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-VoxTree_layers.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-VoxTree_layers.Tpo -c -o libcamvox_la-VoxTree_layers.lo `test -f 'VoxTree_layers.cc' || echo '$(srcdir)/'`VoxTree_layers.cc
+@am__fastdepCXX_TRUE@	mv -f $(DEPDIR)/libcamvox_la-VoxTree_layers.Tpo $(DEPDIR)/libcamvox_la-VoxTree_layers.Plo
+@AMDEP_TRUE@@am__fastdepCXX_FALSE@	source='VoxTree_layers.cc' object='libcamvox_la-VoxTree_layers.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-VoxTree_value.lo `test -f 'VoxTree_value.cc' || echo '$(srcdir)/'`VoxTree_value.cc
+@am__fastdepCXX_FALSE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -c -o libcamvox_la-VoxTree_layers.lo `test -f 'VoxTree_layers.cc' || echo '$(srcdir)/'`VoxTree_layers.cc
 
 libcamvox_la-VoxTree_addCSGObject.lo: VoxTree_addCSGObject.cc
 @am__fastdepCXX_TRUE@	$(LIBTOOL) --tag=CXX $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libcamvox_la_CXXFLAGS) $(CXXFLAGS) -MT libcamvox_la-VoxTree_addCSGObject.lo -MD -MP -MF $(DEPDIR)/libcamvox_la-VoxTree_addCSGObject.Tpo -c -o libcamvox_la-VoxTree_addCSGObject.lo `test -f 'VoxTree_addCSGObject.cc' || echo '$(srcdir)/'`VoxTree_addCSGObject.cc
