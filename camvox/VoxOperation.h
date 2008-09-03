@@ -41,7 +41,19 @@ public:
 	vox_op_t	outside_op;
 	vox_op_t	edge_op;
 	bool		set_edge_obj;
-	double		collision_size[32];
+	double		collision_size[8];
+
+	VoxOperation() :
+		inside_mask(0), outside_mask(0), edge_mask(0),
+		inside_op(VOX_OP_NOP), outside_op(VOX_OP_NOP), edge_op(VOX_OP_NOP),
+		set_edge_obj(false)
+	{
+		for (int i = 0; i < 8; i++) {
+			collision_size[i] = 0.0;
+		}
+	}
+
+	~VoxOperation() {}
 };
 
 }

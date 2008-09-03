@@ -129,6 +129,7 @@ public:
 	VoxCoord childCoord(int child_index);
 	IntervalVector boundingBox(double scale);
 	double size(double scale);
+        Vector center(double scale);
 };
 
 
@@ -154,8 +155,6 @@ public:
 
 class Voxel {
 public:
-        uint32_t        value;
-
         Voxel();
         Voxel(uint32_t _value);
         Voxel(Voxel &other);
@@ -174,7 +173,16 @@ public:
         void setLayers(uint32_t layers);
 };
 
-%template(vectorVoxCoord)       std::vector<VoxCoord>;
+class MillCoord {
+public:
+        VoxCoord        voxel;
+        Vector          position;
+        Vector          orientation;
+
+        MillCoord(const VoxCoord &_voxel, const Vector &_position, const Vector &_orientation);
+};
+
+%template(vectorMillCoord)       std::vector<MillCoord>;
 
 class VoxTree {
 public:
@@ -186,6 +194,6 @@ public:
 	void generatePOVCode();
 	void addCSGObject(CSGObject *obj, VoxOperation &operation);
 	void prune();
-	void getSkin(int layers, double resolution, std::vector<VoxCoord> &coords);
+	void getSkin(int layers, double resolution, std::vector<MillCoord> &coords);
 };
 

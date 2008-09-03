@@ -51,22 +51,51 @@ cr = crank_shaft()
 cr.rotate(camvox.Vector(0.0, 1.0, 0.0), 0.5 * pi)
 cr.setResolution(0.3)
 
-operation = camvox.VoxOperation()
-operation.inside_mask.setLayers(1)
-operation.outside_mask.setLayers(0)
-operation.edge_mask.setLayers(1)
-operation.inside_op = camvox.VOX_OP_OR;
-operation.outside_op = camvox.VOX_OP_NOP;
-operation.edge_op = camvox.VOX_OP_OR;
+mat = CappedCylinder(6.0, 50.0)
+mat.translate(camvox.Vector(0.0, 0.0, -5.0))
+mat.rotate(camvox.Vector(0.0, 1.0, 0.0), 0.5 * pi)
+mat.setResolution(0.3)
 
-tree = camvox.VoxTree(50.0)
+lastmat = CappedCylinder(2.0, 10.0)
+lastmat.translate(camvox.Vector(0.0, 0.0, -25.0))
+lastmat.rotate(camvox.Vector(0.0, 1.0, 0.0), 0.5 * pi)
+lastmat.setResolution(0.3)
+
+clamp = CappedCylinder(6.0, 10.0)
+clamp.translate(camvox.Vector(0.0, 0.0, -35.0))
+clamp.rotate(camvox.Vector(0.0, 1.0, 0.0), 0.5 * pi)
+clamp.setResolution(0.3)
+
+tree = camvox.VoxTree(90.0)
+
+operation = camvox.VoxOperation()
+operation.inside_mask.setLayers(0x01)
+operation.inside_op = camvox.VOX_OP_OR;
+tree.addCSGObject(clamp, operation)
+
+operation = camvox.VoxOperation()
+operation.inside_mask.setLayers(0x02)
+operation.inside_op = camvox.VOX_OP_OR;
+operation.edge_mask.setLayers(0x04)
+operation.edge_op = camvox.VOX_OP_OR;
 tree.addCSGObject(cr, operation)
 
-l = camvox.vectorVoxCoord()
-print len(l)
-tree.getSkin(1, 12.0, l)
-print len(l)
+operation = camvox.VoxOperation()
+operation.inside_mask.setLayers(0x80)
+operation.inside_op = camvox.VOX_OP_OR;
+tree.addCSGObject(mat, operation)
 
-#tree.generatePOVCode()
-#print >>sys.stderr, tree.nr_nodes_created, tree.nr_nodes_destroyed, tree.nr_nodes_created - tree.nr_nodes_destroyed
+operation = camvox.VoxOperation()
+operation.inside_mask.setLayers(0x08)
+operation.inside_op = camvox.VOX_OP_OR;
+tree.addCSGObject(lastmat, operation)
+
+
+l = camvox.vectorMillCoord()
+#print len(l)
+tree.getSkin(1, 12.0, l)
+#print len(l)
+
+tree.generatePOVCode()
+print >>sys.stderr, tree.nr_nodes_created, tree.nr_nodes_destroyed, tree.nr_nodes_created - tree.nr_nodes_destroyed
 

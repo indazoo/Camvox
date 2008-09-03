@@ -22,6 +22,7 @@
 #include <camvox/VoxCoord.h>
 #include <camvox/CSGObject.h>
 #include <camvox/FreeList.h>
+#include <camvox/MillCoord.h>
 
 namespace camvox {
 
@@ -134,7 +135,7 @@ public:
 
 	/** Find all coords that are part of the skin.
 	 */
-	void getSkin(uint8_t layers, double resolution, std::vector<VoxCoord> &coords) const;
+	void getSkin(uint8_t layers, double resolution, std::vector<MillCoord> &coords) const;
 };
 
 }

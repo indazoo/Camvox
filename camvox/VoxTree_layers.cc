@@ -21,6 +21,7 @@
 #include <math.h>
 #include <fenv.h>
 #include <camvox/VoxTree.h>
+#include <camvox/MillCoord.h>
 
 namespace camvox {
 
@@ -64,7 +65,7 @@ uint8_t VoxTree::getLayers(const VoxCoord &coord) const
 	return getNodeLayers(root, VoxCoord(), coord);
 }
 
-void VoxTree::getSkin(uint8_t layers, double resolution, std::vector<VoxCoord> &coords) const
+void VoxTree::getSkin(uint8_t layers, double resolution, std::vector<MillCoord> &coords) const
 {
 	int depth = ceil(log2(size / resolution));
 	int length = 1 << depth;
@@ -74,21 +75,32 @@ void VoxTree::getSkin(uint8_t layers, double resolution, std::vector<VoxCoord> &
 	for (int x = 1; x < length - 1; x++) {
 		VoxCoord coord = VoxCoord(depth, x, y, z);
 
-		if (getLayers(coord) == layers) {
-			for (int z2 = z - 1; z2 < z + 1; z2++) {
-			for (int y2 = y - 1; y2 < y + 1; y2++) {
-			for (int x2 = x - 1; x2 < x + 1; x2++) {
-				VoxCoord neighbour = VoxCoord(depth, x2, y2, z2);
-
-				if (getLayers(neighbour) == 0) {
-					//fprintf(stderr, "(%i %i %i) %i| %x %x %x\n", x, y, z, coord.depth, coord.x, coord.y, coord.z);
-					coords.push_back(coord);
-					goto next;
-				}
-
-			} } }
+		if (getLayers(coord) != layers) {
+			// This pixel does not belong to the layer.
+			continue;
 		}
-next:;
+
+		Vector average_normal = Vector(0.0, 0.0, 0.0, 0.0);
+		bool found_air = false;
+		for (int z2 = -1; z2 <= 1; z2++) {
+		for (int y2 = -1; y2 <= 1; y2++) {
+		for (int x2 = -1; x2 <= 1; x2++) {
+			if (x2 == 0 && y2 == 0 && z2 == 0) {
+				// This is not a neighbour.
+				continue;
+			}
+			VoxCoord neighbour = VoxCoord(depth, x + x2, y + y2, z + z2);
+
+			if (getLayers(neighbour) == 0) {
+				found_air = true;
+				//fprintf(stderr, "(%i %i %i) %i| %x %x %x\n", x, y, z, coord.depth, coord.x, coord.y, coord.z);
+				average_normal+= Vector(x2, y2, z2, 0.0).getNormalized();
+			}
+		} } }
+		if (found_air) {
+			MillCoord mill_coord = MillCoord(coord, coord.center(scale), -average_normal.getNormalized());
+			coords.push_back(mill_coord);
+		}
 	} } }
 }
 

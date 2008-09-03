@@ -39,7 +39,11 @@ library_include_HEADERS=camvox.h\
 			CSGPlane.h\
 			CSGCylinder.h\
 			FreeList.h\
-			VoxTree.h
+			Voxel.h\
+			VoxOperation.h\
+			VoxCoord.h\
+			VoxTree.h\
+			MillCoord.h
 
 
 pkgconfigdir = $(libdir)/pkgconfig

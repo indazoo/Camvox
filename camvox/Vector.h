@@ -68,6 +68,16 @@ public:
 		return TVector(-x, -y, -z, w);
 	}
 
+	/** In place add.
+	 */
+	TVector &operator+=(const TVector &other) {
+		x+= other.x;
+		y+= other.y;
+		z+= other.z;
+		w+= other.w;
+		return *this;
+	}
+
 	/** Return the length of the vector.
 	 * Or the distance between the point and the origin.
 	 */
@@ -75,12 +85,23 @@ public:
 		return gsqrt(gsquare(x) + gsquare(y) + gsquare(z));
 	}
 
-	/** Return a vector with a length of 1.0 in the same orientation as the original vector.
-	 * Or translate the point to lay on the surface of a unit sphere.
+	/** Set the length of this vector to 1, while keeping the same direction.
 	 */
-	TVector normalize() const {
+	TVector &normalize() {
 		T c = 1.0 / length();
-		return TVector(x * c, y * c, z * c, w);
+
+		x*= c;
+		y*= c;
+		z*= c;
+		return *this;
+	}
+
+	/** Set the length of this vector to 1, while keeping the same direction.
+	 */
+	TVector getNormalized() const {
+		T c = 1.0 / length();
+
+		return TVector(x*c, y*c, z*c, w);
 	}
 };
 

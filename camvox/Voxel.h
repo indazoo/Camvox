@@ -44,116 +44,242 @@ public:
  * 01cccccc cccccccc cccccccc llllllll		CSGobject + layer mask.
  */
 class Voxel {
-public:
+private:
 	uint32_t	value;
+public:
+	/** Create a dontPrune voxel.
+	 */
+	Voxel();
 
-	Voxel() : value(0) {}
+	/** Set voxel to be a layer.
+	 * @param layers	Bit mask of layers.
+	 */
+	Voxel(uint8_t layers);
 
-	Voxel(uint8_t layers) : value(0) {
-		setLayers(layers);
-	}
+	/** Copy constructor.
+	 * @param other		The voxel to copy.
+	 */
+	Voxel(const Voxel &other);
 
-	Voxel(const Voxel &other) : value(other.value) {}
+	/** Copy operator.
+	 * @param other		The voxel to copy.
+	 */
+	Voxel &operator=(const Voxel &other);
 
-	Voxel &operator=(const Voxel &other) {
-		value = other.value;
-		return *this;
-	}
+	/** Unequal operator.
+	 * @param other		The other voxel.
+	 * @returns true if not equal.
+	 */
+	bool operator!=(const Voxel &other) const;
 
-	bool operator!=(const Voxel &other) const {
-		return value != other.value;
-	}
+	/** Equal operator.
+	 * @param other		The other voxel.
+	 * @returns true if both voxels are equal.
+	 */
+	bool operator==(const Voxel &other) const;
 
-	bool operator==(const Voxel &other) const {
-		return value == other.value;
-	}
+	/** OR the layers of the other voxel to this one.
+	 * @param other		The other voxel.
+	 */
+	void orLayers(const Voxel &other);
 
-	void orLayers(const Voxel &other) {
-		setLayers(getLayers() | other.getLayers());
-	}
+	/** AND the layers of the other voxel to this one.
+	 * @param other		The other voxel.
+	 */
+	void andLayers(const Voxel &other);
 
-	void andLayers(const Voxel &other) {
-		setLayers(getLayers() & other.getLayers());
-	}
+	/** XOR the layers of the other voxel to this one.
+	 * @param other		The other voxel.
+	 */
+	void xorLayers(const Voxel &other);
 
-	void xorLayers(const Voxel &other) {
-		setLayers(getLayers() ^ other.getLayers());
-	}
+	/** Voxel points to a node.
+	 * @param node_nr	Number of the node.
+	 */
+	void setNodeNr(uint32_t node_nr);
 
-	void setNodeNr(uint32_t node_nr) {
-		if (__builtin_expect(node_nr > 0x7fffffff, 0)) {
-			throw Voxel_err("Node number may not be larger than 0x7fffffff.");
-		}
-		value = node_nr | 0x80000000;
-	}
+	/** Set the layers on this voxel.
+	 * @param layers	Layer mask.
+	 */
+	void setLayers(uint8_t layers);
 
-	void setLayers(uint8_t layers) {
-		if (__builtin_expect(isLayers(), 1)) {
-			value = (value & 0xffffff00) | layers;
-		} else {
-			value = layers | 0x40000000;
-		}
-	}
+	/** Set the CSGObject which caused this voxel.
+	 * @param obj		simplified CSGObject.
+	 */
+	void setCSGObject(const CSGObject *obj);
 
-	void setCSGObject(const CSGObject *obj) {
-		uint32_t id = obj->id;
+	/** Set the voxel to don't prune.
+	 * This means that childs voxels are different from each other.
+	 */
+	void setDontPrune(void);
 
-		if (__builtin_expect(id > 0x3fffff, 0)) {
-			throw Voxel_err("CSGObject is may not be larger than 0x3fffff.");
-		}
+	/** Check if this voxel points to a child node.
+	 * @returns true if this voxel points to a node.
+	 */
+	bool isNodeNr(void) const;
 
-		if (__builtin_expect(isLayers(), 1)) {
-			value = (value & 0xc00000ff) | (id << 8);
-		} else {
-			value = (id << 8) | 0x40000000;
-		}
-	}
+	/** Check if this voxel is a leaf node.
+	 * @returns true if this voxel is a leaf node.
+	 */
+	bool isLayers(void) const;
 
-	void setDontPrune(void) {
-		value = 0;
-	}
+	/** Check if the voxel node can be pruned.
+	 * @returns true if this voxel can not be pruned.
+	 */
+	bool isDontPrune(void) const;
 
-	bool isNodeNr(void) const {
-		return (value & 0x80000000) == 0x80000000;
-	}
+	/** Get the voxel value.
+	 * @returns voxel value.
+	 */
+	uint32_t getValue(void) const;
 
-	bool isLayers(void) const {
-		return (value & 0xc0000000) == 0x40000000;
-	}
+	/** get the node nr.
+	 * @returns node nr.
+	 */
+	uint32_t getNodeNr(void) const;
 
-	bool isDontPrune(void) const {
-		return value == 0;
-	}
+	/** Get the layer mask.
+	 * @returns layer mask.
+	 */
+	uint8_t getLayers(void) const;
 
-	uint32_t getValue(void) const {
-		return value;
-	}
-
-	uint32_t getNodeNr(void) const {
-		if (__builtin_expect(!isNodeNr(), 0)) {
-			throw Voxel_err("Voxel is not a node number.");
-		}
-
-		return value & 0x7fffffff;
-	}
-
-	uint8_t getLayers(void) const {
-		if (__builtin_expect(!isLayers(), 0)) {
-			throw Voxel_err("Voxel is not a layer.");
-		}
-
-		return value & 0x000000ff;
-	}
-
-	CSGObject *getCSGObject(void) const {
-		if (__builtin_expect(!isLayers(), 0)) {
-			throw Voxel_err("Voxel is not a layer.");
-		}
-
-		uint32_t id = (value & 0x3fffff00) >> 8;
-		return csgobject_list[id];
-	}
+	/** Get the object that caused this leaf.
+	 * @returns simplified CSGObject.
+	 */
+	CSGObject *getCSGObject(void) const;
 };
+
+inline Voxel::Voxel() :
+	value(0)
+{
+}
+
+inline Voxel::Voxel(uint8_t layers) :
+	value(0)
+{
+	setLayers(layers);
+}
+
+inline Voxel::Voxel(const Voxel &other) :
+	value(other.value)
+{
+}
+
+inline Voxel &Voxel::operator=(const Voxel &other)
+{
+	value = other.value;
+	return *this;
+}
+
+inline bool Voxel::operator!=(const Voxel &other) const
+{
+	return value != other.value;
+}
+
+inline bool Voxel::operator==(const Voxel &other) const
+{
+	return value == other.value;
+}
+
+inline void Voxel::orLayers(const Voxel &other)
+{
+	setLayers(getLayers() | other.getLayers());
+}
+
+inline void Voxel::andLayers(const Voxel &other)
+{
+	setLayers(getLayers() & other.getLayers());
+}
+
+inline void Voxel::xorLayers(const Voxel &other)
+{
+	setLayers(getLayers() ^ other.getLayers());
+}
+
+inline void Voxel::setNodeNr(uint32_t node_nr)
+{
+	if (__builtin_expect(node_nr > 0x7fffffff, 0)) {
+		throw Voxel_err("Node number may not be larger than 0x7fffffff.");
+	}
+	value = node_nr | 0x80000000;
+}
+
+inline void Voxel::setLayers(uint8_t layers)
+{
+	if (__builtin_expect(isLayers(), 1)) {
+		value = (value & 0xffffff00) | layers;
+	} else {
+		value = layers | 0x40000000;
+	}
+}
+
+inline void Voxel::setCSGObject(const CSGObject *obj)
+{
+	uint32_t id = obj->id;
+
+	if (__builtin_expect(id > 0x3fffff, 0)) {
+		throw Voxel_err("CSGObject is may not be larger than 0x3fffff.");
+	}
+
+	if (__builtin_expect(isLayers(), 1)) {
+		value = (value & 0xc00000ff) | (id << 8);
+	} else {
+		value = (id << 8) | 0x40000000;
+	}
+}
+
+inline void Voxel::setDontPrune(void)
+{
+	value = 0;
+}
+
+inline bool Voxel::isNodeNr(void) const
+{
+	return (value & 0x80000000) == 0x80000000;
+}
+
+inline bool Voxel::isLayers(void) const
+{
+	return (value & 0xc0000000) == 0x40000000;
+}
+
+inline bool Voxel::isDontPrune(void) const
+{
+	return value == 0;
+}
+
+inline uint32_t Voxel::getValue(void) const
+{
+	return value;
+}
+
+inline uint32_t Voxel::getNodeNr(void) const
+{
+	if (__builtin_expect(!isNodeNr(), 0)) {
+		throw Voxel_err("Voxel is not a node number.");
+	}
+
+	return value & 0x7fffffff;
+}
+
+inline uint8_t Voxel::getLayers(void) const
+{
+	if (__builtin_expect(!isLayers(), 0)) {
+		throw Voxel_err("Voxel is not a layer.");
+	}
+
+	return value & 0x000000ff;
+}
+
+inline CSGObject *Voxel::getCSGObject(void) const
+{
+	if (__builtin_expect(!isLayers(), 0)) {
+		throw Voxel_err("Voxel is not a layer.");
+	}
+
+	uint32_t id = (value & 0x3fffff00) >> 8;
+	return csgobject_list[id];
+}
 
 }
 
