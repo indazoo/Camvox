@@ -21,5 +21,7 @@
 #include <camvox/CSGDifference.h>
 #include <camvox/CSGIntersection.h>
 #include <camvox/CSGInvert.h>
+#include <camvox/MillCoord.h>
+
 
 #endif

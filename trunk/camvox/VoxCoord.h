@@ -51,11 +51,11 @@ public:
 
 	/** Construct a new coord identifying the root voxel in the oct-tree.
 	 */
-	VoxCoord(void) : depth(0), x(0), y(0), z(0) {}
+	VoxCoord(void);
 
 	/** Copy constructor.
 	 */
-	VoxCoord(const VoxCoord &other) : depth(other.depth), x(other.x), y(other.y), z(other.z) {}
+	VoxCoord(const VoxCoord &other);
 
 	/** Create a coord at a specific depth.
 	 * @param depth	at what level is this voxel, 0 is root.
@@ -63,22 +63,11 @@ public:
 	 * @param y	number of voxels away at this depth.
 	 * @param z	number of voxels up at this depth.
 	 */
-	VoxCoord(int _depth, int _x = 0, int _y = 0, int _z = 0) : depth(_depth) {
-		uint32_t movement = 0x80000000 >> depth;
-		x = movement * _x;
-		y = movement * _y;
-		z = movement * _z;
-	}
+	VoxCoord(int _depth, int _x = 0, int _y = 0, int _z = 0);
 
 	/** Copy operator.
 	 */
-	VoxCoord &operator=(const VoxCoord &other) {
-		depth = other.depth;
-		x = other.x;
-		y = other.y;
-		z = other.z;
-		return *this;
-	}
+	VoxCoord &operator=(const VoxCoord &other);
 
 	/** Get the coord of a neighbour voxel at the same oct-tree depth.
 	 * To get the other corner of this voxel, one would specify (1, 1, 1)
@@ -89,61 +78,135 @@ public:
 	 * @param z	number of voxels away on the z-axis.
 	 * @returns The new voxel coord pointing to a neighbour voxel.
 	 */
-	VoxCoord nextNeighbour(int _x, int _y, int _z) const {
-		VoxCoord r = *this;
-
-		uint32_t movement = 0x80000000 >> depth;
-		r.x+= movement * _x;
-		r.y+= movement * _y;
-		r.z+= movement * _z;
-		return r;
-	}
+	VoxCoord nextNeighbour(int _x, int _y, int _z) const;
 
 	/** Get the coord of a child voxel at the next depth of the oct-tree.
 	 * @param child_index	An index pointing to one of the eight childs of an oct-tree node.
 	 * @returns The new voxel coord pointing to a child voxel.
 	 */
-	VoxCoord childCoord(int child_index) const {
-		VoxCoord r = *this;
-		r.depth++;
-
-		return r.nextNeighbour(child_index & 1, (child_index >> 1) & 1, (child_index >> 2) & 1);
-	}
+	VoxCoord childCoord(int child_index) const;
 
 	/** Get the axis aligned bounding box describing this voxel in cartesion coords.
 	 * @param scale		The size of the smalles voxel.
 	 * @returns An IntervalVector describing the axis aligned bounding box.
 	 */
-	IntervalVector boundingBox(double scale) const {
-		VoxCoord opposite = nextNeighbour(1, 1, 1);
+	IntervalVector boundingBox(double scale) const;
 
-		double half_size = scale * 1073741824.0;
-
-		return IntervalVector(
-			Interval(x * scale - half_size, opposite.x * scale - half_size),
-			Interval(y * scale - half_size, opposite.y * scale - half_size),
-			Interval(z * scale - half_size, opposite.z * scale - half_size),
-			1.0
-		);
-	}
+	/** Get the center of this voxel in cartesion coords.
+	 * @param scale		The size of the smalles voxel.
+	 * @returns An point in the center.
+	 */
+	Vector center(double scale) const;
 
 	/** The size of this voxel.
+	 * @param scale		The scale for the smallest voxel.
 	 * @returns the size of this voxel in the scale of the oct tree.
 	 */
-	double size(double scale) const {
-		return (0x80000000 >> depth) * scale;
-	}
+	double size(double scale) const;
 
-	int indexAtDepth(int _depth) const {
-		uint32_t mask = (0x80000000 >> _depth);
-
-		return (
-			((x & mask) ? 1 : 0) |
-			((y & mask) ? 2 : 0) |
-			((z & mask) ? 4 : 0)
-		);
-	}
+	/** The index inside the node at a specific depth.
+	 * @param _depth	the node selected at depth.
+	 * @returns index of child node.
+	 */
+	int indexAtDepth(int _depth) const;
 };
+
+inline VoxCoord::VoxCoord(void) :
+	depth(0), x(0), y(0), z(0)
+{
+}
+
+inline VoxCoord::VoxCoord(const VoxCoord &other) :
+	depth(other.depth), x(other.x), y(other.y), z(other.z)
+{
+}
+
+inline VoxCoord::VoxCoord(int _depth, int _x, int _y, int _z) :
+	depth(_depth)
+{
+	uint32_t movement = 0x80000000 >> depth;
+	x = movement * _x;
+	y = movement * _y;
+	z = movement * _z;
+}
+
+inline VoxCoord &VoxCoord::operator=(const VoxCoord &other)
+{
+	depth = other.depth;
+	x = other.x;
+	y = other.y;
+	z = other.z;
+	return *this;
+}
+
+inline VoxCoord VoxCoord::nextNeighbour(int _x, int _y, int _z) const
+{
+	VoxCoord r = *this;
+
+	uint32_t movement = 0x80000000 >> depth;
+	r.x+= movement * _x;
+	r.y+= movement * _y;
+	r.z+= movement * _z;
+	return r;
+}
+
+inline VoxCoord VoxCoord::childCoord(int child_index) const
+{
+	VoxCoord r = *this;
+	r.depth++;
+
+	return r.nextNeighbour(child_index & 1, (child_index >> 1) & 1, (child_index >> 2) & 1);
+}
+
+inline IntervalVector VoxCoord::boundingBox(double scale) const
+{
+	VoxCoord opposite = nextNeighbour(1, 1, 1);
+
+	double half_size = scale * 1073741824.0;
+
+	// Find the two opposite corners.
+	// Then scale it to cartesion coords and
+	// move the origin to the middle of voxel space.
+	return IntervalVector(
+		Interval(x * scale - half_size, opposite.x * scale - half_size),
+		Interval(y * scale - half_size, opposite.y * scale - half_size),
+		Interval(z * scale - half_size, opposite.z * scale - half_size),
+		1.0
+	);
+}
+
+inline Vector VoxCoord::center(double scale) const
+{
+	VoxCoord opposite = nextNeighbour(1, 1, 1);
+
+	double half_size = scale * 1073741824.0;
+
+	// Take the average between the two opposite corners.
+	// Then scale it to cartesion coords and
+	// move the origin to the middle of voxel space.
+	return Vector(
+		(x + opposite.x) * 0.5 * scale - half_size,
+		(y + opposite.y) * 0.5 * scale - half_size,
+		(z + opposite.z) * 0.5 * scale - half_size,
+		1.0
+	);
+}
+
+inline double VoxCoord::size(double scale) const
+{
+	return (0x80000000 >> depth) * scale;
+}
+
+inline int VoxCoord::indexAtDepth(int _depth) const
+{
+	uint32_t mask = (0x80000000 >> _depth);
+
+	return (
+		((x & mask) ? 1 : 0) |
+		((y & mask) ? 2 : 0) |
+		((z & mask) ? 4 : 0)
+	);
+}
 
 }
 #endif

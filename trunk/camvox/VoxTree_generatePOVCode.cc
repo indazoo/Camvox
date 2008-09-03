@@ -33,21 +33,43 @@ void VoxTree::generatePOVCodeForVoxel(uint32_t node_nr, const VoxCoord &coord, i
 		generatePOVCodeForNode(voxel_data.getNodeNr(), voxel_coord);
 
 	} else {
-		if (voxel_data.getLayers() & 1) {
-			IntervalVector voxel_bound = voxel_coord.boundingBox(scale);
+		uint8_t	layers = voxel_data.getLayers();
 
-			// Our Y and Z axis is switched compared to almost everyone else.
-			fprintf(stdout, "box {\n");
-			fprintf(stdout, "  <%lf, %lf, %lf>, <%lf, %lf, %lf>\n",
-				voxel_bound.x.low,
-				voxel_bound.z.low,
-				voxel_bound.y.low,
-				voxel_bound.x.high,
-				voxel_bound.z.high,
-				voxel_bound.y.high
-			);
-			fprintf(stdout, "}\n");
+		if (layers == 0) {
+			return;
 		}
+
+		IntervalVector voxel_bound = voxel_coord.boundingBox(scale);
+
+		// Our Y and Z axis is switched compared to almost everyone else.
+		fprintf(stdout, "box {\n");
+		fprintf(stdout, "  <%lf, %lf, %lf>, <%lf, %lf, %lf>\n",
+			voxel_bound.x.low,
+			voxel_bound.z.low,
+			voxel_bound.y.low,
+			voxel_bound.x.high,
+			voxel_bound.z.high,
+			voxel_bound.y.high
+		);
+		fprintf(stdout, "  texture {\n");
+		if (layers & 0x01) {
+			// Don't cut, ever
+			fprintf(stdout, "    pigment { color Red }\n");
+		} else if (layers & 0x02) {
+			// Inside of the object.
+			fprintf(stdout, "    pigment { color Blue }\n");
+		} else if (layers & 0x04) {
+			// Edge of the object.
+			fprintf(stdout, "    pigment { color White }\n");
+		} else if (layers & 0x08) {
+			// Last layer
+			fprintf(stdout, "    pigment { color Yellow }\n");
+		} else if (layers & 0x80) {
+			// First layer
+			fprintf(stdout, "    pigment { color Green }\n");
+		}
+		fprintf(stdout, "  }\n");
+		fprintf(stdout, "}\n");
 	}
 }
 
@@ -61,7 +83,6 @@ void VoxTree::generatePOVCodeForNode(uint32_t node_nr, const VoxCoord &coord)
 void VoxTree::generatePOVCode(void)
 {
 	fprintf(stdout, "#include \"colors.inc\"\n\n");
-	fprintf(stdout, "#include \"glass.inc\"\n\n");
 
 	fprintf(stdout, "background { color Black }\n");
 	fprintf(stdout, "global_settings { ambient_light <1.2, 1.2, 1.2> }\n");
@@ -97,16 +118,8 @@ void VoxTree::generatePOVCode(void)
 	fprintf(stdout, "  }\n");
 	fprintf(stdout, "}\n");
 
-
-	fprintf(stdout, "union {\n");
-
 	generatePOVCodeForNode(root, VoxCoord());
 
-	fprintf(stdout, "  texture {\n");
-	fprintf(stdout, "    pigment { color Green }\n");
-	fprintf(stdout, "  }\n");
-	//fprintf(stdout, "  interior {I_Glass_Dispersion1}\n");
-	fprintf(stdout, "}\n");
 }
 
 }

@@ -234,7 +234,7 @@ public:
 	TMatrix rotate(const TVector<T> &v, double _angle) const {
 		double		angle = -_angle;
 		TMatrix		B = TMatrix();
-		TVector<T>	nv = v.normalize();
+		TVector<T>	nv = v.getNormalized();
 
 		B.m[0][0] = (1.0 - gcos(angle)) * (nv.x * nv.x) + (       gcos(angle));
 		B.m[0][1] = (1.0 - gcos(angle)) * (nv.x * nv.y) + (nv.z * gsin(angle));
@@ -250,6 +250,7 @@ public:
 };
 
 typedef TMatrix<double>		Matrix;
+
 
 }
 #endif
