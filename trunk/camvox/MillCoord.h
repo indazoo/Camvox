@@ -11,7 +11,7 @@ namespace camvox {
 class MillCoord {
 public:
 	VoxCoord	voxel;		///< This voxel is the center of the tool.
-	Vector		position;	///< Position the position of the tool in cartesion coord
+	Vector		position;	///< The position of the tool in cartesion coord
 	Vector		orientation;	///< The orientation of the tool in cartesion coord.
 
 	MillCoord();
