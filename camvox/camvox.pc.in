@@ -7,6 +7,6 @@ Name: camvox
 Description: Voxel Based Multi-Axis CAM library.
 Requires:
 Version: @VERSION@
-Libs: -L${libdir} -lvoxcam-1.0
-Cflags: -I${includedir}/voxcam-1.0
+Libs: -L${libdir} -lvoxcam-@VERSION@
+Cflags: -I${includedir}/voxcam-@VERSION@
 

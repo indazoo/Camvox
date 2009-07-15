@@ -38,7 +38,7 @@ build_triplet = @build@
 host_triplet = @host@
 subdir = camvox
 DIST_COMMON = $(library_include_HEADERS) $(srcdir)/Makefile.am \
-	$(srcdir)/Makefile.in $(srcdir)/camvox-1.0.pc.in
+	$(srcdir)/Makefile.in $(srcdir)/camvox.pc.in
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/acinclude.m4 \
 	$(top_srcdir)/configure.in
@@ -46,7 +46,7 @@ am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
-CONFIG_CLEAN_FILES = camvox-1.0.pc
+CONFIG_CLEAN_FILES = camvox.pc
 am__vpath_adj_setup = srcdirstrip=`echo "$(srcdir)" | sed 's|.|.|g'`;
 am__vpath_adj = case $$p in \
     $(srcdir)/*) f=`echo "$$p" | sed "s|^$$srcdirstrip/||"`;; \
@@ -240,9 +240,10 @@ sysconfdir = @sysconfdir@
 target_alias = @target_alias@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
+AM_CXXFLAGS = -I$(srcdir)/..
 lib_LTLIBRARIES = libcamvox.la
-libcamvox_la_CXXFLAGS = -Wall
-libcamvox_la_LDFLAGS = -release 1.0
+libcamvox_la_CXXFLAGS = -I$(srcdir)/..
+libcamvox_la_LDFLAGS = -release $(VERSION)
 libcamvox_la_SOURCES = CSGObject.cc\
 			CSGOperation.cc\
 			CSGInvert.cc\
@@ -260,7 +261,7 @@ libcamvox_la_SOURCES = CSGObject.cc\
 			VoxTree_addCSGObject.cc\
 			VoxTree_generatePOVCode.cc
 
-library_includedir = $(includedir)/camvox-1.0/camvox
+library_includedir = $(includedir)/camvox-$(VERSION)/camvox
 library_include_HEADERS = camvox.h\
 			Exceptions.h\
 			GMath.h\
@@ -274,7 +275,7 @@ library_include_HEADERS = camvox.h\
 			CSGDifference.h\
 			CSGIntersection.h\
 			CSGPrimative.h\
-			CSGSPhere.h\
+			CSGSphere.h\
 			CSGPlane.h\
 			CSGCylinder.h\
 			FreeList.h\
@@ -285,7 +286,7 @@ library_include_HEADERS = camvox.h\
 			MillCoord.h
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = camvox-1.0.pc
+pkgconfig_DATA = camvox.pc
 all: all-am
 
 .SUFFIXES:
@@ -319,7 +320,7 @@ $(top_srcdir)/configure:  $(am__configure_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
-camvox-1.0.pc: $(top_builddir)/config.status $(srcdir)/camvox-1.0.pc.in
+camvox.pc: $(top_builddir)/config.status $(srcdir)/camvox.pc.in
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@
 install-libLTLIBRARIES: $(lib_LTLIBRARIES)
 	@$(NORMAL_INSTALL)

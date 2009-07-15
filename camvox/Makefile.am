@@ -1,8 +1,10 @@
 # used by automake
 
+AM_CXXFLAGS = -I$(srcdir)/..
+
 lib_LTLIBRARIES = 	libcamvox.la
-libcamvox_la_CXXFLAGS = -Wall
-libcamvox_la_LDFLAGS =  -release 1.0
+libcamvox_la_CXXFLAGS = -I$(srcdir)/..
+libcamvox_la_LDFLAGS =  -release $(VERSION)
 libcamvox_la_SOURCES =	CSGObject.cc\
 			CSGOperation.cc\
 			CSGInvert.cc\
@@ -21,7 +23,7 @@ libcamvox_la_SOURCES =	CSGObject.cc\
 			VoxTree_generatePOVCode.cc
 
 
-library_includedir=$(includedir)/camvox-1.0/camvox
+library_includedir=$(includedir)/camvox-$(VERSION)/camvox
 library_include_HEADERS=camvox.h\
 			Exceptions.h\
 			GMath.h\
@@ -35,7 +37,7 @@ library_include_HEADERS=camvox.h\
 			CSGDifference.h\
 			CSGIntersection.h\
 			CSGPrimative.h\
-			CSGSPhere.h\
+			CSGSphere.h\
 			CSGPlane.h\
 			CSGCylinder.h\
 			FreeList.h\
@@ -47,6 +49,6 @@ library_include_HEADERS=camvox.h\
 
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = camvox-1.0.pc
+pkgconfig_DATA = camvox.pc
 
 

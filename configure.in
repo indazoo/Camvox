@@ -46,6 +46,6 @@ AC_TYPE_UINT32_T
 # Checks for library functions.
 AC_CHECK_FUNCS([sqrt])
 
-AC_CONFIG_FILES([Makefile pyext/Makefile camvox/Makefile camvox/camvox-1.0.pc])
+AC_CONFIG_FILES([Makefile pyext/Makefile camvox/Makefile camvox/camvox.pc])
 AC_OUTPUT
 
